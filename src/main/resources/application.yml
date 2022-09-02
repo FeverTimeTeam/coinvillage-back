@@ -1,4 +1,7 @@
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://db-no1backend.cpadiqsprb8b.ap-northeast-2.rds.amazonaws.com:3306/coinvillage
