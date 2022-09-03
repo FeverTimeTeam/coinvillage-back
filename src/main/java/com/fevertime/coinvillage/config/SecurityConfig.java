@@ -1,5 +1,9 @@
 package com.fevertime.coinvillage.config;
 
+import com.fevertime.coinvillage.jwt.JwtAccessDeniedHandler;
+import com.fevertime.coinvillage.jwt.JwtAuthenticationEntryPoint;
+import com.fevertime.coinvillage.jwt.JwtSecurityConfig;
+import com.fevertime.coinvillage.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +21,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
+    private final TokenProvider tokenProvider;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
@@ -38,6 +45,8 @@ public class SecurityConfig {
         http.cors().and().csrf().disable()
 
                 .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler)
 
                 .and()
                 .headers()
@@ -60,7 +69,8 @@ public class SecurityConfig {
 
                 .anyRequest().permitAll()
 
-                .and();
+                .and()
+                .apply(new JwtSecurityConfig(tokenProvider));
         return http.build();
     }
 }
