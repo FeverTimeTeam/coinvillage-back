@@ -10,4 +10,6 @@ import lombok.*;
 public class TokenDto {
     // accessToken
     private String token;
+
+    private MemberResponseDto memberResponseDto;
 }

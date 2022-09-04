@@ -1,9 +1,6 @@
 package com.fevertime.coinvillage.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -11,6 +8,7 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @Getter
+@Setter
 @NoArgsConstructor
 @Builder
 public class Member {
@@ -26,6 +24,10 @@ public class Member {
 
     private boolean activated;
 
+    private String phoneNumber;
+
+    private Long currentMoney;
+
     @ManyToMany
     @JoinTable(
             name = "member_authority",
@@ -35,4 +37,7 @@ public class Member {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Country country;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Job job;
 }

@@ -3,6 +3,7 @@ package com.fevertime.coinvillage.dto.login;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fevertime.coinvillage.domain.Authority;
 import com.fevertime.coinvillage.domain.Country;
+import com.fevertime.coinvillage.domain.Job;
 import com.fevertime.coinvillage.domain.Member;
 import lombok.*;
 
@@ -31,9 +32,15 @@ public class MemberRequestDto {
 
     private Set<Authority> authority;
 
+    private String phoneNumber;
+
+    private Long currentMoney;
+
     private String countryName;
 
     private Country country;
+
+    private Job job;
 
     public Member toEntity() {
         return Member.builder()
@@ -41,7 +48,10 @@ public class MemberRequestDto {
                 .password(nickname)
                 .nickname(nickname)
                 .authorities(authority)
+                .phoneNumber(phoneNumber)
+                .currentMoney(currentMoney)
                 .country(country)
+                .job(job)
                 .build();
     }
 

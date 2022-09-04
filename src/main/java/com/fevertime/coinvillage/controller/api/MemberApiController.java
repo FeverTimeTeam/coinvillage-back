@@ -1,8 +1,10 @@
 package com.fevertime.coinvillage.controller.api;
 
+import com.fevertime.coinvillage.domain.Member;
 import com.fevertime.coinvillage.dto.login.*;
 import com.fevertime.coinvillage.jwt.JwtFilter;
 import com.fevertime.coinvillage.jwt.TokenProvider;
+import com.fevertime.coinvillage.repository.MemberRepository;
 import com.fevertime.coinvillage.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +28,7 @@ import java.util.List;
 public class MemberApiController {
     private final MemberService memberService;
     private final TokenProvider tokenProvider;
+    private final MemberRepository memberRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @PostMapping("ruler/signup")
@@ -59,7 +62,10 @@ public class MemberApiController {
         String accessToken = tokenProvider.createToken(authentication);
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, accessToken);
 
-        return new ResponseEntity<>(new TokenDto(accessToken), httpHeaders, HttpStatus.OK);
+        Member member = memberRepository.findByEmail(loginDto.getEmail());
+        MemberResponseDto memberResponseDto = new MemberResponseDto(member);
+
+        return new ResponseEntity<>(new TokenDto(accessToken, memberResponseDto), httpHeaders, HttpStatus.OK);
     }
     
     @GetMapping

@@ -2,12 +2,15 @@ package com.fevertime.coinvillage.service;
 
 import com.fevertime.coinvillage.domain.Authority;
 import com.fevertime.coinvillage.domain.Country;
+import com.fevertime.coinvillage.domain.Job;
 import com.fevertime.coinvillage.domain.Member;
 import com.fevertime.coinvillage.dto.login.CountryResponseDto;
 import com.fevertime.coinvillage.dto.login.MemberRequestDto;
 import com.fevertime.coinvillage.dto.login.MemberResponseDto;
+import com.fevertime.coinvillage.dto.login.MemberUpdateRequestDto;
 import com.fevertime.coinvillage.exception.DuplicateMemberException;
 import com.fevertime.coinvillage.repository.CountryRepository;
+import com.fevertime.coinvillage.repository.JobRepository;
 import com.fevertime.coinvillage.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,8 +30,10 @@ import static com.fevertime.coinvillage.domain.Role.ROLE_NATION;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final CountryRepository countryRepository;
+    private final JobRepository jobRepository;
     private final PasswordEncoder passwordEncoder;
 
+    // 선생님 회원가입
     @Transactional
     public MemberResponseDto signupRuler(MemberRequestDto memberRequestDto) {
         if (memberRepository.findOneWithAuthoritiesByEmail(memberRequestDto.getEmail()).orElse(null) != null) {
@@ -50,6 +55,7 @@ public class MemberService {
                 .password(passwordEncoder.encode(memberRequestDto.getPassword()))
                 .nickname(memberRequestDto.getNickname())
                 .activated(true)
+                .phoneNumber(memberRequestDto.getPhoneNumber())
                 .authorities(Collections.singleton(authority))
                 .country(country)
                 .build();
@@ -58,6 +64,7 @@ public class MemberService {
         return new MemberResponseDto(member);
     }
 
+    // 학생 회원가입
     @Transactional
     public MemberResponseDto signupNation(MemberRequestDto memberRequestDto) {
         if (memberRepository.findOneWithAuthoritiesByEmail(memberRequestDto.getEmail()).orElse(null) != null) {
@@ -77,6 +84,7 @@ public class MemberService {
                 .password(passwordEncoder.encode(memberRequestDto.getPassword()))
                 .nickname(memberRequestDto.getNickname())
                 .activated(true)
+                .currentMoney(0L)
                 .authorities(Collections.singleton(authority))
                 .country(country)
                 .build();
@@ -88,5 +96,19 @@ public class MemberService {
     public List<CountryResponseDto> findCountries() {
         List<Country> countries = countryRepository.findAll();
         return countries.stream().map(CountryResponseDto::new).collect(Collectors.toList());
+    }
+
+    // 직업 담당자 설정
+    @Transactional
+    public Long modJob(Long jobId, MemberUpdateRequestDto memberUpdateRequestDto) {
+        Job job = jobRepository.findById(jobId).orElseThrow(() -> new IllegalArgumentException("해당하는 직업이 없습니다."));
+
+        for (int i = 0; i < memberUpdateRequestDto.getMemberList().size(); i++) {
+            Member member = memberRepository.findByNickname(memberUpdateRequestDto.getMemberList().get(i));
+            member.setJob(job);
+            memberRepository.save(member);
+        }
+
+        return job.getJobId();
     }
 }

@@ -20,6 +20,10 @@ public class MemberResponseDto {
 
     private String nickname;
 
+    private String phoneNumber;
+
+    private Long currentMoney;
+
     private Set<AuthorityDto> authorityDtoSet;
 
     public MemberResponseDto(Member member) {
@@ -27,6 +31,8 @@ public class MemberResponseDto {
         this.email = member.getEmail();
         this.password = member.getPassword();
         this.nickname = member.getNickname();
+        this.phoneNumber = member.getPhoneNumber();
+        this.currentMoney = member.getCurrentMoney();
         this.authorityDtoSet = member.getAuthorities().stream()
                 .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
                 .collect(Collectors.toSet());

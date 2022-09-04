@@ -10,4 +10,8 @@ import java.util.UUID;
 public interface MemberRepository extends JpaRepository<Member, UUID> {
     @EntityGraph(attributePaths = "authorities")
     Optional<Member> findOneWithAuthoritiesByEmail(String email);
+
+    Member findByNickname(String nickname);
+
+    Member findByEmail(String email);
 }
