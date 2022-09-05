@@ -32,13 +32,13 @@ public class ManageResponseDto {
         this.nickname = member.getNickname();
 
         if (member.getJob() == null) {
-            this.jobName = "직업을 선택해주세요";
+            this.jobName = "무직";
         } else {
             this.jobName = member.getJob().getJobName();
         }
 
         if (member.getJob() == null) {
-            this.jobContent = "직업을 선택해주세요";
+            this.jobContent = "없음";
         } else {
             this.jobContent = member.getJob().getJobContent();
         }
