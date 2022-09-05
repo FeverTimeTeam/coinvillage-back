@@ -25,8 +25,21 @@ public class ManageApiController {
     }
 
     @PutMapping("{memberId}")
-    @ApiOperation(value = "국민 관리 직업설정")
+    @ApiOperation(value = "국민관리 직업설정")
     public ResponseEntity<ManageResponseDto> modMembers(@PathVariable Long memberId, @RequestBody ManageUpdateRequestDto manageUpdateRequestDto) {
         return ResponseEntity.ok(manageService.modMembers(memberId, manageUpdateRequestDto));
+    }
+
+    @DeleteMapping("{memberId}")
+    @ApiOperation(value = "국민관리 회원삭제")
+    public ResponseEntity delMember(@PathVariable Long memberId) {
+        manageService.delMember(memberId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("search")
+    @ApiOperation(value = "국민관리 회원검색")
+    public ResponseEntity<List<ManageResponseDto>> searchMembers(@RequestParam String searchWord) {
+        return ResponseEntity.ok(manageService.searchMembers(searchWord));
     }
 }

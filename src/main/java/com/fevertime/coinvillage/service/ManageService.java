@@ -26,6 +26,7 @@ public class ManageService {
         return manageResponseDtos;
     }
 
+    // 국민관리 회원 수정
     public ManageResponseDto modMembers(Long memberId, ManageUpdateRequestDto manageUpdateRequestDto) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException(""));
 
@@ -34,5 +35,16 @@ public class ManageService {
         memberRepository.save(member);
 
         return new ManageResponseDto(member);
+    }
+
+    // 국민관리 회원 삭제
+    public void delMember(Long memberId) {
+        memberRepository.deleteById(memberId);
+    }
+
+    // 국민관리 회원 검색
+    public List<ManageResponseDto> searchMembers(String searchWord) {
+        List<Member> memberList = memberRepository.findByNicknameContaining(searchWord);
+        return memberList.stream().map(ManageResponseDto::new).collect(Collectors.toList());
     }
 }
