@@ -11,4 +11,6 @@ public interface JobRepository extends JpaRepository<Job, Long> {
 
     @Query("select j.jobName from Job j")
     List<String> findAllJobName();
+
+    Job findByJobName(String jobName);
 }

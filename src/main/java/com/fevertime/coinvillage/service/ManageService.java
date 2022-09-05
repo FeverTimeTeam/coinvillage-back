@@ -29,7 +29,7 @@ public class ManageService {
     public ManageResponseDto modMembers(Long memberId, ManageUpdateRequestDto manageUpdateRequestDto) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException(""));
 
-        member.update(jobRepository.findById(manageUpdateRequestDto.getJob().getJobId()).orElseThrow());
+        member.update(jobRepository.findByJobName(manageUpdateRequestDto.getJob().getJobName()));
 
         memberRepository.save(member);
 
