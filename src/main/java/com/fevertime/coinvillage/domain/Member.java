@@ -42,4 +42,8 @@ public class Member {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Job job;
+
+    public void update(Job job) {
+        this.job = job;
+    }
 }

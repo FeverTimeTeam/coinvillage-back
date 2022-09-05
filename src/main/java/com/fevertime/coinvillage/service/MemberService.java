@@ -9,6 +9,7 @@ import com.fevertime.coinvillage.dto.login.MemberRequestDto;
 import com.fevertime.coinvillage.dto.login.MemberResponseDto;
 import com.fevertime.coinvillage.dto.login.MemberUpdateRequestDto;
 import com.fevertime.coinvillage.dto.manage.ManageResponseDto;
+import com.fevertime.coinvillage.dto.manage.ManageUpdateRequestDto;
 import com.fevertime.coinvillage.exception.DuplicateMemberException;
 import com.fevertime.coinvillage.repository.CountryRepository;
 import com.fevertime.coinvillage.repository.JobRepository;
@@ -73,6 +74,10 @@ public class MemberService {
             throw new DuplicateMemberException("이미 가입되어 있는 유저입니다.");
         }
 
+        if (countryRepository.findByCountryName(memberRequestDto.getCountryName()) == null) {
+            throw new IllegalArgumentException("존재하지 않는 국가입니다.");
+        }
+
         Country country = countryRepository.findByCountryName(memberRequestDto.getCountryName());
 
         memberRequestDto.setCountry(country);
@@ -114,11 +119,5 @@ public class MemberService {
         }
 
         return job.getJobId();
-    }
-    
-    // 국민관리 회원 전체보기
-    public List<ManageResponseDto> showMembers() {
-        List<Member> memberList = memberRepository.findAll();
-        return memberList.stream().map(ManageResponseDto::new).collect(Collectors.toList());
     }
 }
