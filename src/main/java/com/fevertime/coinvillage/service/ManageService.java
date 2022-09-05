@@ -26,8 +26,8 @@ public class ManageService {
         return manageResponseDtos;
     }
 
-    public ManageResponseDto modMembers(String nickname, ManageUpdateRequestDto manageUpdateRequestDto) {
-        Member member = memberRepository.findByNickname(nickname);
+    public ManageResponseDto modMembers(Long memberId, ManageUpdateRequestDto manageUpdateRequestDto) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException(""));
 
         member.update(jobRepository.findById(manageUpdateRequestDto.getJob().getJobId()).orElseThrow());
 

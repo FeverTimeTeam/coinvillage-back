@@ -24,9 +24,9 @@ public class ManageApiController {
         return ResponseEntity.ok(manageService.showMembers());
     }
 
-    @PutMapping
+    @PutMapping("{memberId}")
     @ApiOperation(value = "국민 관리 직업설정")
-    public ResponseEntity<ManageResponseDto> modMembers(String nickname, @RequestBody ManageUpdateRequestDto manageUpdateRequestDto) {
-        return ResponseEntity.ok(manageService.modMembers(nickname, manageUpdateRequestDto));
+    public ResponseEntity<ManageResponseDto> modMembers(@PathVariable Long memberId, @RequestBody ManageUpdateRequestDto manageUpdateRequestDto) {
+        return ResponseEntity.ok(manageService.modMembers(memberId, manageUpdateRequestDto));
     }
 }
