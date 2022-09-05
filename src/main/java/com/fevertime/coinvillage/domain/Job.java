@@ -1,9 +1,6 @@
 package com.fevertime.coinvillage.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -22,7 +19,7 @@ public class Job {
 
     private String jobContent;
 
-    private int salary;
+    private Long payCheck;
 
     @OneToMany(mappedBy = "job", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Member> memberList;

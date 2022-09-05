@@ -22,7 +22,7 @@ public class MemberResponseDto {
 
     private String phoneNumber;
 
-    private Long currentMoney;
+    private Long property;
 
     private Set<AuthorityDto> authorityDtoSet;
 
@@ -32,7 +32,7 @@ public class MemberResponseDto {
         this.password = member.getPassword();
         this.nickname = member.getNickname();
         this.phoneNumber = member.getPhoneNumber();
-        this.currentMoney = member.getCurrentMoney();
+        this.property = member.getProperty();
         this.authorityDtoSet = member.getAuthorities().stream()
                 .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
                 .collect(Collectors.toSet());

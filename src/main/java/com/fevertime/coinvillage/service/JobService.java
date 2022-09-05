@@ -25,7 +25,7 @@ public class JobService {
                 .jobName(jobRequestDto.getJobName())
                 .jobContent(jobRequestDto.getJobContent())
                 .headcount(jobRepository.countByJobName(jobRequestDto.getJobName()) - 1)
-                .salary(jobRequestDto.getSalary())
+                .payCheck(jobRequestDto.getPayCheck())
                 .memberList(null)
                 .build();
     }

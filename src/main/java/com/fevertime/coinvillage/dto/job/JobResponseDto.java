@@ -2,17 +2,9 @@ package com.fevertime.coinvillage.dto.job;
 
 import com.fevertime.coinvillage.domain.Job;
 import com.fevertime.coinvillage.dto.login.MemberResponseDto;
-import com.fevertime.coinvillage.repository.JobRepository;
 import lombok.*;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.FluentQuery;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Getter
@@ -29,7 +21,7 @@ public class JobResponseDto {
 
     private int headcount;
 
-    private int salary;
+    private Long payCheck;
 
     private List<MemberResponseDto> memberList;
 
@@ -38,7 +30,7 @@ public class JobResponseDto {
         this.jobName = job.getJobName();
         this.jobContent = job.getJobContent();
         this.headcount = job.getMemberList().size();
-        this.salary = job.getSalary();
+        this.payCheck = job.getPayCheck();
         this.memberList = job.getMemberList().stream().map(MemberResponseDto::new).collect(Collectors.toList());
     }
 }

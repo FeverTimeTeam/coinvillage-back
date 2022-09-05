@@ -3,7 +3,9 @@ package com.fevertime.coinvillage.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collector;
 
 @Entity
 @AllArgsConstructor
@@ -26,7 +28,7 @@ public class Member {
 
     private String phoneNumber;
 
-    private Long currentMoney;
+    private Long property;
 
     @ManyToMany
     @JoinTable(

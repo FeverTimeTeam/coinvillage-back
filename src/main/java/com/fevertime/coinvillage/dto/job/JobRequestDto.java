@@ -13,13 +13,13 @@ public class JobRequestDto {
 
     private String jobContent;
 
-    private int salary;
+    private Long payCheck;
 
     public Job toEntity() {
         return Job.builder()
                 .jobName(jobName)
                 .jobContent(jobContent)
-                .salary(salary)
+                .payCheck(payCheck)
                 .build();
     }
 }

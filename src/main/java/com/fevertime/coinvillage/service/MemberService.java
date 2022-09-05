@@ -8,11 +8,13 @@ import com.fevertime.coinvillage.dto.login.CountryResponseDto;
 import com.fevertime.coinvillage.dto.login.MemberRequestDto;
 import com.fevertime.coinvillage.dto.login.MemberResponseDto;
 import com.fevertime.coinvillage.dto.login.MemberUpdateRequestDto;
+import com.fevertime.coinvillage.dto.manage.ManageResponseDto;
 import com.fevertime.coinvillage.exception.DuplicateMemberException;
 import com.fevertime.coinvillage.repository.CountryRepository;
 import com.fevertime.coinvillage.repository.JobRepository;
 import com.fevertime.coinvillage.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,7 +86,7 @@ public class MemberService {
                 .password(passwordEncoder.encode(memberRequestDto.getPassword()))
                 .nickname(memberRequestDto.getNickname())
                 .activated(true)
-                .currentMoney(0L)
+                .property(0L)
                 .authorities(Collections.singleton(authority))
                 .country(country)
                 .build();
@@ -93,12 +95,13 @@ public class MemberService {
         return new MemberResponseDto(member);
     }
 
+    // 테스트용 전체보기 리스트
     public List<CountryResponseDto> findCountries() {
         List<Country> countries = countryRepository.findAll();
         return countries.stream().map(CountryResponseDto::new).collect(Collectors.toList());
     }
 
-    // 직업 담당자 설정
+    // 직업 담당자 수정
     @Transactional
     public Long modJob(Long jobId, MemberUpdateRequestDto memberUpdateRequestDto) {
         Job job = jobRepository.findById(jobId).orElseThrow(() -> new IllegalArgumentException("해당하는 직업이 없습니다."));
@@ -110,5 +113,11 @@ public class MemberService {
         }
 
         return job.getJobId();
+    }
+    
+    // 국민관리 회원 전체보기
+    public List<ManageResponseDto> showMembers() {
+        List<Member> memberList = memberRepository.findAll(Sort.by(Sort.Direction.DESC, "property"));
+        return memberList.stream().map(ManageResponseDto::new).collect(Collectors.toList());
     }
 }

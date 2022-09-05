@@ -34,7 +34,7 @@ public class MemberRequestDto {
 
     private String phoneNumber;
 
-    private Long currentMoney;
+    private Long property;
 
     private String countryName;
 
@@ -49,7 +49,7 @@ public class MemberRequestDto {
                 .nickname(nickname)
                 .authorities(authority)
                 .phoneNumber(phoneNumber)
-                .currentMoney(currentMoney)
+                .property(property)
                 .country(country)
                 .job(job)
                 .build();
