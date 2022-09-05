@@ -11,6 +11,8 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class ManageResponseDto {
+    private Long memberId;
+
     private String nickname;
 
     private String jobName;
@@ -26,6 +28,7 @@ public class ManageResponseDto {
     private List<String> jobList;
 
     public ManageResponseDto(Member member) {
+        this.memberId = member.getMemberId();
         this.nickname = member.getNickname();
 
         if (member.getJob() == null) {
