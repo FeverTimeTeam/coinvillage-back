@@ -1,6 +1,5 @@
 package com.fevertime.coinvillage.service;
 
-import com.fevertime.coinvillage.domain.Job;
 import com.fevertime.coinvillage.domain.Member;
 import com.fevertime.coinvillage.dto.manage.ManageResponseDto;
 import com.fevertime.coinvillage.dto.manage.ManageUpdateRequestDto;
@@ -10,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,9 +28,8 @@ public class ManageService {
 
     public ManageResponseDto modMembers(String nickname, ManageUpdateRequestDto manageUpdateRequestDto) {
         Member member = memberRepository.findByNickname(nickname);
-                //.orElseThrow(() -> new IllegalArgumentException(""));
 
-        member.update(manageUpdateRequestDto.getJob());
+        member.update(jobRepository.findById(manageUpdateRequestDto.getJob().getJobId()).orElseThrow());
 
         memberRepository.save(member);
 

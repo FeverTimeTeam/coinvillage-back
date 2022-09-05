@@ -34,7 +34,7 @@ public class JobApiController {
     }
 
     @PutMapping("{jobId}")
-    @ApiOperation(value = "직업정보 수정")
+    @ApiOperation(value = "이거 쓰지 마세요")
     public ResponseEntity<Long> modJob(@PathVariable Long jobId, @RequestBody MemberUpdateRequestDto memberUpdateRequestDto) {
         return ResponseEntity.ok(memberService.modJob(jobId, memberUpdateRequestDto));
     }
