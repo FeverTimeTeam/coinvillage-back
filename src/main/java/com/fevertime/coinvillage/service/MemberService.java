@@ -88,6 +88,7 @@ public class MemberService {
                 .activated(true)
                 .property(0L)
                 .authorities(Collections.singleton(authority))
+                .phoneNumber(memberRequestDto.getPhoneNumber())
                 .country(country)
                 .build();
         memberRepository.save(member);
@@ -117,7 +118,7 @@ public class MemberService {
     
     // 국민관리 회원 전체보기
     public List<ManageResponseDto> showMembers() {
-        List<Member> memberList = memberRepository.findAll(Sort.by(Sort.Direction.DESC, "property"));
+        List<Member> memberList = memberRepository.findAll();
         return memberList.stream().map(ManageResponseDto::new).collect(Collectors.toList());
     }
 }

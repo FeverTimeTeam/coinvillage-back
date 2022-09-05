@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class ManageResponseDto {
-    private Long rank;
+    private String nickname;
 
     private String jobName;
 
@@ -22,9 +22,7 @@ public class ManageResponseDto {
     private Long property;
 
     public ManageResponseDto(Member member) {
-        this.jobName = member.getJob().getJobName();
-        this.jobContent = member.getJob().getJobName();
-        this.payCheck = member.getJob().getPayCheck();
+        this.nickname = member.getNickname();
         this.property = member.getProperty();
     }
 }
