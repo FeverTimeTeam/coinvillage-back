@@ -45,4 +45,9 @@ public class JobApiController {
         jobService.deletejob(jobId);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("124")
+    public String apple() {
+        return ResponseEntity.ok("좀 되라");
+    }
 }
