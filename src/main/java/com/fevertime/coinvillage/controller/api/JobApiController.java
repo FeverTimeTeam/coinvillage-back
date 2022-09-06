@@ -2,6 +2,7 @@ package com.fevertime.coinvillage.controller.api;
 
 import com.fevertime.coinvillage.dto.job.JobRequestDto;
 import com.fevertime.coinvillage.dto.job.JobResponseDto;
+import com.fevertime.coinvillage.dto.job.JobUpdateRequestDto;
 import com.fevertime.coinvillage.dto.login.MemberUpdateRequestDto;
 import com.fevertime.coinvillage.service.JobService;
 import com.fevertime.coinvillage.service.MemberService;
@@ -33,11 +34,11 @@ public class JobApiController {
         return ResponseEntity.ok(jobService.viewJobs());
     }
 
-    @PutMapping("{jobId}")
+    /* @PutMapping("{jobId}")
     @ApiOperation(value = "이거 쓰지 마세요")
     public ResponseEntity<Long> modJob(@PathVariable Long jobId, @RequestBody MemberUpdateRequestDto memberUpdateRequestDto) {
         return ResponseEntity.ok(memberService.modJob(jobId, memberUpdateRequestDto));
-    }
+    } */
 
     @DeleteMapping("{jobId}")
     @ApiOperation(value = "직업 삭제")
@@ -45,9 +46,10 @@ public class JobApiController {
         jobService.deletejob(jobId);
         return ResponseEntity.noContent().build();
     }
-
-    @GetMapping("124")
-    public ResponseEntity<String> apple() {
-        return ResponseEntity.ok("좀 되라제발");
+    
+    @PutMapping("{jobId}")
+    @ApiOperation(value = "직업 수정")
+    public ResponseEntity<JobResponseDto> modJob(@PathVariable Long jobId, @RequestBody JobUpdateRequestDto jobUpdateRequestDto) {
+        return ResponseEntity.ok(jobService.modjob(jobId, jobUpdateRequestDto));
     }
 }

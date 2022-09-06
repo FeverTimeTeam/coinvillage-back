@@ -3,6 +3,7 @@ package com.fevertime.coinvillage.service;
 import com.fevertime.coinvillage.domain.Job;
 import com.fevertime.coinvillage.dto.job.JobRequestDto;
 import com.fevertime.coinvillage.dto.job.JobResponseDto;
+import com.fevertime.coinvillage.dto.job.JobUpdateRequestDto;
 import com.fevertime.coinvillage.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,5 +43,17 @@ public class JobService {
     @Transactional
     public void deletejob(Long jobId) {
         jobRepository.deleteById(jobId);
+    }
+
+    // 직업 수정
+    @Transactional
+    public JobResponseDto modjob(Long jobId, JobUpdateRequestDto jobUpdateRequestDto) {
+        Job job = jobRepository.findById(jobId).orElseThrow(() -> new IllegalArgumentException("없는 직업입니다."));
+
+        job.update(jobUpdateRequestDto.getJobContent(), jobUpdateRequestDto.getPayCheck());
+
+        jobRepository.save(job);
+
+        return new JobResponseDto(job);
     }
 }

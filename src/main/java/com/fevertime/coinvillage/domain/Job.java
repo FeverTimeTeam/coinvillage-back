@@ -23,4 +23,9 @@ public class Job {
 
     @OneToMany(mappedBy = "job", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Member> memberList;
+
+    public void update(String jobContent, Long payCheck) {
+        this.jobContent = jobContent;
+        this.payCheck = payCheck;
+    }
 }
