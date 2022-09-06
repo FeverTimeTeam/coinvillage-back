@@ -48,6 +48,6 @@ public class JobApiController {
 
     @GetMapping("124")
     public ResponseEntity<String> apple() {
-        return ResponseEntity.ok("좀 되라");
+        return ResponseEntity.ok("좀 되라제발");
     }
 }
