@@ -70,7 +70,7 @@ jobs:
         run: |
           aws deploy create-deployment \
           --application-name springboot-feverTime \
-          --deployment-group-name springboot-intro-deploy-group \
+          --deployment-group-name springboot-coinvillage \
           --file-exists-behavior OVERWRITE \
           --s3-location bucket=aws-jimin-s3,bundleType=zip,key=springboot-intro-build.zip \
           --region ap-northeast-2
