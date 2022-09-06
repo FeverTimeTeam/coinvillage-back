@@ -5,12 +5,9 @@ name: jimin-action
 # Controls when the workflow will run
 on:
   push:
-    branches:
-      - master
-  workflow_dispatch:
-
-env:
-  S3_BUCKET_NAME: aws-jimin-s3
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   build:
@@ -28,12 +25,9 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      # Build
       - name: Build with Gradle
         run: ./gradlew clean build
-        
-      - name: Make zip file
-        run: zip -r ./$GITHUB_SHA.zip .
-        shell: bash
 
       # 전송할 파일을 담을 디렉토리 생성
       - name: Make Directory for deliver
