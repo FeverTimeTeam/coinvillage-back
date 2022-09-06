@@ -20,7 +20,6 @@ import java.util.List;
 @Api(tags = "직업관리")
 public class JobApiController {
     private final JobService jobService;
-    private final MemberService memberService;
     
     @PostMapping
     @ApiOperation(value = "직업 추가")
