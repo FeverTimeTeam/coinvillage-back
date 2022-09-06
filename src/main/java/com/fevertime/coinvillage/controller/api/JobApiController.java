@@ -47,7 +47,7 @@ public class JobApiController {
     }
 
     @GetMapping("124")
-    public String apple() {
+    public ResponseEntity<String> apple() {
         return ResponseEntity.ok("좀 되라");
     }
 }
