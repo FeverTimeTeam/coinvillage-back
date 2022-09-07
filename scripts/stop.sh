@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 PROJECT_ROOT="/home/ubuntu/app"
-JAR_FILE="$PROJECT_ROOT/*SNAPSHOT.war"
+JAR_FILE="$PROJECT_ROOT/coinvillage-0.0.1-SNAPSHOT.war"
 
 DEPLOY_LOG="$PROJECT_ROOT/deploy.log"
 
