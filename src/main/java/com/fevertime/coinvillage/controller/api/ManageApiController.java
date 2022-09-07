@@ -48,9 +48,4 @@ public class ManageApiController {
     public ResponseEntity<ManageResponseDto> payMembers(@PathVariable Long memberId) {
         return ResponseEntity.ok(manageService.payMembers(memberId));
     }
-
-    @GetMapping("12345")
-    public ResponseEntity<String> test() {
-        return ResponseEntity.ok("테스트");
-    }
 }
