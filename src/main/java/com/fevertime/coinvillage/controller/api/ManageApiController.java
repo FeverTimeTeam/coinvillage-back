@@ -42,4 +42,10 @@ public class ManageApiController {
     public ResponseEntity<List<ManageResponseDto>> searchMembers(@RequestParam String searchWord) {
         return ResponseEntity.ok(manageService.searchMembers(searchWord));
     }
+
+    @PutMapping("pay/{memberId}")
+    @ApiOperation(value = "국민관리 월급지급")
+    public ResponseEntity<ManageResponseDto> payMembers(@PathVariable Long memberId) {
+        return ResponseEntity.ok(manageService.payMembers(memberId));
+    }
 }

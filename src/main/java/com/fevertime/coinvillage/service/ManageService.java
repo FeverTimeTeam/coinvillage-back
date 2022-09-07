@@ -28,7 +28,7 @@ public class ManageService {
 
     // 국민관리 회원 수정
     public ManageResponseDto modMembers(Long memberId, ManageUpdateRequestDto manageUpdateRequestDto) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException(""));
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("찾으시는 회원이 없습니다."));
 
         member.update(jobRepository.findByJobName(manageUpdateRequestDto.getJob().getJobName()));
 
@@ -46,5 +46,16 @@ public class ManageService {
     public List<ManageResponseDto> searchMembers(String searchWord) {
         List<Member> memberList = memberRepository.findByNicknameContaining(searchWord);
         return memberList.stream().map(ManageResponseDto::new).collect(Collectors.toList());
+    }
+    
+    // 국민관리 월급 지급
+    public ManageResponseDto payMembers(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("찾으시는 회원이 없습니다."));
+
+        member.plusPay(member.getJob().getPayCheck());
+
+        memberRepository.save(member);
+
+        return new ManageResponseDto(member);
     }
 }

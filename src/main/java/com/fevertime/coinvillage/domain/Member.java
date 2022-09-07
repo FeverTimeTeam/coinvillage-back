@@ -44,4 +44,6 @@ public class Member {
     public void update(Job job) {
         this.job = job;
     }
+
+    public void plusPay(Long paycheck) { this.property += paycheck; }
 }
