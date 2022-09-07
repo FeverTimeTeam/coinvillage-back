@@ -52,7 +52,11 @@ public class ManageService {
     public ManageResponseDto payMembers(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("찾으시는 회원이 없습니다."));
 
-        member.plusPay(member.getJob().getPayCheck());
+        if (member.getJob() == null) {
+            member.plusPay(0L);
+        } else {
+            member.plusPay(member.getJob().getPayCheck());
+        }
 
         memberRepository.save(member);
 
