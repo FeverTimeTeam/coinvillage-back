@@ -49,7 +49,7 @@ public class ManageApiController {
         return ResponseEntity.ok(manageService.payMembers(memberId));
     }
 
-    @GetMapping("1234")
+    @GetMapping("12345")
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("테스트");
     }
