@@ -7,6 +7,7 @@ import com.fevertime.coinvillage.domain.member.Authority;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -45,15 +46,14 @@ public class Member {
     @ManyToOne(fetch = FetchType.LAZY)
     private Job job;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    private Account account;
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    private List<Account> accountList;
 
     public void update(Job job) {
         this.job = job;
     }
 
-    public void plusPay(Long paycheck, Account account) {
+    public void plusPay(Long paycheck) {
         this.property += paycheck;
-        this.account = account;
     }
 }

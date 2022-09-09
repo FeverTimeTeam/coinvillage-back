@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.fevertime.coinvillage.domain.model.StateName.DEPOSIT;
-
 @Service
 @RequiredArgsConstructor
 public class ManageService {
@@ -57,20 +55,23 @@ public class ManageService {
     // 국민관리 월급 지급
     public ManageResponseDto payMembers(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("찾으시는 회원이 없습니다."));
+
+        if (member.getJob() == null) {
+            member.plusPay(0L);
+        } else {
+            member.plusPay(member.getJob().getPayCheck());
+        }
+
         Account account = Account.builder()
                 .content("월급")
+                .count(0L)
                 .total(member.getJob().getPayCheck())
-                .stateName(DEPOSIT)
+                .stateName(StateName.DEPOSIT)
                 .member(member)
                 .build();
 
-        if (member.getJob() == null) {
-            member.plusPay(0L, null);
-        } else {
-            member.plusPay(member.getJob().getPayCheck(), account);
-        }
-
         memberRepository.save(member);
+        accountRepository.save(account);
 
         return new ManageResponseDto(member);
     }

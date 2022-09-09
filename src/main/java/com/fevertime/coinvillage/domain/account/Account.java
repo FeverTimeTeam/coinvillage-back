@@ -31,6 +31,6 @@ public class Account extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private StateName stateName;
 
-    @OneToOne(mappedBy = "account")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 }
