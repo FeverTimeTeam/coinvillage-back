@@ -1,9 +1,12 @@
 package com.fevertime.coinvillage.service;
 
 import com.fevertime.coinvillage.domain.account.Account;
+import com.fevertime.coinvillage.domain.member.Member;
+import com.fevertime.coinvillage.domain.model.StateName;
 import com.fevertime.coinvillage.dto.account.AccountRequestDto;
 import com.fevertime.coinvillage.dto.account.AccountResponseDto;
 import com.fevertime.coinvillage.repository.AccountRepository;
+import com.fevertime.coinvillage.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AccountService {
     private final AccountRepository accountRepository;
+    private final MemberRepository memberRepository;
     
     // 통장 내역 보기
     public List<AccountResponseDto> showAccounts(String email) {
@@ -24,4 +28,18 @@ public class AccountService {
     }
 
     // 통장 구매 API
+    public AccountResponseDto consumeAccount(String email, AccountRequestDto accountRequestDto) {
+        Member member = memberRepository.findByEmail(email);
+
+        accountRequestDto.setMember(member);
+        accountRequestDto.setStateName(StateName.WITHDRAWL);
+
+        Account account = accountRequestDto.toEntity();
+
+        accountRepository.save(account);
+        member.consume(accountRequestDto.getTotal());
+        memberRepository.save(member);
+
+        return new AccountResponseDto(account);
+    }
 }

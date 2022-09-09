@@ -31,11 +31,12 @@ public class AccountResponseDto {
 
         this.property = account.getMember().getProperty();
         this.createdAt = account.getCreatedAt().format(DateTimeFormatter.ofPattern("MM.dd"));
-        this.content = account.getContent() + '(' + payMonth  + "월)";
         this.count = account.getCount();
-        if (account.getStateName() == DEPOSIT) {
+        if (account.getStateName() == DEPOSIT && account.getContent().equals("월급")) {
+            this.content = account.getContent() + '(' + payMonth  + "월)";
             this.total = ("+" + account.getTotal());
         } else if (account.getStateName() == WITHDRAWL) {
+            this.content = account.getContent();
             this.total = ("-" + account.getTotal());
         }
     }
