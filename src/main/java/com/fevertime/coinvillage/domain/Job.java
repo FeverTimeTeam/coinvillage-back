@@ -1,5 +1,6 @@
 package com.fevertime.coinvillage.domain;
 
+import com.fevertime.coinvillage.domain.member.Member;
 import lombok.*;
 
 import javax.persistence.*;

@@ -1,5 +1,9 @@
-package com.fevertime.coinvillage.domain;
+package com.fevertime.coinvillage.domain.member;
 
+import com.fevertime.coinvillage.domain.Country;
+import com.fevertime.coinvillage.domain.Job;
+import com.fevertime.coinvillage.domain.account.Account;
+import com.fevertime.coinvillage.domain.member.Authority;
 import lombok.*;
 
 import javax.persistence.*;
@@ -41,9 +45,15 @@ public class Member {
     @ManyToOne(fetch = FetchType.LAZY)
     private Job job;
 
+    @OneToOne(cascade = CascadeType.PERSIST)
+    private Account account;
+
     public void update(Job job) {
         this.job = job;
     }
 
-    public void plusPay(Long paycheck) { this.property += paycheck; }
+    public void plusPay(Long paycheck, Account account) {
+        this.property += paycheck;
+        this.account = account;
+    }
 }

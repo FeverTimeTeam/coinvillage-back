@@ -1,6 +1,6 @@
 package com.fevertime.coinvillage.repository;
 
-import com.fevertime.coinvillage.domain.Member;
+import com.fevertime.coinvillage.domain.member.Member;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,6 +1,7 @@
 package com.fevertime.coinvillage.dto.manage;
 
-import com.fevertime.coinvillage.domain.Member;
+import com.fevertime.coinvillage.domain.account.Account;
+import com.fevertime.coinvillage.domain.member.Member;
 import lombok.*;
 
 import java.util.List;

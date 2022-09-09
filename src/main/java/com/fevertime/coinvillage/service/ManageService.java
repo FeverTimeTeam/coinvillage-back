@@ -1,8 +1,11 @@
 package com.fevertime.coinvillage.service;
 
-import com.fevertime.coinvillage.domain.Member;
+import com.fevertime.coinvillage.domain.account.Account;
+import com.fevertime.coinvillage.domain.member.Member;
+import com.fevertime.coinvillage.domain.model.StateName;
 import com.fevertime.coinvillage.dto.manage.ManageResponseDto;
 import com.fevertime.coinvillage.dto.manage.ManageUpdateRequestDto;
+import com.fevertime.coinvillage.repository.AccountRepository;
 import com.fevertime.coinvillage.repository.JobRepository;
 import com.fevertime.coinvillage.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,11 +15,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.fevertime.coinvillage.domain.model.StateName.DEPOSIT;
+
 @Service
 @RequiredArgsConstructor
 public class ManageService {
     private final MemberRepository memberRepository;
     private final JobRepository jobRepository;
+    private final AccountRepository accountRepository;
 
     // 국민관리 회원 전체보기
     public List<ManageResponseDto> showMembers() {
@@ -51,11 +57,17 @@ public class ManageService {
     // 국민관리 월급 지급
     public ManageResponseDto payMembers(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("찾으시는 회원이 없습니다."));
+        Account account = Account.builder()
+                .content("월급")
+                .total(member.getJob().getPayCheck())
+                .stateName(DEPOSIT)
+                .member(member)
+                .build();
 
         if (member.getJob() == null) {
-            member.plusPay(0L);
+            member.plusPay(0L, null);
         } else {
-            member.plusPay(member.getJob().getPayCheck());
+            member.plusPay(member.getJob().getPayCheck(), account);
         }
 
         memberRepository.save(member);

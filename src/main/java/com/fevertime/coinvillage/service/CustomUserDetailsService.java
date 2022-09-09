@@ -1,6 +1,6 @@
 package com.fevertime.coinvillage.service;
 
-import com.fevertime.coinvillage.domain.Member;
+import com.fevertime.coinvillage.domain.member.Member;
 import com.fevertime.coinvillage.repository.MemberRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

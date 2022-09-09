@@ -1,21 +1,17 @@
 package com.fevertime.coinvillage.service;
 
-import com.fevertime.coinvillage.domain.Authority;
-import com.fevertime.coinvillage.domain.Country;
-import com.fevertime.coinvillage.domain.Job;
-import com.fevertime.coinvillage.domain.Member;
+import com.fevertime.coinvillage.domain.*;
+import com.fevertime.coinvillage.domain.member.Authority;
+import com.fevertime.coinvillage.domain.member.Member;
 import com.fevertime.coinvillage.dto.login.CountryResponseDto;
 import com.fevertime.coinvillage.dto.login.MemberRequestDto;
 import com.fevertime.coinvillage.dto.login.MemberResponseDto;
 import com.fevertime.coinvillage.dto.login.MemberUpdateRequestDto;
-import com.fevertime.coinvillage.dto.manage.ManageResponseDto;
-import com.fevertime.coinvillage.dto.manage.ManageUpdateRequestDto;
 import com.fevertime.coinvillage.exception.DuplicateMemberException;
 import com.fevertime.coinvillage.repository.CountryRepository;
 import com.fevertime.coinvillage.repository.JobRepository;
 import com.fevertime.coinvillage.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +20,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.fevertime.coinvillage.domain.Role.ROLE_RULER;
-import static com.fevertime.coinvillage.domain.Role.ROLE_NATION;
+import static com.fevertime.coinvillage.domain.model.Role.ROLE_RULER;
+import static com.fevertime.coinvillage.domain.model.Role.ROLE_NATION;
 
 
 @Service
@@ -96,6 +92,8 @@ public class MemberService {
                 .phoneNumber(memberRequestDto.getPhoneNumber())
                 .country(country)
                 .build();
+
+
         memberRepository.save(member);
 
         return new MemberResponseDto(member);

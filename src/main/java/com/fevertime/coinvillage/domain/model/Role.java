@@ -1,4 +1,4 @@
-package com.fevertime.coinvillage.domain;
+package com.fevertime.coinvillage.domain.model;
 
 public enum Role {
     ROLE_RULER, // 선생님
