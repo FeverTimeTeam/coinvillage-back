@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("manage")
+@RequestMapping("managements")
 @Api(tags = "국민관리")
 public class ManageApiController {
     private final ManageService manageService;

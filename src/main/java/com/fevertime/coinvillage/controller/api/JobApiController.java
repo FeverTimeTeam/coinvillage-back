@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("job")
+@RequestMapping("jobs")
 @Api(tags = "직업관리")
 public class JobApiController {
     private final JobService jobService;

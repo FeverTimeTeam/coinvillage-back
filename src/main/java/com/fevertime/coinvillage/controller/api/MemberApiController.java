@@ -1,6 +1,6 @@
 package com.fevertime.coinvillage.controller.api;
 
-import com.fevertime.coinvillage.domain.Member;
+import com.fevertime.coinvillage.domain.member.Member;
 import com.fevertime.coinvillage.dto.login.*;
 import com.fevertime.coinvillage.jwt.JwtFilter;
 import com.fevertime.coinvillage.jwt.TokenProvider;
@@ -23,7 +23,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("member")
+@RequestMapping("members")
 @Api(tags = "로그인, 회원가입")
 public class MemberApiController {
     private final MemberService memberService;
