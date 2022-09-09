@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +22,7 @@ public class AccountApiController {
 
     @GetMapping
     @ApiOperation(value = "입출금내역")
-    public ResponseEntity<List<AccountResponseDto>> showAccounts() {
-        return ResponseEntity.ok(accountService.showAccounts());
+    public ResponseEntity<List<AccountResponseDto>> showAccounts(Authentication authentication) {
+        return ResponseEntity.ok(accountService.showAccounts(authentication.getName()));
     }
 }

@@ -67,6 +67,9 @@ public class SecurityConfig {
                 .antMatchers("/v2/**").anonymous()
                 .antMatchers("/csrf").anonymous()
 
+                .antMatchers("/accounts").authenticated()
+                .antMatchers("/accounts/**").authenticated()
+
                 .anyRequest().permitAll()
 
                 .and()

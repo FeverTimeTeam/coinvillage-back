@@ -1,5 +1,6 @@
 package com.fevertime.coinvillage.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -17,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Configuration
+@RequiredArgsConstructor
 public class SwaggerConfig {
 
     @Bean
@@ -25,24 +27,10 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo())
                 .securityContexts(Arrays.asList(securityContext()))
                 .securitySchemes(Arrays.asList(apiKey()))
-                .useDefaultResponseMessages(false)
                 .select()
-
                 .apis(RequestHandlerSelectors.basePackage("com.fevertime.coinvillage.controller.api"))
                 .paths(PathSelectors.any())
                 .build();
-    }
-
-    private ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-                .title("KB 국민은행 공모전 - 코빌")
-                .description("코빌 REST API")
-                .version("0.1.0")
-                .build();
-    }
-
-    private ApiKey apiKey() {
-        return new ApiKey("JWT", "Authoriztion", "header");
     }
 
     private SecurityContext securityContext() {
@@ -52,10 +40,21 @@ public class SwaggerConfig {
     }
 
     private List<SecurityReference> defaultAuth() {
-        AuthorizationScope authorizationScope = new AuthorizationScope("global", "aceessEverything");
+        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
-
         authorizationScopes[0] = authorizationScope;
-        return Arrays.asList(new SecurityReference("JWT", authorizationScopes));
+        return Arrays.asList(new SecurityReference("Authorization", authorizationScopes));
+    }
+
+    private ApiKey apiKey() {
+        return new ApiKey("Authorization", "Authorization", "header");
+    }
+
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+                .title("KB 국민은행 공모전 - 코빌")
+                .description("코빌 REST API")
+                .version("0.1.0")
+                .build();
     }
 }
