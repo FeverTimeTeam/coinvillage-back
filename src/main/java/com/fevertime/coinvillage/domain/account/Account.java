@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -31,6 +32,11 @@ public class Account extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private StateName stateName;
 
+    private Long accountTotal;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
+
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<Savings> savingsList;
 }

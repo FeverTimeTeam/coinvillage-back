@@ -9,6 +9,7 @@ import com.fevertime.coinvillage.repository.AccountRepository;
 import com.fevertime.coinvillage.repository.JobRepository;
 import com.fevertime.coinvillage.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ManageService {
     private final MemberRepository memberRepository;
@@ -61,6 +63,7 @@ public class ManageService {
         } else {
             member.plusPay(member.getJob().getPayCheck());
         }
+         log.info(String.valueOf(member.getAccountList().get(0).getAccountTotal() + member.getAccountList().get(0).getSavingsList().get(0).getSavingsTotal()));
 
         Account account = Account.builder()
                 .content("월급")

@@ -53,8 +53,8 @@ public class Member {
         this.job = job;
     }
 
-    public void plusPay(Long paycheck) {
-        this.property += paycheck;
+    public void plusPay(Long property) {
+        this.property += property;
     }
 
     public void consume(Long total) { this.property -= total; }
