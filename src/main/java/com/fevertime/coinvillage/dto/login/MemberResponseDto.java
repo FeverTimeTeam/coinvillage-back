@@ -28,6 +28,12 @@ public class MemberResponseDto {
 
     private Set<AuthorityDto> authorityDtoSet;
 
+    private String jobName;
+
+    private String jobContent;
+
+    private long payCheck;
+
     public MemberResponseDto(Member member) {
         this.memberId = member.getMemberId();
         this.email = member.getEmail();
@@ -39,5 +45,20 @@ public class MemberResponseDto {
         this.authorityDtoSet = member.getAuthorities().stream()
                 .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
                 .collect(Collectors.toSet());
+        if (member.getJob().getJobName() == null) {
+            this.jobName = "무직";
+        } else {
+            this.jobName = member.getJob().getJobName();
+        }
+        if (member.getJob().getJobContent() == null) {
+            this.jobName = "없음";
+        } else {
+            this.jobContent = member.getJob().getJobContent();
+        }
+        if (member.getJob().getPayCheck() == null) {
+            this.payCheck = 0L;
+        } else {
+            this.payCheck = member.getJob().getPayCheck();
+        }
     }
 }
