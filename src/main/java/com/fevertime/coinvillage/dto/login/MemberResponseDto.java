@@ -24,6 +24,8 @@ public class MemberResponseDto {
 
     private Long property;
 
+    private String countryName;
+
     private Set<AuthorityDto> authorityDtoSet;
 
     public MemberResponseDto(Member member) {
@@ -33,6 +35,7 @@ public class MemberResponseDto {
         this.nickname = member.getNickname();
         this.phoneNumber = member.getPhoneNumber();
         this.property = member.getProperty();
+        this.countryName = member.getCountry().getCountryName();
         this.authorityDtoSet = member.getAuthorities().stream()
                 .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
                 .collect(Collectors.toSet());
