@@ -25,8 +25,11 @@ public class AccountResponseDto {
 
     private String total;
 
+    private String state;
+
     public AccountResponseDto(Account account) {
-        LocalDate localDate = LocalDate.parse(account.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))).minusMonths(1);
+        LocalDate localDate = LocalDate.parse(account.getCreatedAt()
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))).minusMonths(1);
         String payMonth = localDate.toString().substring(5, 7);
 
         this.property = account.getMember().getProperty();
@@ -39,5 +42,6 @@ public class AccountResponseDto {
             this.content = account.getContent();
             this.total = ("-" + account.getTotal());
         }
+        this.state = account.getStateName().toString();
     }
 }
