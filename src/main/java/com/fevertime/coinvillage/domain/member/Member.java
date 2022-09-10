@@ -54,7 +54,7 @@ public class Member {
     }
 
     public void plusPay(Long property) {
-        this.property += property;
+        this.property = property;
     }
 
     public void consume(Long total) { this.property -= total; }

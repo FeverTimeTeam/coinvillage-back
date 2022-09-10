@@ -27,17 +27,17 @@ public class AccountService {
                 .collect(Collectors.toList());
     }
 
-    // 통장 구매 API
+    // 통장 소비 API
     public AccountResponseDto consumeAccount(String email, AccountRequestDto accountRequestDto) {
         Member member = memberRepository.findByEmail(email);
 
         accountRequestDto.setMember(member);
         accountRequestDto.setStateName(StateName.WITHDRAWL);
+        accountRequestDto.setAccountTotal(member.getAccountList().get(member.getAccountList().size() - 1).getAccountTotal() - accountRequestDto.getTotal());
 
         Account account = accountRequestDto.toEntity();
 
         accountRepository.save(account);
-        member.consume(accountRequestDto.getTotal());
         memberRepository.save(member);
 
         return new AccountResponseDto(account);

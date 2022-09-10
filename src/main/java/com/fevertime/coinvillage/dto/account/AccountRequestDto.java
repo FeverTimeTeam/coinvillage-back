@@ -17,6 +17,8 @@ public class AccountRequestDto {
 
     private Long total;
 
+    private Long accountTotal;
+
     private StateName stateName;
 
     private Member member;
@@ -26,6 +28,7 @@ public class AccountRequestDto {
                 .content(content)
                 .count(count)
                 .total(total)
+                .accountTotal(accountTotal)
                 .stateName(stateName)
                 .member(member)
                 .build();

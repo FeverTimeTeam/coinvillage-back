@@ -58,22 +58,24 @@ public class ManageService {
     public ManageResponseDto payMembers(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("찾으시는 회원이 없습니다."));
 
-        if (member.getJob() == null) {
-            member.plusPay(0L);
-        } else {
-            member.plusPay(member.getJob().getPayCheck());
-        }
-        // log.info(String.valueOf(member.getAccountList().get(0).getAccountTotal() + member.getAccountList().get(0).getSavingsList().get(0).getSavingsTotal()));
-
         Account account = Account.builder()
                 .content("월급")
                 .count(0L)
                 .total(member.getJob().getPayCheck())
                 .stateName(StateName.DEPOSIT)
+                .accountTotal(member.getAccountList().get(member.getAccountList().size() - 1).getAccountTotal() + member.getJob().getPayCheck())
                 .member(member)
                 .build();
 
         memberRepository.save(member);
+
+        if (member.getJob() == null) {
+            member.plusPay(0L);
+        } else {
+            member.plusPay(member.getAccountList().get(member.getAccountList().size() - 1).getAccountTotal());
+              // + member.getAccountList().get(member.getAccountList().size() - 1).getSavingsList().get(member.getAccountList().get(member.getAccountList().size() - 1).getSavingsList().size()).getSavingsTotal());
+        }
+
         accountRepository.save(account);
 
         return new ManageResponseDto(member);
