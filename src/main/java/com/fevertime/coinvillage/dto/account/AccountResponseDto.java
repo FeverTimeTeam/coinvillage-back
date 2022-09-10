@@ -15,6 +15,8 @@ import static com.fevertime.coinvillage.domain.model.StateName.WITHDRAWL;
 @NoArgsConstructor
 @Builder
 public class AccountResponseDto {
+    private Long accountId;
+
     private Long property;
 
     private String createdAt;
@@ -32,6 +34,7 @@ public class AccountResponseDto {
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))).minusMonths(1);
         String payMonth = localDate.toString().substring(5, 7);
 
+        this.accountId = account.getAccountId();
         this.property = account.getMember().getProperty();
         this.createdAt = account.getCreatedAt().format(DateTimeFormatter.ofPattern("MM.dd"));
         this.count = account.getCount();
