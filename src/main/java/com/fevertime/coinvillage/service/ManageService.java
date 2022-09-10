@@ -63,7 +63,7 @@ public class ManageService {
         } else {
             member.plusPay(member.getJob().getPayCheck());
         }
-        // log.info(String.valueOf(member.getAccountList().get(0).getAccountTotal() + member.getAccountList().get(0).getSavingsList().get(0).getSavingsTotal()));
+        // log.info(String.valueOf((member.getAccountList().get(member.getAccountList().size() - 1).getAccountTotal())));
 
         Account account = Account.builder()
                 .content("월급")
@@ -72,6 +72,9 @@ public class ManageService {
                 .stateName(StateName.DEPOSIT)
                 .member(member)
                 .build();
+
+        log.info(String.valueOf(member.getJob().getPayCheck()));
+
 
         memberRepository.save(member);
         accountRepository.save(account);

@@ -39,4 +39,8 @@ public class Account extends BaseEntity {
 
     @OneToMany(mappedBy = "account", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Savings> savingsList;
+
+    public void plusPay(Long payCheck) {
+        this.accountTotal += payCheck;
+    }
 }
