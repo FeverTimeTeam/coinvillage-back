@@ -91,8 +91,8 @@ public class MemberService {
                 .authorities(Collections.singleton(authority))
                 .phoneNumber(memberRequestDto.getPhoneNumber())
                 .country(country)
+                .job(null)
                 .build();
-
 
         memberRepository.save(member);
 
