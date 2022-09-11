@@ -53,6 +53,8 @@ public class SavingsService {
                 .account(account)
                 .build();
 
+        log.info(formatedNow);
+
         savingsRepository.save(savings);
 
         account.stack(30L);

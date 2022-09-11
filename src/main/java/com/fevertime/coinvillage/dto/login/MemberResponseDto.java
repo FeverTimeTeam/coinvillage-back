@@ -45,5 +45,14 @@ public class MemberResponseDto {
         this.authorityDtoSet = member.getAuthorities().stream()
                 .map(authority -> AuthorityDto.builder().authorityName(authority.getAuthorityName()).build())
                 .collect(Collectors.toSet());
+        if (member.getJob() == null) {
+            this.jobName = "무직";
+            this.jobContent = "없음";
+            this.payCheck = 0L;
+        } else {
+            this.jobName = member.getJob().getJobName();
+            this.jobContent = member.getJob().getJobContent();
+            this.payCheck = member.getJob().getPayCheck();
+        }
     }
 }

@@ -101,14 +101,8 @@ public class MemberService {
                 .member(member)
                 .build();
 
-        Savings savings = Savings.builder()
-                .savingsTotal(0L)
-                .account(account)
-                .build();
-
         memberRepository.save(member);
         accountRepository.save(account);
-        savingsRepository.save(savings);
 
         return new MemberResponseDto(member);
     }

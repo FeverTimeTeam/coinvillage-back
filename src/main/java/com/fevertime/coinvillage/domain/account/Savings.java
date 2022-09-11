@@ -23,8 +23,10 @@ public class Savings extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Term term;
 
+    // 요일
     private String week;
 
+    // 날짜
     private String day;
 
     private Long bill;
