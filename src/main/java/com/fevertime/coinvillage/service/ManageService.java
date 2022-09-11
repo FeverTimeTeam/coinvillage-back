@@ -63,7 +63,7 @@ public class ManageService {
                 .count(0L)
                 .total(member.getJob().getPayCheck())
                 .stateName(StateName.DEPOSIT)
-                .accountTotal(member.getAccountList().get(member.getAccountList().size() - 1).getAccountTotal() + member.getJob().getPayCheck())
+                .accountTotal(member.getAccountTotal() + member.getJob().getPayCheck())
                 .member(member)
                 .build();
 
@@ -72,8 +72,8 @@ public class ManageService {
         if (member.getJob() == null) {
             member.plusPay(0L);
         } else {
-            member.plusPay(member.getAccountList().get(member.getAccountList().size() - 1).getAccountTotal() + member.getJob().getPayCheck());
-            log.info(member.getAccountList().get(member.getAccountList().size() - 1).getAccountTotal().toString());
+            member.changeAccountTotal(member.getAccountTotal() + member.getJob().getPayCheck());
+            member.plusPay(member.getAccountTotal() + member.getSavingsTotal());
             // + member.getAccountList().get(member.getAccountList().size() - 1).getSavingsList().get(member.getAccountList().get(member.getAccountList().size() - 1).getSavingsList().size()).getSavingsTotal());
         }
 

@@ -20,17 +20,6 @@ public class Savings extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long savingsId;
 
-    @Enumerated(EnumType.STRING)
-    private Term term;
-
-    // 요일
-    private String week;
-
-    // 날짜
-    private String day;
-
-    private Long bill;
-
     private String content;
 
     private Long total;
@@ -42,4 +31,8 @@ public class Savings extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Account account;
+
+    public void changeSavingsTotal(Long total) {
+        this.savingsTotal += total;
+    }
 }

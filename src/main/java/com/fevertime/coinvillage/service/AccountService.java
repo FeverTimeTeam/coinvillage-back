@@ -33,7 +33,8 @@ public class AccountService {
 
         accountRequestDto.setMember(member);
         accountRequestDto.setStateName(StateName.WITHDRAWL);
-        accountRequestDto.setAccountTotal(member.getAccountList().get(member.getAccountList().size() - 1).getAccountTotal() - accountRequestDto.getTotal());
+        accountRequestDto.setAccountTotal(member.getAccountTotal() - accountRequestDto.getTotal());
+        member.changeAccountTotal(member.getAccountTotal() - accountRequestDto.getTotal());
 
         Account account = accountRequestDto.toEntity();
 

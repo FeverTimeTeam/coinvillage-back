@@ -93,6 +93,7 @@ public class MemberService {
                 .authorities(Collections.singleton(authority))
                 .phoneNumber(memberRequestDto.getPhoneNumber())
                 .country(country)
+                .savingsTotal(0L)
                 .job(null)
                 .build();
 

@@ -3,6 +3,7 @@ package com.fevertime.coinvillage.domain.member;
 import com.fevertime.coinvillage.domain.Country;
 import com.fevertime.coinvillage.domain.Job;
 import com.fevertime.coinvillage.domain.account.Account;
+import com.fevertime.coinvillage.domain.account.SavingsSetting;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,6 +33,10 @@ public class Member {
 
     private Long property;
 
+    private Long accountTotal;
+
+    private Long savingsTotal;
+
     @ManyToMany
     @JoinTable(
             name = "member_authority",
@@ -48,6 +53,9 @@ public class Member {
     @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<Account> accountList;
 
+    @OneToOne(mappedBy = "member")
+    private SavingsSetting savingsSetting;
+
     public void update(Job job) {
         this.job = job;
     }
@@ -56,5 +64,13 @@ public class Member {
         this.property = property;
     }
 
-    public void consume(Long total) { this.property -= total; }
+    public void changeAccountTotal(Long accountTotal) {
+        this.accountTotal = accountTotal;
+    }
+
+    public void changeSavingsTotal(Long savingsTotal) {
+        this.savingsTotal = savingsTotal;
+    }
+
+    public void changeProperty(Long property) { this.property = property; }
 }
