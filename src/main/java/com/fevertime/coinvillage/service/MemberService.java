@@ -1,6 +1,8 @@
 package com.fevertime.coinvillage.service;
 
 import com.fevertime.coinvillage.domain.*;
+import com.fevertime.coinvillage.domain.account.Account;
+import com.fevertime.coinvillage.domain.account.Savings;
 import com.fevertime.coinvillage.domain.member.Authority;
 import com.fevertime.coinvillage.domain.member.Member;
 import com.fevertime.coinvillage.dto.login.CountryResponseDto;
@@ -8,9 +10,7 @@ import com.fevertime.coinvillage.dto.login.MemberRequestDto;
 import com.fevertime.coinvillage.dto.login.MemberResponseDto;
 import com.fevertime.coinvillage.dto.login.MemberUpdateRequestDto;
 import com.fevertime.coinvillage.exception.DuplicateMemberException;
-import com.fevertime.coinvillage.repository.CountryRepository;
-import com.fevertime.coinvillage.repository.JobRepository;
-import com.fevertime.coinvillage.repository.MemberRepository;
+import com.fevertime.coinvillage.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,6 +30,8 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final CountryRepository countryRepository;
     private final JobRepository jobRepository;
+    private final AccountRepository accountRepository;
+    private final SavingsRepository savingsRepository;
     private final PasswordEncoder passwordEncoder;
 
     // 선생님 회원가입
@@ -94,7 +96,19 @@ public class MemberService {
                 .job(null)
                 .build();
 
+        Account account = Account.builder()
+                .accountTotal(0L)
+                .member(member)
+                .build();
+
+        Savings savings = Savings.builder()
+                .savingsTotal(0L)
+                .account(account)
+                .build();
+
         memberRepository.save(member);
+        accountRepository.save(account);
+        savingsRepository.save(savings);
 
         return new MemberResponseDto(member);
     }

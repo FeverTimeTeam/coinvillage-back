@@ -3,7 +3,6 @@ package com.fevertime.coinvillage.domain.member;
 import com.fevertime.coinvillage.domain.Country;
 import com.fevertime.coinvillage.domain.Job;
 import com.fevertime.coinvillage.domain.account.Account;
-import com.fevertime.coinvillage.domain.member.Authority;
 import lombok.*;
 
 import javax.persistence.*;

@@ -67,16 +67,17 @@ public class ManageService {
                 .member(member)
                 .build();
 
-        memberRepository.save(member);
+        accountRepository.save(account);
 
         if (member.getJob() == null) {
             member.plusPay(0L);
         } else {
-            member.plusPay(member.getAccountList().get(member.getAccountList().size() - 1).getAccountTotal());
-              // + member.getAccountList().get(member.getAccountList().size() - 1).getSavingsList().get(member.getAccountList().get(member.getAccountList().size() - 1).getSavingsList().size()).getSavingsTotal());
+            member.plusPay(member.getAccountList().get(member.getAccountList().size() - 1).getAccountTotal() + member.getJob().getPayCheck());
+            log.info(member.getAccountList().get(member.getAccountList().size() - 1).getAccountTotal().toString());
+            // + member.getAccountList().get(member.getAccountList().size() - 1).getSavingsList().get(member.getAccountList().get(member.getAccountList().size() - 1).getSavingsList().size()).getSavingsTotal());
         }
 
-        accountRepository.save(account);
+        memberRepository.save(member);
 
         return new ManageResponseDto(member);
     }
