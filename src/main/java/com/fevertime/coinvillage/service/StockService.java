@@ -8,10 +8,7 @@ import com.fevertime.coinvillage.domain.model.StateName;
 import com.fevertime.coinvillage.dto.stock.StockRequestDto;
 import com.fevertime.coinvillage.dto.stock.StockResponseDto;
 import com.fevertime.coinvillage.dto.stock.StockUpdateRequestDto;
-import com.fevertime.coinvillage.dto.stock.nation.StockBuyResponseDto;
-import com.fevertime.coinvillage.dto.stock.nation.StockNationMypageResponseDto;
-import com.fevertime.coinvillage.dto.stock.nation.StockNationRequestDto;
-import com.fevertime.coinvillage.dto.stock.nation.StockNationResponseDto;
+import com.fevertime.coinvillage.dto.stock.nation.*;
 import com.fevertime.coinvillage.repository.MemberRepository;
 import com.fevertime.coinvillage.repository.StockBuyRepository;
 import com.fevertime.coinvillage.repository.StockHistoryRepository;
@@ -137,7 +134,7 @@ public class StockService {
 
     // 주식 마이페이지 판매하기(학생)
     @Transactional
-    public StockNationMypageResponseDto sellStocks(Long stockId, String email) {
+    public StockResultResponseDto sellStocks(Long stockId, String email) {
         Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
         Member member = memberRepository.findByEmail(email);
 
@@ -162,6 +159,6 @@ public class StockService {
         member.changeProperty(member.getAccountTotal() + member.getSavingsTotal() + member.getStockTotal());
         memberRepository.save(member);
 
-        return new StockNationMypageResponseDto(stock);
+        return new StockResultResponseDto(stock);
     }
 }

@@ -3,10 +3,7 @@ package com.fevertime.coinvillage.controller.api;
 import com.fevertime.coinvillage.dto.stock.StockRequestDto;
 import com.fevertime.coinvillage.dto.stock.StockResponseDto;
 import com.fevertime.coinvillage.dto.stock.StockUpdateRequestDto;
-import com.fevertime.coinvillage.dto.stock.nation.StockBuyResponseDto;
-import com.fevertime.coinvillage.dto.stock.nation.StockNationMypageResponseDto;
-import com.fevertime.coinvillage.dto.stock.nation.StockNationRequestDto;
-import com.fevertime.coinvillage.dto.stock.nation.StockNationResponseDto;
+import com.fevertime.coinvillage.dto.stock.nation.*;
 import com.fevertime.coinvillage.service.StockService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -93,7 +90,7 @@ public class StockApiController {
 
     @PostMapping("mypage/{stockId}")
     @ApiOperation(value = "주식 종목 마이페이지 판매하기(학생)")
-    public ResponseEntity<StockNationMypageResponseDto> sellStocks(@PathVariable Long stockId, Authentication authentication) {
+    public ResponseEntity<StockResultResponseDto> sellStocks(@PathVariable Long stockId, Authentication authentication) {
         return ResponseEntity.ok(stockService.sellStocks(stockId, authentication.getName()));
     }
 }
