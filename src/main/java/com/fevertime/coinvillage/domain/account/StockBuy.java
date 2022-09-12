@@ -30,4 +30,8 @@ public class StockBuy extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Stock stock;
+
+    public void clear() {
+        this.count = 0L;
+    }
 }

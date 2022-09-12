@@ -153,8 +153,10 @@ public class StockService {
                 .total(stock.getPrice() * buyCount)
                 .stock(stock)
                 .build();
+        stockBuy.clear();
         stock.changeStockTotal(member.getStockTotal() + stockBuy.getTotal());
         stockBuyRepository.deleteAllByStock_StockId(stockId);
+        stockRepository.save(stock);
         stockBuyRepository.save(stockBuy);
 
         member.changeStockTotal(member.getStockTotal() + stockBuy.getTotal());
