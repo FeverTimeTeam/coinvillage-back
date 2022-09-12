@@ -1,5 +1,6 @@
 package com.fevertime.coinvillage.domain;
 
+import com.fevertime.coinvillage.domain.account.Stock;
 import com.fevertime.coinvillage.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

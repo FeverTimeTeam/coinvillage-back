@@ -4,6 +4,7 @@ import com.fevertime.coinvillage.domain.Country;
 import com.fevertime.coinvillage.domain.Job;
 import com.fevertime.coinvillage.domain.account.Account;
 import com.fevertime.coinvillage.domain.account.SavingsSetting;
+import com.fevertime.coinvillage.domain.account.Stock;
 import lombok.*;
 
 import javax.persistence.*;
@@ -54,6 +55,9 @@ public class Member {
 
     @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<Account> accountList;
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private List<Stock> stockList;
 
     @OneToOne(mappedBy = "member")
     private SavingsSetting savingsSetting;
