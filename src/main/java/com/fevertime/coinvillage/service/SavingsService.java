@@ -55,10 +55,14 @@ public class SavingsService {
         return new SavingsSettingResponseDto(savingsSetting);
     }
 
-    /*@Transactional
+    @Transactional
     public SavingsSettingResponseDto modSavings(String email, SavingsSettingRequestDto savingsSettingRequestDto) {
-        SavingsSetting savingsSetting = savingsSettingRepository.find
+        SavingsSetting savingsSetting = savingsSettingRepository.findByMember_Email(email);
 
+        savingsSetting.updateBill(savingsSettingRequestDto.getBill());
 
-    }*/
+        savingsSettingRepository.save(savingsSetting);
+
+        return new SavingsSettingResponseDto(savingsSetting);
+    }
 }

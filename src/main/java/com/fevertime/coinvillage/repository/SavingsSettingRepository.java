@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SavingsSettingRepository extends JpaRepository<SavingsSetting, Long> {
     SavingsSetting findAllByTerm(Term term);
+
+    SavingsSetting findByMember_Email(String email);
 }
