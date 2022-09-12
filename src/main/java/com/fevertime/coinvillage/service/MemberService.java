@@ -94,6 +94,7 @@ public class MemberService {
                 .phoneNumber(memberRequestDto.getPhoneNumber())
                 .country(country)
                 .savingsTotal(0L)
+                .stockTotal(0L)
                 .job(null)
                 .build();
 

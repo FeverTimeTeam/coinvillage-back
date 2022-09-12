@@ -37,6 +37,8 @@ public class Member {
 
     private Long savingsTotal;
 
+    private Long stockTotal;
+
     @ManyToMany
     @JoinTable(
             name = "member_authority",
@@ -60,16 +62,16 @@ public class Member {
         this.job = job;
     }
 
-    public void plusPay(Long property) {
-        this.property = property;
-    }
-
     public void changeAccountTotal(Long accountTotal) {
         this.accountTotal = accountTotal;
     }
 
     public void changeSavingsTotal(Long savingsTotal) {
         this.savingsTotal = savingsTotal;
+    }
+
+    public void changeStockTotal(Long stockTotal) {
+        this.stockTotal = stockTotal;
     }
 
     public void changeProperty(Long property) { this.property = property; }

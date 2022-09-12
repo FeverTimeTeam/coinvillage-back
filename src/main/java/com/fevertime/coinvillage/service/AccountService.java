@@ -43,4 +43,25 @@ public class AccountService {
 
         return new AccountResponseDto(account);
     }
+
+    // 입출금에서 주식통장으로 입금
+    public AccountResponseDto stockDeposit(String email, AccountRequestDto accountRequestDto) {
+        Member member = memberRepository.findByEmail(email);
+        
+        Account account = Account.builder()
+                .total(accountRequestDto.getTotal())
+                .stateName(StateName.WITHDRAWL)
+                .accountTotal(member.getAccountTotal() - accountRequestDto.getTotal())
+                .content("주식통장으로 입금")
+                .member(member)
+                .build();
+
+        member.changeAccountTotal(member.getAccountTotal() - accountRequestDto.getTotal());
+        member.changeStockTotal(member.getStockTotal() + accountRequestDto.getTotal());
+
+        accountRepository.save(account);
+        memberRepository.save(member);
+
+        return new AccountResponseDto(account);
+    }
 }

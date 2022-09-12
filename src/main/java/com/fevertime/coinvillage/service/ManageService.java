@@ -70,10 +70,10 @@ public class ManageService {
         accountRepository.save(account);
 
         if (member.getJob() == null) {
-            member.plusPay(0L);
+            member.changeProperty(0L);
         } else {
             member.changeAccountTotal(member.getAccountTotal() + member.getJob().getPayCheck());
-            member.plusPay(member.getAccountTotal() + member.getSavingsTotal());
+            member.changeProperty(member.getAccountTotal() + member.getSavingsTotal());
             // + member.getAccountList().get(member.getAccountList().size() - 1).getSavingsList().get(member.getAccountList().get(member.getAccountList().size() - 1).getSavingsList().size()).getSavingsTotal());
         }
 

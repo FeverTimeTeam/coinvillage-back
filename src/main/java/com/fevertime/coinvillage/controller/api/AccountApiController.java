@@ -26,8 +26,14 @@ public class AccountApiController {
     }
 
     @PostMapping
-    @ApiOperation("소비하기")
+    @ApiOperation(value = "소비하기")
     public ResponseEntity<AccountResponseDto> consumeAccount(Authentication authentication, @RequestBody AccountRequestDto accountRequestDto) {
         return ResponseEntity.ok(accountService.consumeAccount(authentication.getName(), accountRequestDto));
+    }
+
+    @PostMapping("stock")
+    @ApiOperation(value = "주식통장으로 입금")
+    public ResponseEntity<AccountResponseDto> stockDeposit(Authentication authentication, @RequestBody AccountRequestDto accountRequestDto) {
+        return ResponseEntity.ok(accountService.stockDeposit(authentication.getName(), accountRequestDto));
     }
 }
