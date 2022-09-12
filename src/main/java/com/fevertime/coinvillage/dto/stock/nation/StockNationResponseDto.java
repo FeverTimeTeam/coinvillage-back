@@ -19,8 +19,6 @@ public class StockNationResponseDto {
 
     private Long gap;
 
-    // private Long buyCount;
-
     public StockNationResponseDto(Stock stock) {
         this.stockId = stock.getStockId();
         this.content = stock.getContent();
@@ -29,7 +27,7 @@ public class StockNationResponseDto {
             this.percent = 0.0;
         } else {
             this.percent = (stock.getPrice().doubleValue()
-                    - stock.getStockHistoryList().get(stock.getStockHistoryList().size() - 1).getVariable().doubleValue()) / stock.getPrice().doubleValue() * 100;
+                    - stock.getStockHistoryList().get(stock.getStockHistoryList().size() - 1).getPrice().doubleValue()) / stock.getPrice().doubleValue() * 100;
         }
         if (stock.getStockHistoryList().size() - 1 == -1) {
             this.gap = 0L;
