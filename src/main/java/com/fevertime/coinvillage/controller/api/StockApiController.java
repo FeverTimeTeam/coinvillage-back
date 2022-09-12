@@ -87,13 +87,13 @@ public class StockApiController {
 
     @GetMapping("mypage/{stockId}")
     @ApiOperation(value = "주식 종목 마이페이지 상세보기(학생)")
-    public ResponseEntity<StockNationMypageResponseDto> nationMypage(Long stockId) {
+    public ResponseEntity<StockNationMypageResponseDto> nationMypage(@PathVariable Long stockId) {
         return ResponseEntity.ok(stockService.showMypage(stockId));
     }
 
     @PostMapping("mypage/{stockId}")
     @ApiOperation(value = "주식 종목 마이페이지 판매하기(학생)")
-    public ResponseEntity<StockNationMypageResponseDto> sellStocks(Long stockId, Authentication authentication) {
+    public ResponseEntity<StockNationMypageResponseDto> sellStocks(@PathVariable Long stockId, Authentication authentication) {
         return ResponseEntity.ok(stockService.sellStocks(stockId, authentication.getName()));
     }
 }
