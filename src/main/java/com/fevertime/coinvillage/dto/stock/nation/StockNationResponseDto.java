@@ -19,6 +19,8 @@ public class StockNationResponseDto {
 
     private Long gap;
 
+    // private Long buyCount;
+
     public StockNationResponseDto(Stock stock) {
         this.stockId = stock.getStockId();
         this.content = stock.getContent();
