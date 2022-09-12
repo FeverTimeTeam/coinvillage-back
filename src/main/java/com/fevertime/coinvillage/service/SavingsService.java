@@ -1,16 +1,12 @@
 package com.fevertime.coinvillage.service;
 
-import com.fevertime.coinvillage.domain.account.Account;
 import com.fevertime.coinvillage.domain.account.Savings;
 import com.fevertime.coinvillage.domain.account.SavingsSetting;
 import com.fevertime.coinvillage.domain.member.Member;
-import com.fevertime.coinvillage.domain.model.StateName;
 import com.fevertime.coinvillage.domain.model.Term;
-import com.fevertime.coinvillage.dto.savings.SavingsRequestDto;
 import com.fevertime.coinvillage.dto.savings.SavingsResponseDto;
 import com.fevertime.coinvillage.dto.savings.SavingsSettingRequestDto;
 import com.fevertime.coinvillage.dto.savings.SavingsSettingResponseDto;
-import com.fevertime.coinvillage.repository.AccountRepository;
 import com.fevertime.coinvillage.repository.MemberRepository;
 import com.fevertime.coinvillage.repository.SavingsRepository;
 import com.fevertime.coinvillage.repository.SavingsSettingRepository;
@@ -27,7 +23,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class SavingsService {
     private final SavingsRepository savingsRepository;
-    private final AccountRepository accountRepository;
     private final MemberRepository memberRepository;
     private final SavingsSettingRepository savingsSettingRepository;
 
@@ -40,6 +35,7 @@ public class SavingsService {
                 .collect(Collectors.toList());
     }
 
+    // 적금 설정 세팅
     @Transactional
     public SavingsSettingResponseDto stackSavings(String email, SavingsSettingRequestDto savingsSettingRequestDto) {
         Member member = memberRepository.findByEmail(email);
@@ -55,6 +51,7 @@ public class SavingsService {
         return new SavingsSettingResponseDto(savingsSetting);
     }
 
+    // 적금 세팅 수정하기
     @Transactional
     public SavingsSettingResponseDto modSavings(String email, SavingsSettingRequestDto savingsSettingRequestDto) {
         SavingsSetting savingsSetting = savingsSettingRepository.findByMember_Email(email);

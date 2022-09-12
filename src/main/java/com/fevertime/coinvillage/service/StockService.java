@@ -56,6 +56,7 @@ public class StockService {
         StockHistory stockHistory = StockHistory.builder()
                 .content(stock.getContent())
                 .variable(stock.getVariable())
+                .price(stock.getPrice())
                 .stock(stock)
                 .build();
         stockHistoryRepository.save(stockHistory);
@@ -82,4 +83,9 @@ public class StockService {
         Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
         return new StockResponseDto(stock);
     }
+
+    // 주식 구매하기(학생)
+    /*public StockResponseDto buyStock(Long stockId) {
+
+    }*/
 }

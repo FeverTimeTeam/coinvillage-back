@@ -56,7 +56,7 @@ public class ScheduledTasks {
 
             member.changeSavingsTotal(savings.getSavingsTotal());
             member.changeAccountTotal(member.getAccountTotal() - savingsSettings.getBill());
-            member.changeProperty(savings.getSavingsTotal() + member.getAccountTotal() - savingsSettings.getBill());
+            member.changeProperty(savings.getSavingsTotal() + member.getAccountTotal() + member.getStockTotal());
             memberRepository.save(member);
 
             Account account1 = Account.builder()

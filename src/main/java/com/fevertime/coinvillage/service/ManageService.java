@@ -73,8 +73,7 @@ public class ManageService {
             member.changeProperty(0L);
         } else {
             member.changeAccountTotal(member.getAccountTotal() + member.getJob().getPayCheck());
-            member.changeProperty(member.getAccountTotal() + member.getSavingsTotal());
-            // + member.getAccountList().get(member.getAccountList().size() - 1).getSavingsList().get(member.getAccountList().get(member.getAccountList().size() - 1).getSavingsList().size()).getSavingsTotal());
+            member.changeProperty(member.getAccountTotal() + member.getSavingsTotal() + member.getStockTotal());
         }
 
         memberRepository.save(member);
