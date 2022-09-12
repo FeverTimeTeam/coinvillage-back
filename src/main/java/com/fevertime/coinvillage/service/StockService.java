@@ -150,7 +150,8 @@ public class StockService {
                 .total(stock.getPrice() * buyCount)
                 .stock(stock)
                 .build();
-        stockBuy.clear();
+        List<StockBuy> setStockBuyCount = stockBuyRepository.findAllByStock_Member_Email(email);
+        setStockBuyCount.forEach(StockBuy::clear);
         stock.changeStockTotal(member.getStockTotal() + stockBuy.getTotal());
         stockRepository.save(stock);
         stockBuyRepository.save(stockBuy);
