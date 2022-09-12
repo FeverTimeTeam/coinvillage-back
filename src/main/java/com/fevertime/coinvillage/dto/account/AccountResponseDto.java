@@ -29,6 +29,8 @@ public class AccountResponseDto {
 
     private String state;
 
+    private Long accountTotal;
+
     public AccountResponseDto(Account account) {
         LocalDate localDate = LocalDate.parse(account.getCreatedAt()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))).minusMonths(1);
@@ -46,5 +48,6 @@ public class AccountResponseDto {
             this.total = ("-" + account.getTotal());
         }
         this.state = account.getStateName().toString();
+        this.accountTotal = account.getMember().getAccountTotal();
     }
 }
