@@ -3,6 +3,7 @@ package com.fevertime.coinvillage.controller.api;
 import com.fevertime.coinvillage.dto.stock.StockRequestDto;
 import com.fevertime.coinvillage.dto.stock.StockResponseDto;
 import com.fevertime.coinvillage.dto.stock.StockUpdateRequestDto;
+import com.fevertime.coinvillage.dto.stock.nation.StockNationRequestDto;
 import com.fevertime.coinvillage.dto.stock.nation.StockNationResponseDto;
 import com.fevertime.coinvillage.service.StockService;
 import io.swagger.annotations.Api;
@@ -68,5 +69,11 @@ public class StockApiController {
     @ApiOperation(value = "주식 종목 상세보기(학생)")
     public ResponseEntity<StockResponseDto> showNationStock(@PathVariable Long stockId) {
         return ResponseEntity.ok(stockService.showNationStock(stockId));
+    }
+
+    @PostMapping("{stockId}")
+    @ApiOperation(value = "주식 종목 구매하기(학생)")
+    public ResponseEntity<StockResponseDto> buyNationStock(@PathVariable Long stockId, Authentication authentication, @RequestBody StockNationRequestDto stockNationRequestDto) {
+        return ResponseEntity.ok(stockService.buyStock(stockId, authentication.getName(), stockNationRequestDto));
     }
 }

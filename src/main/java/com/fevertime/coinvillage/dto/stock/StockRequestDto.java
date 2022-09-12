@@ -16,7 +16,7 @@ public class StockRequestDto {
 
     private Long price;
 
-    private Long variable;
+    private Long stockTotal;
 
     private Member member;
 
@@ -25,7 +25,6 @@ public class StockRequestDto {
                 .content(content)
                 .description(description)
                 .price(price)
-                .variable(variable)
                 .member(member)
                 .build();
     }

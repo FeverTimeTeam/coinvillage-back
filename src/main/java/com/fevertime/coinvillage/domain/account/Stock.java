@@ -28,8 +28,6 @@ public class Stock extends BaseEntity {
 
     private Long price;
 
-    private Long variable;
-
     private Long stockTotal;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,10 +36,9 @@ public class Stock extends BaseEntity {
     @OneToMany(mappedBy = "stock", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<StockHistory> stockHistoryList;
 
-    public void update(String content, String description, Long price, Long variable) {
+    public void update(String content, String description, Long price) {
         this.content = content;
         this.description = description;
         this.price = price;
-        this.variable = variable;
     }
 }

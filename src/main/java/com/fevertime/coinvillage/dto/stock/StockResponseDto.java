@@ -19,8 +19,6 @@ public class StockResponseDto {
 
     private Long price;
 
-    private Long variable;
-
     private String createdAt;
 
     public StockResponseDto(Stock stock) {
@@ -28,7 +26,6 @@ public class StockResponseDto {
         this.content = stock.getContent();
         this.description = stock.getDescription();
         this.price = stock.getPrice();
-        this.variable = stock.getVariable();
         this.createdAt = stock.getCreatedAt().format(DateTimeFormatter.ofPattern("yy.MM.dd"));
     }
 }
