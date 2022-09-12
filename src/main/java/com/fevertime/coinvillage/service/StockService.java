@@ -18,6 +18,7 @@ import com.fevertime.coinvillage.repository.StockHistoryRepository;
 import com.fevertime.coinvillage.repository.StockRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +32,7 @@ public class StockService {
     private final StockBuyRepository stockBuyRepository;
 
     // 주식 종목 생성(선생님)
+    @Transactional
     public StockResponseDto makeStocks(String email, StockRequestDto stockRequestDto) {
         Member member = memberRepository.findByEmail(email);
 
@@ -43,6 +45,7 @@ public class StockService {
     }
 
     // 주식 종목 전체보기(선생님)
+    @Transactional
     public List<StockResponseDto> showStocks(String email) {
         List<Stock> stockList = stockRepository.findAllByMember_Email(email);
         return stockList.stream()
@@ -50,12 +53,14 @@ public class StockService {
     }
     
     // 주식 종목 상세보기(선생님)
+    @Transactional
     public StockResponseDto showStock(Long stockId) {
         Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
         return new StockResponseDto(stock);
     }
     
     // 주식 종목 수정(선생님)
+    @Transactional
     public StockResponseDto changeStocks(Long stockId, StockUpdateRequestDto stockUpdateRequestDto) {
         Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
 
@@ -72,11 +77,13 @@ public class StockService {
     }
 
     // 주식 종목 삭제(선생님)
+    @Transactional
     public void deleteStock(Long stockId) {
         stockRepository.deleteById(stockId);
     }
 
     // 주식 종목 전체보기(학생)
+    @Transactional
     public List<StockNationResponseDto> showNationStocks(String email) {
         List<Stock> stockList = stockRepository.findAllByMember_Country_CountryName(memberRepository.findByEmail(email).getCountry().getCountryName());
         return stockList.stream()
@@ -84,12 +91,14 @@ public class StockService {
     }
 
     // 주식 종목 상세보기(학생)
+    @Transactional
     public StockResponseDto showNationStock(Long stockId) {
         Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
         return new StockResponseDto(stock);
     }
 
     // 주식 구매하기(학생)
+    @Transactional
     public StockBuyResponseDto buyStock(Long stockId, String email, StockNationRequestDto stockNationRequestDto) {
         Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
         Member member = memberRepository.findByEmail(email);
@@ -112,6 +121,7 @@ public class StockService {
     }
 
     // 주식 마이페이지 전체보기(학생)
+    @Transactional
     public List<StockNationMypageResponseDto> showMypages(String email) {
         List<Stock> stockList = stockRepository.findAllByMember_Country_CountryName(memberRepository.findByEmail(email).getCountry().getCountryName());
         return stockList.stream()
@@ -119,12 +129,14 @@ public class StockService {
     }
 
     // 주식 마이페이지 상세보기(학생)
+    @Transactional
     public StockNationMypageResponseDto showMypage(Long stockId) {
         Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
         return new StockNationMypageResponseDto(stock);
     }
 
     // 주식 마이페이지 판매하기(학생)
+    @Transactional
     public StockNationMypageResponseDto sellStocks(Long stockId, String email) {
         Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
         Member member = memberRepository.findByEmail(email);
