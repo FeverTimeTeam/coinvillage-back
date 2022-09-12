@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableJpaAuditing
-@EnableScheduling
 public class BackendApplication extends SpringBootServletInitializer {
 
     // ec2 404에러 해결 코드
