@@ -19,8 +19,6 @@ public class StockHistory {
 
     private String content;
 
-    private Long variable;
-
     private Long price;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -3,6 +3,8 @@ package com.fevertime.coinvillage.controller.api;
 import com.fevertime.coinvillage.dto.stock.StockRequestDto;
 import com.fevertime.coinvillage.dto.stock.StockResponseDto;
 import com.fevertime.coinvillage.dto.stock.StockUpdateRequestDto;
+import com.fevertime.coinvillage.dto.stock.nation.StockBuyResponseDto;
+import com.fevertime.coinvillage.dto.stock.nation.StockNationMypageResponseDto;
 import com.fevertime.coinvillage.dto.stock.nation.StockNationRequestDto;
 import com.fevertime.coinvillage.dto.stock.nation.StockNationResponseDto;
 import com.fevertime.coinvillage.service.StockService;
@@ -73,7 +75,25 @@ public class StockApiController {
 
     @PostMapping("{stockId}")
     @ApiOperation(value = "주식 종목 구매하기(학생)")
-    public ResponseEntity<StockResponseDto> buyNationStock(@PathVariable Long stockId, Authentication authentication, @RequestBody StockNationRequestDto stockNationRequestDto) {
+    public ResponseEntity<StockBuyResponseDto> buyNationStock(@PathVariable Long stockId, Authentication authentication, @RequestBody StockNationRequestDto stockNationRequestDto) {
         return ResponseEntity.ok(stockService.buyStock(stockId, authentication.getName(), stockNationRequestDto));
+    }
+
+    @GetMapping("mypage")
+    @ApiOperation(value = "주식 종목 마이페이지(학생)")
+    public ResponseEntity<List<StockNationMypageResponseDto>> nationMypages(Authentication authentication) {
+        return ResponseEntity.ok(stockService.showMypages(authentication.getName()));
+    }
+
+    @GetMapping("mypage/{stockId}")
+    @ApiOperation(value = "주식 종목 마이페이지 상세보기(학생)")
+    public ResponseEntity<StockNationMypageResponseDto> nationMypage(Long stockId) {
+        return ResponseEntity.ok(stockService.showMypage(stockId));
+    }
+
+    @PostMapping("mypage/{stockId}")
+    @ApiOperation(value = "주식 종목 마이페이지 판매하기(학생)")
+    public ResponseEntity<StockNationMypageResponseDto> sellStocks(Long stockId, Authentication authentication) {
+        return ResponseEntity.ok(stockService.sellStocks(stockId, authentication.getName()));
     }
 }

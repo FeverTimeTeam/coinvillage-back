@@ -1,5 +1,6 @@
 package com.fevertime.coinvillage.domain.account;
 
+import com.fevertime.coinvillage.domain.BaseEntity;
 import com.fevertime.coinvillage.domain.model.StateName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class StockBuy {
+public class StockBuy extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long stockBuyId;

@@ -36,9 +36,16 @@ public class Stock extends BaseEntity {
     @OneToMany(mappedBy = "stock", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<StockHistory> stockHistoryList;
 
+    @OneToMany(mappedBy = "stock", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<StockBuy> stockBuyList;
+
     public void update(String content, String description, Long price) {
         this.content = content;
         this.description = description;
         this.price = price;
+    }
+
+    public void changeStockTotal(Long stockTotal) {
+        this.stockTotal = stockTotal;
     }
 }

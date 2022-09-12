@@ -8,9 +8,12 @@ import com.fevertime.coinvillage.domain.model.StateName;
 import com.fevertime.coinvillage.dto.stock.StockRequestDto;
 import com.fevertime.coinvillage.dto.stock.StockResponseDto;
 import com.fevertime.coinvillage.dto.stock.StockUpdateRequestDto;
+import com.fevertime.coinvillage.dto.stock.nation.StockBuyResponseDto;
+import com.fevertime.coinvillage.dto.stock.nation.StockNationMypageResponseDto;
 import com.fevertime.coinvillage.dto.stock.nation.StockNationRequestDto;
 import com.fevertime.coinvillage.dto.stock.nation.StockNationResponseDto;
 import com.fevertime.coinvillage.repository.MemberRepository;
+import com.fevertime.coinvillage.repository.StockBuyRepository;
 import com.fevertime.coinvillage.repository.StockHistoryRepository;
 import com.fevertime.coinvillage.repository.StockRepository;
 import lombok.RequiredArgsConstructor;
@@ -87,7 +90,7 @@ public class StockService {
     }
 
     // 주식 구매하기(학생)
-    public StockResponseDto buyStock(Long stockId, String email, StockNationRequestDto stockNationRequestDto) {
+    public StockBuyResponseDto buyStock(Long stockId, String email, StockNationRequestDto stockNationRequestDto) {
         Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
         Member member = memberRepository.findByEmail(email);
 
@@ -98,12 +101,53 @@ public class StockService {
                 .total(stockNationRequestDto.getTotal())
                 .stock(stock)
                 .build();
+        stock.changeStockTotal(member.getStockTotal() - stockBuy.getTotal());
         stockBuyRepository.save(stockBuy);
 
-        member.changeStockTotal(member.getStockTotal() - stock.getPrice());
+        member.changeStockTotal(member.getStockTotal() - stockBuy.getTotal());
         member.changeProperty(member.getAccountTotal() + member.getSavingsTotal() + member.getStockTotal());
         memberRepository.save(member);
 
-        return new StockResponseDto(stock);
+        return new StockBuyResponseDto(stockBuy);
+    }
+
+    // 주식 마이페이지 전체보기(학생)
+    public List<StockNationMypageResponseDto> showMypages(String email) {
+        List<Stock> stockList = stockRepository.findAllByMember_Country_CountryName(memberRepository.findByEmail(email).getCountry().getCountryName());
+        return stockList.stream()
+                .map(StockNationMypageResponseDto::new).collect(Collectors.toList());
+    }
+
+    // 주식 마이페이지 상세보기(학생)
+    public StockNationMypageResponseDto showMypage(Long stockId) {
+        Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
+        return new StockNationMypageResponseDto(stock);
+    }
+
+    // 주식 마이페이지 판매하기(학생)
+    public StockNationMypageResponseDto sellStocks(Long stockId, String email) {
+        Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
+        Member member = memberRepository.findByEmail(email);
+
+        Long buyCount = 0L;
+        for (int i = 0; i < stock.getStockBuyList().size(); i++) {
+            buyCount += stock.getStockBuyList().get(i).getCount();
+        }
+
+        StockBuy stockBuy = StockBuy.builder()
+                .content(stock.getContent())
+                .stateName(StateName.DEPOSIT)
+                .count(buyCount)
+                .total(stock.getPrice() * buyCount)
+                .stock(stock)
+                .build();
+        stock.changeStockTotal(member.getStockTotal() + stockBuy.getTotal());
+        stockBuyRepository.save(stockBuy);
+
+        member.changeStockTotal(member.getStockTotal() + stockBuy.getTotal());
+        member.changeProperty(member.getAccountTotal() + member.getSavingsTotal() + member.getStockTotal());
+        memberRepository.save(member);
+
+        return new StockNationMypageResponseDto(stock);
     }
 }
