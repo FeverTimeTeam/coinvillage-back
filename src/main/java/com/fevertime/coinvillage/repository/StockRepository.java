@@ -8,5 +8,5 @@ import java.util.List;
 public interface StockRepository extends JpaRepository<Stock, Long> {
     List<Stock> findAllByMember_Email(String email);
 
-    Stock findByMember_Email(String email);
+    List<Stock> findAllByMember_Country_CountryName(String countryName);
 }

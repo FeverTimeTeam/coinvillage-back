@@ -70,6 +70,8 @@ public class SecurityConfig {
                 .antMatchers("/accounts").authenticated()
                 .antMatchers("/accounts/**").authenticated()
 
+                .antMatchers("/stocks/**").authenticated()
+
                 .anyRequest().permitAll()
 
                 .and()

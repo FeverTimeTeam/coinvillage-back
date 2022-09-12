@@ -13,4 +13,6 @@ public class StockUpdateRequestDto {
     private String description;
 
     private Long price;
+
+    private Long variable;
 }

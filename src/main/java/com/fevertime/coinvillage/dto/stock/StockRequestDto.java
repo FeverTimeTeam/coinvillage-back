@@ -16,6 +16,8 @@ public class StockRequestDto {
 
     private Long price;
 
+    private Long variable;
+
     private Member member;
 
     public Stock toEntity() {
@@ -23,6 +25,7 @@ public class StockRequestDto {
                 .content(content)
                 .description(description)
                 .price(price)
+                .variable(variable)
                 .member(member)
                 .build();
     }
