@@ -134,7 +134,7 @@ public class StockService {
 
     // 주식 마이페이지 판매하기(학생)
     @Transactional
-    public StockResultResponseDto sellStocks(Long stockId, String email) {
+    public StockNationMypageResponseDto sellStocks(Long stockId, String email) {
         Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
         Member member = memberRepository.findByEmail(email);
 
@@ -164,6 +164,6 @@ public class StockService {
         setStockBuyCount1.forEach(StockBuy::clear);
         stockBuyRepository.save(stockBuy);
 
-        return new StockResultResponseDto(stock);
+        return new StockNationMypageResponseDto(stock);
     }
 }

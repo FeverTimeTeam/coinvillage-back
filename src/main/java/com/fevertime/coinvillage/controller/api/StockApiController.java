@@ -90,7 +90,7 @@ public class StockApiController {
 
     @PostMapping("mypage/{stockId}")
     @ApiOperation(value = "주식 종목 마이페이지 판매하기(학생)")
-    public ResponseEntity<StockResultResponseDto> sellStocks(@PathVariable Long stockId, Authentication authentication) {
+    public ResponseEntity<StockNationMypageResponseDto> sellStocks(@PathVariable Long stockId, Authentication authentication) {
         return ResponseEntity.ok(stockService.sellStocks(stockId, authentication.getName()));
     }
 }
