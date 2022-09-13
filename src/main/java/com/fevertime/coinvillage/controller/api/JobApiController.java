@@ -3,13 +3,13 @@ package com.fevertime.coinvillage.controller.api;
 import com.fevertime.coinvillage.dto.job.JobRequestDto;
 import com.fevertime.coinvillage.dto.job.JobResponseDto;
 import com.fevertime.coinvillage.dto.job.JobUpdateRequestDto;
-import com.fevertime.coinvillage.dto.login.MemberUpdateRequestDto;
 import com.fevertime.coinvillage.service.JobService;
-import com.fevertime.coinvillage.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,15 +22,17 @@ public class JobApiController {
     private final JobService jobService;
     
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_RULER')")
     @ApiOperation(value = "직업 추가")
-    public ResponseEntity<JobResponseDto> addJob(@RequestBody JobRequestDto jobRequestDto) {
-        return ResponseEntity.ok(jobService.addJob(jobRequestDto));
+    public ResponseEntity<JobResponseDto> addJob(@RequestBody JobRequestDto jobRequestDto, Authentication authentication) {
+        return ResponseEntity.ok(jobService.addJob(jobRequestDto, authentication.getName()));
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_RULER')")
     @ApiOperation(value = "직업 전체 보기")
-    public ResponseEntity<List<JobResponseDto>> viewJobs() {
-        return ResponseEntity.ok(jobService.viewJobs());
+    public ResponseEntity<List<JobResponseDto>> viewJobs(Authentication authentication) {
+        return ResponseEntity.ok(jobService.viewJobs(authentication.getName()));
     }
 
     /* @PutMapping("{jobId}")
@@ -40,6 +42,7 @@ public class JobApiController {
     } */
 
     @DeleteMapping("{jobId}")
+    @PreAuthorize("hasRole('ROLE_RULER')")
     @ApiOperation(value = "직업 삭제")
     public ResponseEntity removeJob(@PathVariable Long jobId) {
         jobService.deletejob(jobId);
@@ -47,6 +50,7 @@ public class JobApiController {
     }
     
     @PutMapping("{jobId}")
+    @PreAuthorize("hasRole('ROLE_RULER')")
     @ApiOperation(value = "직업 수정")
     public ResponseEntity<JobResponseDto> modJob(@PathVariable Long jobId, @RequestBody JobUpdateRequestDto jobUpdateRequestDto) {
         return ResponseEntity.ok(jobService.modjob(jobId, jobUpdateRequestDto));

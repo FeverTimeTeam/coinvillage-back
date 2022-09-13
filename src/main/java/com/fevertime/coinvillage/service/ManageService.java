@@ -25,8 +25,8 @@ public class ManageService {
     private final AccountRepository accountRepository;
 
     // 국민관리 회원 전체보기
-    public List<ManageResponseDto> showMembers() {
-        List<Member> memberList = memberRepository.findAll(Sort.by(Sort.Direction.DESC, "property"));
+    public List<ManageResponseDto> showMembers(String email) {
+        List<Member> memberList = memberRepository.findAllByCountry_CountryName(memberRepository.findByEmail(email).getCountry().getCountryName(), Sort.by(Sort.Direction.DESC, "property"));
         List<ManageResponseDto> manageResponseDtos = memberList.stream().map(ManageResponseDto::new).collect(Collectors.toList());
         manageResponseDtos.forEach(manage -> manage.setJobList(jobRepository.findAllJobName()));
         return manageResponseDtos;

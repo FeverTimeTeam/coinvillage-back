@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +21,8 @@ public class ManageApiController {
 
     @GetMapping
     @ApiOperation(value = "국민관리 전체보기")
-    public ResponseEntity<List<ManageResponseDto>> showMembers() {
-        return ResponseEntity.ok(manageService.showMembers());
+    public ResponseEntity<List<ManageResponseDto>> showMembers(Authentication authentication) {
+        return ResponseEntity.ok(manageService.showMembers(authentication.getName()));
     }
 
     @PutMapping("{memberId}")

@@ -1,6 +1,7 @@
 package com.fevertime.coinvillage.repository;
 
 import com.fevertime.coinvillage.domain.Job;
+import com.fevertime.coinvillage.domain.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,4 +14,6 @@ public interface JobRepository extends JpaRepository<Job, Long> {
     List<String> findAllJobName();
 
     Job findByJobName(String jobName);
+
+    List<Job> findAllByCountry_CountryName(String email);
 }

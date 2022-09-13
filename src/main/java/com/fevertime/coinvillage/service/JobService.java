@@ -5,7 +5,9 @@ import com.fevertime.coinvillage.dto.job.JobRequestDto;
 import com.fevertime.coinvillage.dto.job.JobResponseDto;
 import com.fevertime.coinvillage.dto.job.JobUpdateRequestDto;
 import com.fevertime.coinvillage.repository.JobRepository;
+import com.fevertime.coinvillage.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,10 +18,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class JobService {
     private final JobRepository jobRepository;
+    private final MemberRepository memberRepository;
 
     // 직업 추가
     @Transactional
-    public JobResponseDto addJob(JobRequestDto jobRequestDto) {
+    public JobResponseDto addJob(JobRequestDto jobRequestDto, String email) {
+        jobRequestDto.setCountry(memberRepository.findByEmail(email).getCountry());
         Job job = jobRequestDto.toEntity();
         jobRepository.save(job);
         return JobResponseDto.builder()
@@ -33,8 +37,8 @@ public class JobService {
 
     // 직업 전체 보기
     @Transactional
-    public List<JobResponseDto> viewJobs() {
-        List<Job> jobs = jobRepository.findAll();
+    public List<JobResponseDto> viewJobs(String email) {
+        List<Job> jobs = jobRepository.findAllByCountry_CountryName(memberRepository.findByEmail(email).getCountry().getCountryName());
         return jobs.stream().map(JobResponseDto::new)
                 .collect(Collectors.toList());
     }

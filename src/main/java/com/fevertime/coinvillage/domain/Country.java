@@ -1,6 +1,5 @@
 package com.fevertime.coinvillage.domain;
 
-import com.fevertime.coinvillage.domain.account.Stock;
 import com.fevertime.coinvillage.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +22,6 @@ public class Country {
 
     private String countryName;
 
-    @OneToMany(mappedBy = "country", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "country", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Member> memberList;
 }

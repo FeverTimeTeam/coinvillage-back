@@ -22,6 +22,9 @@ public class Job {
 
     private Long payCheck;
 
+    @OneToOne
+    private Country country;
+
     @OneToMany(mappedBy = "job", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Member> memberList;
 
