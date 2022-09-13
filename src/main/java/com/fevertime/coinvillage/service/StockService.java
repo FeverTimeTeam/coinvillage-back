@@ -150,7 +150,7 @@ public class StockService {
                 .total(stock.getPrice() * buyCount)
                 .stock(stock)
                 .build();
-        List<StockBuy> setStockBuyCount = stockBuyRepository.findAllByStock_Member_Email(email);
+        List<StockBuy> setStockBuyCount = stockBuyRepository.findAllByStock_StockId(stockId);
         setStockBuyCount.forEach(StockBuy::clear);
         stock.changeStockTotal(member.getStockTotal() + stockBuy.getTotal());
         stockBuyRepository.save(stockBuy);
@@ -160,7 +160,7 @@ public class StockService {
         member.changeProperty(member.getAccountTotal() + member.getSavingsTotal() + member.getStockTotal());
         memberRepository.save(member);
 
-        List<StockBuy> setStockBuyCount1 = stockBuyRepository.findAllByStock_Member_Email(email);
+        List<StockBuy> setStockBuyCount1 = stockBuyRepository.findAllByStock_StockId(stockId);
         setStockBuyCount1.forEach(StockBuy::clear);
         stockBuyRepository.save(stockBuy);
 

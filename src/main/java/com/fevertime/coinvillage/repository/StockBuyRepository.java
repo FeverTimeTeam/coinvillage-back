@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface StockBuyRepository extends JpaRepository<StockBuy, Long> {
-    List<StockBuy> findAllByStock_Member_Email(String email);
+    List<StockBuy> findAllByStock_StockId(Long stockId);
 }
