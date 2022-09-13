@@ -24,4 +24,7 @@ public class Country {
 
     @OneToMany(mappedBy = "country", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Member> memberList;
+
+    @OneToOne(mappedBy = "country")
+    private TodayMessage todayMessage;
 }

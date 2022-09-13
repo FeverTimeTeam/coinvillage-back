@@ -1,22 +1,34 @@
 package com.fevertime.coinvillage.domain.country;
 
+import com.fevertime.coinvillage.domain.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Builder
-public class TodayMessage {
+public class TodayMessage extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long todayMessageId;
+
+    private String message;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
+    @OneToOne
+    private Country country;
+
+    public void changeMessage(String message) {
+        this.message = message;
+    }
 }

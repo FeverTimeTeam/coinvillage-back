@@ -1,6 +1,7 @@
 package com.fevertime.coinvillage.service;
 
 import com.fevertime.coinvillage.domain.country.Country;
+import com.fevertime.coinvillage.domain.country.TodayMessage;
 import com.fevertime.coinvillage.domain.job.Job;
 import com.fevertime.coinvillage.domain.account.Account;
 import com.fevertime.coinvillage.domain.member.Authority;
@@ -34,8 +35,8 @@ public class MemberService {
     private final CountryRepository countryRepository;
     private final JobRepository jobRepository;
     private final AccountRepository accountRepository;
-    private final SavingsRepository savingsRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TodayMessageRepository todayMessageRepository;
     private final S3Uploader s3Uploader;
 
     // 선생님 회원가입
@@ -65,6 +66,12 @@ public class MemberService {
                 .country(country)
                 .build();
         memberRepository.save(member);
+
+        TodayMessage todayMessage = TodayMessage.builder()
+                .message(null)
+                .country(country)
+                .build();
+        todayMessageRepository.save(todayMessage);
 
         return new MemberResponseDto(member);
     }
