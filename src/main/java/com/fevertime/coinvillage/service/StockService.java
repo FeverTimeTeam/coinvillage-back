@@ -153,8 +153,8 @@ public class StockService {
         List<StockBuy> setStockBuyCount = stockBuyRepository.findAllByStock_Member_Email(email);
         setStockBuyCount.forEach(StockBuy::clear);
         stock.changeStockTotal(member.getStockTotal() + stockBuy.getTotal());
-        stockRepository.save(stock);
         stockBuyRepository.save(stockBuy);
+        stockRepository.save(stock);
 
         member.changeStockTotal(member.getStockTotal() + stockBuy.getTotal());
         member.changeProperty(member.getAccountTotal() + member.getSavingsTotal() + member.getStockTotal());
