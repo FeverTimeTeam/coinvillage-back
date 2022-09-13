@@ -1,7 +1,6 @@
 package com.fevertime.coinvillage.repository;
 
-import com.fevertime.coinvillage.domain.Job;
-import com.fevertime.coinvillage.domain.member.Member;
+import com.fevertime.coinvillage.domain.Job.Job;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

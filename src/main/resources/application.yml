@@ -25,3 +25,23 @@ jwt:
   #echo 'silvernine-tech-spring-boot-jwt-tutorial-secret-silvernine-tech-spring-boot-jwt-tutorial-secret'|base64
   secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
   token-validity-in-seconds: 86400 # 24시간
+
+cloud:
+  aws:
+    s3:
+      bucket: aws-jimin-s3
+    credentials:
+      access-key: AKIAWHTNIWXM4BI5A4FX
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
+
+logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: ERROR

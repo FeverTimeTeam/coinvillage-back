@@ -1,13 +1,12 @@
 package com.fevertime.coinvillage.service;
 
-import com.fevertime.coinvillage.domain.Job;
+import com.fevertime.coinvillage.domain.Job.Job;
 import com.fevertime.coinvillage.dto.job.JobRequestDto;
 import com.fevertime.coinvillage.dto.job.JobResponseDto;
 import com.fevertime.coinvillage.dto.job.JobUpdateRequestDto;
 import com.fevertime.coinvillage.repository.JobRepository;
 import com.fevertime.coinvillage.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

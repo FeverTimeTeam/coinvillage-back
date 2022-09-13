@@ -3,7 +3,7 @@ package com.fevertime.coinvillage.dto.login;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fevertime.coinvillage.domain.member.Authority;
 import com.fevertime.coinvillage.domain.Country;
-import com.fevertime.coinvillage.domain.Job;
+import com.fevertime.coinvillage.domain.Job.Job;
 import com.fevertime.coinvillage.domain.member.Member;
 import lombok.*;
 

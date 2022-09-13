@@ -35,12 +35,6 @@ public class JobApiController {
         return ResponseEntity.ok(jobService.viewJobs(authentication.getName()));
     }
 
-    /* @PutMapping("{jobId}")
-    @ApiOperation(value = "이거 쓰지 마세요")
-    public ResponseEntity<Long> modJob(@PathVariable Long jobId, @RequestBody MemberUpdateRequestDto memberUpdateRequestDto) {
-        return ResponseEntity.ok(memberService.modJob(jobId, memberUpdateRequestDto));
-    } */
-
     @DeleteMapping("{jobId}")
     @PreAuthorize("hasRole('ROLE_RULER')")
     @ApiOperation(value = "직업 삭제")
@@ -56,3 +50,5 @@ public class JobApiController {
         return ResponseEntity.ok(jobService.modjob(jobId, jobUpdateRequestDto));
     }
 }
+
+

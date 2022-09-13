@@ -1,8 +1,8 @@
 package com.fevertime.coinvillage.service;
 
 import com.fevertime.coinvillage.domain.*;
+import com.fevertime.coinvillage.domain.Job.Job;
 import com.fevertime.coinvillage.domain.account.Account;
-import com.fevertime.coinvillage.domain.account.Savings;
 import com.fevertime.coinvillage.domain.member.Authority;
 import com.fevertime.coinvillage.domain.member.Member;
 import com.fevertime.coinvillage.dto.login.CountryResponseDto;

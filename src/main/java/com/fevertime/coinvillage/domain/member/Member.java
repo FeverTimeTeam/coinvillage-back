@@ -1,7 +1,7 @@
 package com.fevertime.coinvillage.domain.member;
 
 import com.fevertime.coinvillage.domain.Country;
-import com.fevertime.coinvillage.domain.Job;
+import com.fevertime.coinvillage.domain.Job.Job;
 import com.fevertime.coinvillage.domain.account.Account;
 import com.fevertime.coinvillage.domain.account.SavingsSetting;
 import com.fevertime.coinvillage.domain.account.Stock;
