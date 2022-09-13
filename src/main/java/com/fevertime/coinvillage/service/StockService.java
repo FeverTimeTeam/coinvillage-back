@@ -160,6 +160,10 @@ public class StockService {
         member.changeProperty(member.getAccountTotal() + member.getSavingsTotal() + member.getStockTotal());
         memberRepository.save(member);
 
+        List<StockBuy> setStockBuyCount1 = stockBuyRepository.findAllByStock_Member_Email(email);
+        setStockBuyCount1.forEach(StockBuy::clear);
+        stockBuyRepository.save(stockBuy);
+
         return new StockResultResponseDto(stock);
     }
 }
