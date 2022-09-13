@@ -11,11 +11,14 @@ import com.fevertime.coinvillage.dto.login.MemberResponseDto;
 import com.fevertime.coinvillage.dto.login.MemberUpdateRequestDto;
 import com.fevertime.coinvillage.exception.DuplicateMemberException;
 import com.fevertime.coinvillage.repository.*;
+import com.fevertime.coinvillage.util.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +36,7 @@ public class MemberService {
     private final AccountRepository accountRepository;
     private final SavingsRepository savingsRepository;
     private final PasswordEncoder passwordEncoder;
+    private final S3Uploader s3Uploader;
 
     // 선생님 회원가입
     @Transactional
@@ -96,6 +100,7 @@ public class MemberService {
                 .savingsTotal(0L)
                 .stockTotal(0L)
                 .job(null)
+                .imageUrl(null)
                 .build();
 
         Account account = Account.builder()
@@ -127,5 +132,19 @@ public class MemberService {
         }
 
         return job.getJobId();
+    }
+
+    @Transactional
+    public MemberResponseDto changeProfileImage(MultipartFile file, String email) {
+        Member member = memberRepository.findByEmail(email);
+
+        try {
+            String S3Url = s3Uploader.upload(file, "profile");
+            member.changeProfileImg(S3Url);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        memberRepository.save(member);
+        return new MemberResponseDto(member);
     }
 }

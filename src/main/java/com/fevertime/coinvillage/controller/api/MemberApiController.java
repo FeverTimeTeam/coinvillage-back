@@ -17,6 +17,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -72,5 +73,11 @@ public class MemberApiController {
     @ApiOperation(value = "회원 전체보기 테스트")
     public ResponseEntity<List<CountryResponseDto>> findCountries() {
         return ResponseEntity.ok(memberService.findCountries());
+    }
+
+    @PutMapping("profile")
+    @ApiOperation(value = "프로필 수정")
+    public ResponseEntity<MemberResponseDto> changeProfile(@RequestPart MultipartFile file, Authentication authentication) {
+        return ResponseEntity.ok(memberService.changeProfileImage(file, authentication.getName()));
     }
 }

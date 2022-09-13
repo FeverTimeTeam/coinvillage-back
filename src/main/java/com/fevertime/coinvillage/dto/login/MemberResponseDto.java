@@ -34,6 +34,8 @@ public class MemberResponseDto {
 
     private long payCheck;
 
+    private String profileUrl;
+
     public MemberResponseDto(Member member) {
         this.memberId = member.getMemberId();
         this.email = member.getEmail();
@@ -54,5 +56,6 @@ public class MemberResponseDto {
             this.jobContent = member.getJob().getJobContent();
             this.payCheck = member.getJob().getPayCheck();
         }
+        this.profileUrl = member.getImageUrl();
     }
 }

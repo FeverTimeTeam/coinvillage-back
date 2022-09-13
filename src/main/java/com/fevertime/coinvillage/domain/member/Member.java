@@ -40,6 +40,8 @@ public class Member {
 
     private Long stockTotal;
 
+    private String imageUrl;
+
     @ManyToMany
     @JoinTable(
             name = "member_authority",
@@ -79,4 +81,8 @@ public class Member {
     }
 
     public void changeProperty(Long property) { this.property = property; }
+
+    public void changeProfileImg(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }
