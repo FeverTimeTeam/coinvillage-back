@@ -1,6 +1,6 @@
-package com.fevertime.coinvillage.domain.Job;
+package com.fevertime.coinvillage.domain.job;
 
-import com.fevertime.coinvillage.domain.Country;
+import com.fevertime.coinvillage.domain.country.Country;
 import com.fevertime.coinvillage.domain.member.Member;
 import lombok.*;
 

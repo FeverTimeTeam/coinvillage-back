@@ -1,4 +1,4 @@
-package com.fevertime.coinvillage.domain;
+package com.fevertime.coinvillage.domain.country;
 
 import com.fevertime.coinvillage.domain.member.Member;
 import lombok.AllArgsConstructor;

@@ -1,7 +1,7 @@
 package com.fevertime.coinvillage.service;
 
-import com.fevertime.coinvillage.domain.*;
-import com.fevertime.coinvillage.domain.Job.Job;
+import com.fevertime.coinvillage.domain.country.Country;
+import com.fevertime.coinvillage.domain.job.Job;
 import com.fevertime.coinvillage.domain.account.Account;
 import com.fevertime.coinvillage.domain.member.Authority;
 import com.fevertime.coinvillage.domain.member.Member;
@@ -134,6 +134,7 @@ public class MemberService {
         return job.getJobId();
     }
 
+    // 이미지 수정
     @Transactional
     public MemberResponseDto changeProfileImage(MultipartFile file, String email) {
         Member member = memberRepository.findByEmail(email);
@@ -145,6 +146,13 @@ public class MemberService {
             e.printStackTrace();
         }
         memberRepository.save(member);
+        return new MemberResponseDto(member);
+    }
+    
+    // 프로필 정보주기
+    @Transactional
+    public MemberResponseDto getProfileImage(String email) {
+        Member member = memberRepository.findByEmail(email);
         return new MemberResponseDto(member);
     }
 }

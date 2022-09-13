@@ -80,4 +80,10 @@ public class MemberApiController {
     public ResponseEntity<MemberResponseDto> changeProfile(@RequestPart MultipartFile file, Authentication authentication) {
         return ResponseEntity.ok(memberService.changeProfileImage(file, authentication.getName()));
     }
+
+    @GetMapping("profile")
+    @ApiOperation(value = "프로필 이미지정보 가져오기")
+    public ResponseEntity<MemberResponseDto> getProfile(Authentication authentication) {
+        return ResponseEntity.ok(memberService.getProfileImage(authentication.getName()));
+    }
 }

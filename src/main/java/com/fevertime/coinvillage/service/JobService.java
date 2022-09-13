@@ -1,6 +1,6 @@
 package com.fevertime.coinvillage.service;
 
-import com.fevertime.coinvillage.domain.Job.Job;
+import com.fevertime.coinvillage.domain.job.Job;
 import com.fevertime.coinvillage.dto.job.JobRequestDto;
 import com.fevertime.coinvillage.dto.job.JobResponseDto;
 import com.fevertime.coinvillage.dto.job.JobUpdateRequestDto;

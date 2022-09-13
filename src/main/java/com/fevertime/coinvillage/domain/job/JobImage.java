@@ -1,4 +1,4 @@
-package com.fevertime.coinvillage.domain.Job;
+package com.fevertime.coinvillage.domain.job;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

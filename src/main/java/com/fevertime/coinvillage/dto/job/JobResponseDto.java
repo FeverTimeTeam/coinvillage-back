@@ -1,7 +1,6 @@
 package com.fevertime.coinvillage.dto.job;
 
-import com.fevertime.coinvillage.domain.Job.Job;
-import com.fevertime.coinvillage.domain.Job.JobImage;
+import com.fevertime.coinvillage.domain.job.Job;
 import com.fevertime.coinvillage.dto.login.MemberResponseDto;
 import lombok.*;
 

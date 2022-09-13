@@ -1,6 +1,6 @@
 package com.fevertime.coinvillage.dto.job;
 
-import com.fevertime.coinvillage.domain.Job.JobImage;
+import com.fevertime.coinvillage.domain.job.JobImage;
 import lombok.*;
 
 @Getter
