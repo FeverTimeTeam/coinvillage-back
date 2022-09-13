@@ -93,4 +93,10 @@ public class StockApiController {
     public ResponseEntity<StockNationMypageResponseDto> sellStocks(@PathVariable Long stockId, Authentication authentication) {
         return ResponseEntity.ok(stockService.sellStocks(stockId, authentication.getName()));
     }
+
+    @GetMapping("history")
+    @ApiOperation(value = "주식 종목 거래내역(학생)")
+    public ResponseEntity<List<StockBuyResponseDto>> showStockBuys(Authentication authentication) {
+        return ResponseEntity.ok(stockService.showStockBuys(authentication.getName()));
+    }
 }

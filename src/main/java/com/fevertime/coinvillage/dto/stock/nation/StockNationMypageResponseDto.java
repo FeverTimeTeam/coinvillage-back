@@ -17,6 +17,8 @@ public class StockNationMypageResponseDto {
 
     private Long price;
 
+    private Long count;
+
     private Long buyCount;
 
     private Long stockTotal;
@@ -31,6 +33,7 @@ public class StockNationMypageResponseDto {
         this.content = stock.getContent();
         this.description = stock.getDescription();
         this.price = stock.getPrice();
+        this.count = stock.getCount();
         this.buyCount = buyCount;
         this.stockTotal = stock.getMember().getStockTotal();
     }

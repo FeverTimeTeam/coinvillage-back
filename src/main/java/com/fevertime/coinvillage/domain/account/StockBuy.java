@@ -24,6 +24,8 @@ public class StockBuy extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private StateName stateName;
 
+    private Long price;
+
     private Long count;
 
     private Long total;

@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface StockBuyRepository extends JpaRepository<StockBuy, Long> {
     List<StockBuy> findAllByStock_StockId(Long stockId);
+
+    List<StockBuy> findAllByStock_Member_Country_CountryName(String countryname);
 }

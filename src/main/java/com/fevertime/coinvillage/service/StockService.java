@@ -104,10 +104,12 @@ public class StockService {
                 .content(stock.getContent())
                 .stateName(StateName.WITHDRAWL)
                 .count(stockNationRequestDto.getCount())
+                .price(stock.getPrice())
                 .total(stockNationRequestDto.getTotal())
                 .stock(stock)
                 .build();
         stock.changeStockTotal(member.getStockTotal() - stockBuy.getTotal());
+        stockRepository.save(stock);
         stockBuyRepository.save(stockBuy);
 
         member.changeStockTotal(member.getStockTotal() - stockBuy.getTotal());
@@ -166,5 +168,13 @@ public class StockService {
 
         return new StockNationMypageResponseDto(stock);
     }
-    // 왜 안댐
+
+    // 주식 거래기록 확인
+    @Transactional
+    public List<StockBuyResponseDto> showStockBuys(String email) {
+        List<StockBuy> stockBuy = stockBuyRepository.findAllByStock_Member_Country_CountryName(memberRepository.findByEmail(email).getCountry().getCountryName());
+        return stockBuy.stream()
+                .map(StockBuyResponseDto::new)
+                .collect(Collectors.toList());
+    }
 }
