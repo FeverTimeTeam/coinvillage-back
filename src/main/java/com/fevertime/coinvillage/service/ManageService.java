@@ -61,7 +61,7 @@ public class ManageService {
         Account account = Account.builder()
                 .content("월급")
                 .count(0L)
-                .total(member.getJob().getPayCheck())
+                .total(member.getJob().getPayCheck() * (100 - member.getCountry().getTax()) / 100)
                 .stateName(StateName.DEPOSIT)
                 .accountTotal(member.getAccountTotal() + member.getJob().getPayCheck())
                 .member(member)

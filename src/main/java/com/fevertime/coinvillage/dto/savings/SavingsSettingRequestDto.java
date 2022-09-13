@@ -12,4 +12,6 @@ public class SavingsSettingRequestDto {
     private Term term;
 
     private Long bill;
+
+    private Long tax;
 }

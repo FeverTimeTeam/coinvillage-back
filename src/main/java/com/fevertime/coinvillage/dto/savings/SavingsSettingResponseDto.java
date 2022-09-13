@@ -14,17 +14,17 @@ public class SavingsSettingResponseDto {
 
     private Term term;
 
-    private String week;
-
     private String day;
 
     private Long bill;
 
+    private Long tax;
+
     public SavingsSettingResponseDto(SavingsSetting savingsSetting) {
         this.settingsId = savingsSetting.getSettingsId();
         this.term = savingsSetting.getTerm();
-        this.week = savingsSetting.getWeek();
         this.day = savingsSetting.getDay();
         this.bill = savingsSetting.getBill();
+        this.tax = savingsSetting.getMember().getCountry().getTax();
     }
 }

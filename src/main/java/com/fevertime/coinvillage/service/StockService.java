@@ -1,18 +1,17 @@
 package com.fevertime.coinvillage.service;
 
+import com.fevertime.coinvillage.domain.account.Account;
 import com.fevertime.coinvillage.domain.account.Stock;
 import com.fevertime.coinvillage.domain.account.StockBuy;
 import com.fevertime.coinvillage.domain.account.StockHistory;
 import com.fevertime.coinvillage.domain.member.Member;
 import com.fevertime.coinvillage.domain.model.StateName;
+import com.fevertime.coinvillage.dto.account.AccountResponseDto;
 import com.fevertime.coinvillage.dto.stock.StockRequestDto;
 import com.fevertime.coinvillage.dto.stock.StockResponseDto;
 import com.fevertime.coinvillage.dto.stock.StockUpdateRequestDto;
 import com.fevertime.coinvillage.dto.stock.nation.*;
-import com.fevertime.coinvillage.repository.MemberRepository;
-import com.fevertime.coinvillage.repository.StockBuyRepository;
-import com.fevertime.coinvillage.repository.StockHistoryRepository;
-import com.fevertime.coinvillage.repository.StockRepository;
+import com.fevertime.coinvillage.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +26,7 @@ public class StockService {
     private final MemberRepository memberRepository;
     private final StockHistoryRepository stockHistoryRepository;
     private final StockBuyRepository stockBuyRepository;
+    private final AccountRepository accountRepository;
 
     // 주식 종목 생성(선생님)
     @Transactional
@@ -176,5 +176,26 @@ public class StockService {
         return stockBuy.stream()
                 .map(StockBuyResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    // 주식통장에서 입출금통장으로 입금
+    @Transactional
+    public AccountResponseDto stockTransfer(String email, StockRequestDto stockRequestDto) {
+        Member member = memberRepository.findByEmail(email);
+
+        Account account = Account.builder()
+                .total(stockRequestDto.getPrice())
+                .stateName(StateName.DEPOSIT)
+                .content("주식통장에서 입금")
+                .member(member)
+                .accountTotal(member.getAccountTotal() + stockRequestDto.getPrice())
+                .build();
+        accountRepository.save(account);
+
+        member.changeAccountTotal(member.getAccountTotal() + stockRequestDto.getPrice());
+        member.changeStockTotal(member.getStockTotal() - stockRequestDto.getPrice());
+        memberRepository.save(member);
+
+        return new AccountResponseDto(account);
     }
 }

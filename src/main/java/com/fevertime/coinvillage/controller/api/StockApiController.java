@@ -1,5 +1,6 @@
 package com.fevertime.coinvillage.controller.api;
 
+import com.fevertime.coinvillage.dto.account.AccountResponseDto;
 import com.fevertime.coinvillage.dto.stock.StockRequestDto;
 import com.fevertime.coinvillage.dto.stock.StockResponseDto;
 import com.fevertime.coinvillage.dto.stock.StockUpdateRequestDto;
@@ -99,4 +100,11 @@ public class StockApiController {
     public ResponseEntity<List<StockBuyResponseDto>> showStockBuys(Authentication authentication) {
         return ResponseEntity.ok(stockService.showStockBuys(authentication.getName()));
     }
+
+    @PostMapping("transfer")
+    @ApiOperation(value = "주식통장에서 입출금통장으로 이체")
+    public ResponseEntity<AccountResponseDto> stockTransfer(Authentication authentication, @RequestBody StockRequestDto stockRequestDto) {
+        return ResponseEntity.ok(stockService.stockTransfer(authentication.getName(), stockRequestDto));
+    }
+
 }

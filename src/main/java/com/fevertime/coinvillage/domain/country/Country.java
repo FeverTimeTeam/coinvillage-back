@@ -22,9 +22,15 @@ public class Country {
 
     private String countryName;
 
+    private Long tax;
+
     @OneToMany(mappedBy = "country", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Member> memberList;
 
     @OneToOne(mappedBy = "country")
     private TodayMessage todayMessage;
+
+    public void changeTax(Long tax) {
+        this.tax = tax;
+    }
 }

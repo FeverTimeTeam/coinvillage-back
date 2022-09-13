@@ -58,6 +58,7 @@ public class MemberRequestDto {
     public Country toCountry() {
         return Country.builder()
                 .countryName(countryName)
+                .tax(0L)
                 .build();
     }
 }
