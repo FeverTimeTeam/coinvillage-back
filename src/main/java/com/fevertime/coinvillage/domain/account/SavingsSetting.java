@@ -22,8 +22,6 @@ public class SavingsSetting {
     @Enumerated(EnumType.STRING)
     private Term term;
 
-    private String week;
-
     private String day;
 
     private Long bill;

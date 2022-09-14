@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,13 +29,14 @@ public class SavingsApiController {
     }
 
     @PutMapping("setting")
-    @ApiOperation(value = "적금, 세금 세팅하기")
+    @PreAuthorize("hasRole('ROLE_RULER')")
+    @ApiOperation(value = "적금 날짜, 세금 세팅하기(선생님)")
     public ResponseEntity<List<SavingsSettingResponseDto>> stackSavingsSetting(Authentication authentication, @RequestBody SavingsSettingRequestDto savingsSettingRequestDto) {
         return ResponseEntity.ok(savingsService.stackSavings(authentication.getName(), savingsSettingRequestDto));
     }
 
     @PutMapping("change")
-    @ApiOperation(value = "적금, 세금 수정하기")
+    @ApiOperation(value = "적금 금액 세팅하기(학생)")
     public ResponseEntity<SavingsSettingResponseDto> modSavingsSetting(Authentication authentication, @RequestBody SavingsSettingRequestDto savingsSettingRequestDto) {
         return ResponseEntity.ok(savingsService.modSavings(authentication.getName(), savingsSettingRequestDto));
     }
