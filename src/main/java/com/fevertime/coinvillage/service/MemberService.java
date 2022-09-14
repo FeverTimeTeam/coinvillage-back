@@ -66,6 +66,12 @@ public class MemberService {
                 .activated(true)
                 .phoneNumber(memberRequestDto.getPhoneNumber())
                 .authorities(Collections.singleton(authority))
+                .property(0L)
+                .accountTotal(0L)
+                .savingsTotal(0L)
+                .stockTotal(0L)
+                .imageUrl(null)
+                .job(null)
                 .country(country)
                 .build();
         memberRepository.save(member);
