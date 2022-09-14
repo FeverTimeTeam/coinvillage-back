@@ -9,9 +9,17 @@ import com.fevertime.coinvillage.repository.AccountRepository;
 import com.fevertime.coinvillage.repository.MemberRepository;
 import com.fevertime.coinvillage.repository.SavingsRepository;
 import com.fevertime.coinvillage.repository.SavingsSettingRepository;
+import com.fevertime.coinvillage.util.SpringDynamicCornTask;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.annotation.SchedulingConfigurer;
+import org.springframework.scheduling.config.ScheduledTaskRegistrar;
+import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,14 +37,18 @@ public class ScheduledTasks {
     private final AccountRepository accountRepository;
     private final SavingsRepository savingsRepository;
     private final SavingsSettingRepository savingsSettingRepository;
+    private final SpringDynamicCornTask springDynamicCornTask;
 
     @Transactional
-    @Scheduled(cron = "0/3 * * * * ?")
+    @Scheduled(cron = "0 0 0 1 * *")
     public void run() {
         List<SavingsSetting> savingsSettingList = savingsSettingRepository.findAll();
         for (SavingsSetting savingsSetting : savingsSettingList) {
+
             // 모든 국민의 적금 세팅 조회
             SavingsSetting savingsSettings = savingsSettingRepository.findById(savingsSetting.getSettingsId()).orElseThrow(() -> new IllegalArgumentException("없음"));
+            String customCron = "0 0 0 " + savingsSettings.getDay() + " * *";
+            springDynamicCornTask.setCron(customCron);
             Member member = memberRepository.findByEmail(savingsSettings.getMember().getEmail());
             List<Account> accounts = accountRepository.findAllByMember_Email(savingsSettings.getMember().getEmail());
             Account account = accounts.get(accounts.size() - 1);

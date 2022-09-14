@@ -49,6 +49,9 @@ public class AccountResponseDto {
         } else if (account.getStateName() == WITHDRAWL) {
             this.content = account.getContent();
             this.total = ("-" + account.getTotal());
+        } else if (account.getStateName() == DEPOSIT && account.getContent().equals("적금 만기")) {
+            this.content = account.getContent();
+            this.total = ("+" + account.getTotal());
         }
         this.state = account.getStateName().toString();
         this.accountTotal = account.getMember().getAccountTotal();
