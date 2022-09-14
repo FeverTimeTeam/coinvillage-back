@@ -34,6 +34,13 @@ public class SavingsApiController {
         return ResponseEntity.ok(savingsService.stackSavings(authentication.getName(), savingsSettingRequestDto));
     }
 
+    @GetMapping("setting")
+    @PreAuthorize("hasRole('ROLE_RULER')")
+    @ApiOperation(value = "현재 설정한 세팅값 보기(선생님)")
+    public ResponseEntity<SavingsSettingResponseDto> showSetting(Authentication authentication) {
+        return ResponseEntity.ok(savingsService.showSetting(authentication.getName()));
+    }
+
     @PutMapping("change")
     @ApiOperation(value = "적금 금액 세팅하기(학생)")
     public ResponseEntity<SavingsSettingResponseDto> modSavingsSetting(Authentication authentication, @RequestBody SavingsSettingRequestDto savingsSettingRequestDto) {

@@ -20,11 +20,14 @@ public class SavingsSettingResponseDto {
 
     private Long tax;
 
+    private Long maturity;
+
     public SavingsSettingResponseDto(SavingsSetting savingsSetting) {
         this.settingsId = savingsSetting.getSettingsId();
         this.term = savingsSetting.getTerm();
         this.day = savingsSetting.getDay();
         this.bill = savingsSetting.getBill();
         this.tax = savingsSetting.getMember().getCountry().getTax();
+        this.maturity = savingsSetting.getMaturity();
     }
 }

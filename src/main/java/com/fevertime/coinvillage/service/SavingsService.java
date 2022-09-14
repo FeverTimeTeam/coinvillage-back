@@ -55,6 +55,19 @@ public class SavingsService {
                 .collect(Collectors.toList());
     }
 
+    // 현재 설정한 세팅값(선생님)
+    @Transactional
+    public SavingsSettingResponseDto showSetting(String email) {
+        Country country = countryRepository.findByCountryName(memberRepository.findByEmail(email).getCountry().getCountryName());
+        SavingsSetting savingsSetting = savingsSettingRepository.findAllByMember_Country_CountryName(country.getCountryName()).get(0);
+
+        return SavingsSettingResponseDto.builder()
+                .tax(country.getTax())
+                .day(savingsSetting.getDay())
+                .maturity(savingsSetting.getMaturity())
+                .build();
+    }
+
     // 적금 세팅 수정하기(학생)
     @Transactional
     public SavingsSettingResponseDto modSavings(String email, SavingsSettingRequestDto savingsSettingRequestDto) {
