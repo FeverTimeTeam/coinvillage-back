@@ -1,6 +1,7 @@
 package com.fevertime.coinvillage.service;
 
 import com.fevertime.coinvillage.domain.account.Account;
+import com.fevertime.coinvillage.domain.member.Authority;
 import com.fevertime.coinvillage.domain.member.Member;
 import com.fevertime.coinvillage.domain.model.StateName;
 import com.fevertime.coinvillage.dto.manage.ManageResponseDto;
@@ -14,7 +15,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.fevertime.coinvillage.domain.model.Role.ROLE_NATION;
 
 @Service
 @Slf4j
@@ -26,7 +30,8 @@ public class ManageService {
 
     // 국민관리 회원 전체보기
     public List<ManageResponseDto> showMembers(String email) {
-        List<Member> memberList = memberRepository.findAllByCountry_CountryName(memberRepository.findByEmail(email).getCountry().getCountryName(), Sort.by(Sort.Direction.DESC, "property"));
+        List<Member> memberList = memberRepository.findAllByCountry_CountryName(memberRepository
+                .findByEmail(email).getCountry().getCountryName(), Sort.by(Sort.Direction.DESC, "property"));
         List<ManageResponseDto> manageResponseDtos = memberList.stream().map(ManageResponseDto::new).collect(Collectors.toList());
         manageResponseDtos.forEach(manage -> manage.setJobList(jobRepository.findAllJobName()));
         return manageResponseDtos;
