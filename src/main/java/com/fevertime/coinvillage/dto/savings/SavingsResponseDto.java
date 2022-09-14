@@ -28,14 +28,21 @@ public class SavingsResponseDto {
 
     private StateName stateName;
 
+    private Long maturity;
+
     public SavingsResponseDto(Savings savings) {
         this.savingsId = savings.getSavingsId();
         this.savingsTotal = savings.getSavingsTotal();
         this.createdAt = savings.getCreatedAt()
                 .format(DateTimeFormatter.ofPattern("MM.dd"));
         this.content = savings.getContent();
-        this.total = "+" + savings.getTotal();
+        if (savings.getStateName() == StateName.DEPOSIT) {
+            this.total = "+" + savings.getTotal();
+        } else if (savings.getStateName() == StateName.WITHDRAWL) {
+            this.total = "-" + savingsTotal;
+        }
         this.interest = savings.getAccount().getMember().getSavingsSetting().getInterest();
         this.stateName = savings.getStateName();
+        this.maturity = savings.getAccount().getMember().getSavingsSetting().getMaturity();
     }
 }
