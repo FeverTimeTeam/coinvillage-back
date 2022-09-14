@@ -27,7 +27,7 @@ public class StockNationResponseDto {
             this.percent = 0.0;
         } else {
             this.percent = (stock.getPrice().doubleValue()
-                    - stock.getStockHistoryList().get(stock.getStockHistoryList().size() - 1).getPrice().doubleValue()) / stock.getPrice().doubleValue() * 100;
+                    - stock.getStockHistoryList().get(stock.getStockHistoryList().size() - 1).getPrice().doubleValue()) * 100 / stock.getPrice().doubleValue();
         }
         if (stock.getStockHistoryList().size() - 1 == -1) {
             this.gap = 0L;
