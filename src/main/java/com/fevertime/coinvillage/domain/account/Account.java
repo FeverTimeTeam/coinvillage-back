@@ -24,7 +24,6 @@ public class Account extends BaseEntity {
 
     private String content;
 
-    @ColumnDefault("-")
     private Long count;
 
     private Long total;
