@@ -66,9 +66,9 @@ public class StockService {
                 .price(stock.getPrice())
                 .stock(stock)
                 .build();
-        stockHistoryRepository.save(stockHistory);
         stock.update(stockUpdateRequestDto.getContent(), stockUpdateRequestDto.getDescription(), stockUpdateRequestDto.getPrice());
         stockRepository.save(stock);
+        stockHistoryRepository.save(stockHistory);
 
         return new StockResponseDto(stock);
     }
