@@ -31,8 +31,8 @@ cloud:
     s3:
       bucket: aws-jimin-s3
     credentials:
-      access-key: AKIAWHTNIWXM4BI5A4FX
-      secret-key: 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
+      access-key: AKIAWHTNIWXMSCYSYXHN
+      secret-key: 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
     region:
       static: ap-northeast-2
       auto: false
