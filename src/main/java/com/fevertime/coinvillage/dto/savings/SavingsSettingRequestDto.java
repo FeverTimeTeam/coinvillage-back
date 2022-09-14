@@ -16,4 +16,6 @@ public class SavingsSettingRequestDto {
     private Long tax;
 
     private String day;
+
+    private Long interest;
 }

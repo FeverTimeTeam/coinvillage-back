@@ -26,6 +26,10 @@ public class SavingsSetting {
 
     private Long bill;
 
+    private Long maturity;
+
+    private Long interest;
+
     @OneToOne(cascade = CascadeType.PERSIST)
     private Member member;
 
@@ -35,5 +39,18 @@ public class SavingsSetting {
 
     public void updateDay(String day) {
         this.day = day;
+    }
+
+    public void updateInterest(Long interest) {
+        this.interest = interest;
+    }
+
+    public void updateMaturity() {
+        if (maturity == 0) {
+            this.maturity = 0L;
+            this.bill = 0L;
+        } else {
+            this.maturity -= 1;
+        }
     }
 }

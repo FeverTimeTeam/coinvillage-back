@@ -122,6 +122,8 @@ public class MemberService {
                 .term(Term.MONTHLY)
                 .day("1")
                 .bill(0L)
+                .maturity(6L)
+                .interest(0L)
                 .member(member)
                 .build();
 

@@ -1,17 +1,16 @@
 package com.fevertime.coinvillage.service;
 
+import com.fevertime.coinvillage.domain.account.Account;
 import com.fevertime.coinvillage.domain.account.Savings;
 import com.fevertime.coinvillage.domain.account.SavingsSetting;
 import com.fevertime.coinvillage.domain.country.Country;
 import com.fevertime.coinvillage.domain.member.Member;
+import com.fevertime.coinvillage.domain.model.StateName;
 import com.fevertime.coinvillage.domain.model.Term;
 import com.fevertime.coinvillage.dto.savings.SavingsResponseDto;
 import com.fevertime.coinvillage.dto.savings.SavingsSettingRequestDto;
 import com.fevertime.coinvillage.dto.savings.SavingsSettingResponseDto;
-import com.fevertime.coinvillage.repository.CountryRepository;
-import com.fevertime.coinvillage.repository.MemberRepository;
-import com.fevertime.coinvillage.repository.SavingsRepository;
-import com.fevertime.coinvillage.repository.SavingsSettingRepository;
+import com.fevertime.coinvillage.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,6 +27,7 @@ public class SavingsService {
     private final MemberRepository memberRepository;
     private final SavingsSettingRepository savingsSettingRepository;
     private final CountryRepository countryRepository;
+    private final AccountRepository accountRepository;
 
     // 적금 내역 보기
     @Transactional
@@ -38,7 +38,7 @@ public class SavingsService {
                 .collect(Collectors.toList());
     }
 
-    // 적금, 세금 세팅(선생님)
+    // 적금 날짜, 적금만기 이자, 세금 세팅하기(선생님)
     @Transactional
     public List<SavingsSettingResponseDto> stackSavings(String email, SavingsSettingRequestDto savingsSettingRequestDto) {
         Country country = countryRepository.findByCountryName(memberRepository.findByEmail(email).getCountry().getCountryName());
@@ -47,6 +47,7 @@ public class SavingsService {
 
         List<SavingsSetting> savingsSetting = savingsSettingRepository.findAllByMember_Country_CountryName(country.getCountryName());
         savingsSetting.forEach(a -> a.updateDay(savingsSettingRequestDto.getDay()));
+        savingsSetting.forEach(b -> b.updateInterest(savingsSettingRequestDto.getInterest()));
         savingsSettingRepository.saveAll(savingsSetting);
 
         return savingsSetting.stream()
@@ -62,5 +63,39 @@ public class SavingsService {
         savingsSettingRepository.save(savingsSetting);
 
         return new SavingsSettingResponseDto(savingsSetting);
+    }
+
+    // 적금 만기 수령받기(학생)
+    @Transactional
+    public void receiveSavings(String email) {
+        Member member = memberRepository.findByEmail(email);
+        Long savingsExpiration = member.getSavingsTotal() * ((member.getSavingsSetting().getInterest() / 100) + 1);
+        member.changeAccountTotal(member.getAccountTotal() + savingsExpiration);
+        member.changeSavingsTotal(0L);
+        member.changeProperty(member.getAccountTotal() + savingsExpiration + member.getStockTotal());
+        memberRepository.save(member);
+
+        List<Account> accounts = accountRepository.findAllByMember_Email(email);
+        Account account = accounts.get(accounts.size() - 1);
+
+        Savings savings = Savings.builder()
+                .stateName(StateName.WITHDRAWL)
+                .savingsTotal(0L)
+                .total(savingsExpiration)
+                .content("적금 만기")
+                .account(account)
+                .build();
+        savingsRepository.save(savings);
+
+        Account account1 = Account.builder()
+                .accountTotal(member.getAccountTotal())
+                .content("적금 만기")
+                .count(0L)
+                .total(savingsExpiration)
+                .stateName(StateName.DEPOSIT)
+                .member(member)
+                .build();
+        accountRepository.save(account);
+        accountRepository.save(account1);
     }
 }

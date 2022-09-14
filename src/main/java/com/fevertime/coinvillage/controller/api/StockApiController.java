@@ -106,5 +106,4 @@ public class StockApiController {
     public ResponseEntity<AccountResponseDto> stockTransfer(Authentication authentication, @RequestBody StockRequestDto stockRequestDto) {
         return ResponseEntity.ok(stockService.stockTransfer(authentication.getName(), stockRequestDto));
     }
-
 }

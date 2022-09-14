@@ -1,6 +1,5 @@
 package com.fevertime.coinvillage.controller.api;
 
-import com.fevertime.coinvillage.dto.savings.SavingsRequestDto;
 import com.fevertime.coinvillage.dto.savings.SavingsResponseDto;
 import com.fevertime.coinvillage.dto.savings.SavingsSettingRequestDto;
 import com.fevertime.coinvillage.dto.savings.SavingsSettingResponseDto;
@@ -30,7 +29,7 @@ public class SavingsApiController {
 
     @PutMapping("setting")
     @PreAuthorize("hasRole('ROLE_RULER')")
-    @ApiOperation(value = "적금 날짜, 세금 세팅하기(선생님)")
+    @ApiOperation(value = "적금 날짜, 적금만기 이자, 세금 세팅하기(선생님)")
     public ResponseEntity<List<SavingsSettingResponseDto>> stackSavingsSetting(Authentication authentication, @RequestBody SavingsSettingRequestDto savingsSettingRequestDto) {
         return ResponseEntity.ok(savingsService.stackSavings(authentication.getName(), savingsSettingRequestDto));
     }
@@ -39,5 +38,11 @@ public class SavingsApiController {
     @ApiOperation(value = "적금 금액 세팅하기(학생)")
     public ResponseEntity<SavingsSettingResponseDto> modSavingsSetting(Authentication authentication, @RequestBody SavingsSettingRequestDto savingsSettingRequestDto) {
         return ResponseEntity.ok(savingsService.modSavings(authentication.getName(), savingsSettingRequestDto));
+    }
+
+    @PostMapping
+    @ApiOperation(value = "적금 만기 수령(학생)")
+    public void receiveSavings(Authentication authentication) {
+        savingsService.receiveSavings(authentication.getName());
     }
 }
