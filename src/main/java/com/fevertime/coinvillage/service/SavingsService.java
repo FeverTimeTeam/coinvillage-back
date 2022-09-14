@@ -38,40 +38,28 @@ public class SavingsService {
                 .collect(Collectors.toList());
     }
 
-    // 적금, 세금 세팅
+    // 적금, 세금 세팅(선생님)
     @Transactional
-    public SavingsSettingResponseDto stackSavings(String email, SavingsSettingRequestDto savingsSettingRequestDto) {
-        Member member = memberRepository.findByEmail(email);
-
+    public List<SavingsSettingResponseDto> stackSavings(String email, SavingsSettingRequestDto savingsSettingRequestDto) {
         Country country = countryRepository.findByCountryName(memberRepository.findByEmail(email).getCountry().getCountryName());
         country.changeTax(savingsSettingRequestDto.getTax());
-
         countryRepository.save(country);
 
-        SavingsSetting savingsSetting = SavingsSetting.builder()
-                .term(Term.MONTHLY)
-                .bill(savingsSettingRequestDto.getBill())
-                .member(member)
-                .build();
+        List<SavingsSetting> savingsSetting = savingsSettingRepository.findAllByMember_Country_CountryName(country.getCountryName());
+        savingsSetting.forEach(a -> a.updateDay(savingsSettingRequestDto.getDay()));
+        savingsSettingRepository.saveAll(savingsSetting);
 
-        savingsSettingRepository.save(savingsSetting);
-
-        return new SavingsSettingResponseDto(savingsSetting);
+        return savingsSetting.stream()
+                .map(SavingsSettingResponseDto::new)
+                .collect(Collectors.toList());
     }
 
-    // 적금 세팅 수정하기
+    // 적금 세팅 수정하기(학생)
     @Transactional
     public SavingsSettingResponseDto modSavings(String email, SavingsSettingRequestDto savingsSettingRequestDto) {
-        log.info("시작");
         SavingsSetting savingsSetting = savingsSettingRepository.findByMember_Email(email);
-        log.info(savingsSetting.getDay());
         savingsSetting.updateBill(savingsSettingRequestDto.getBill());
         savingsSettingRepository.save(savingsSetting);
-
-        Country country = countryRepository.findByCountryName(memberRepository.findByEmail(email).getCountry().getCountryName());
-        log.info(country.getCountryName());
-        country.changeTax(savingsSettingRequestDto.getTax());
-        countryRepository.save(country);
 
         return new SavingsSettingResponseDto(savingsSetting);
     }

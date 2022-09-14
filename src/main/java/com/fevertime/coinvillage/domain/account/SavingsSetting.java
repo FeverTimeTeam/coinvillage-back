@@ -34,4 +34,8 @@ public class SavingsSetting {
     public void updateBill(Long bill) {
         this.bill = bill;
     }
+
+    public void updateDay(String day) {
+        this.day = day;
+    }
 }

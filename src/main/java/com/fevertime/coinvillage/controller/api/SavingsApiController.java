@@ -27,13 +27,13 @@ public class SavingsApiController {
         return ResponseEntity.ok(savingsService.showSavings(authentication.getName()));
     }
 
-    @PostMapping
+    @PutMapping("setting")
     @ApiOperation(value = "적금, 세금 세팅하기")
-    public ResponseEntity<SavingsSettingResponseDto> stackSavingsSetting(Authentication authentication, @RequestBody SavingsSettingRequestDto savingsSettingRequestDto) {
+    public ResponseEntity<List<SavingsSettingResponseDto>> stackSavingsSetting(Authentication authentication, @RequestBody SavingsSettingRequestDto savingsSettingRequestDto) {
         return ResponseEntity.ok(savingsService.stackSavings(authentication.getName(), savingsSettingRequestDto));
     }
 
-    @PutMapping
+    @PutMapping("change")
     @ApiOperation(value = "적금, 세금 수정하기")
     public ResponseEntity<SavingsSettingResponseDto> modSavingsSetting(Authentication authentication, @RequestBody SavingsSettingRequestDto savingsSettingRequestDto) {
         return ResponseEntity.ok(savingsService.modSavings(authentication.getName(), savingsSettingRequestDto));

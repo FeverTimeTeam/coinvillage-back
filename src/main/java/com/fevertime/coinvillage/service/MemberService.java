@@ -1,11 +1,13 @@
 package com.fevertime.coinvillage.service;
 
+import com.fevertime.coinvillage.domain.account.SavingsSetting;
 import com.fevertime.coinvillage.domain.country.Country;
 import com.fevertime.coinvillage.domain.country.TodayMessage;
 import com.fevertime.coinvillage.domain.job.Job;
 import com.fevertime.coinvillage.domain.account.Account;
 import com.fevertime.coinvillage.domain.member.Authority;
 import com.fevertime.coinvillage.domain.member.Member;
+import com.fevertime.coinvillage.domain.model.Term;
 import com.fevertime.coinvillage.dto.login.CountryResponseDto;
 import com.fevertime.coinvillage.dto.login.MemberRequestDto;
 import com.fevertime.coinvillage.dto.login.MemberResponseDto;
@@ -37,6 +39,7 @@ public class MemberService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
     private final TodayMessageRepository todayMessageRepository;
+    private final SavingsSettingRepository savingsSettingRepository;
     private final S3Uploader s3Uploader;
 
     // 선생님 회원가입
@@ -115,8 +118,16 @@ public class MemberService {
                 .member(member)
                 .build();
 
+        SavingsSetting savingsSetting = SavingsSetting.builder()
+                .term(Term.MONTHLY)
+                .day("1")
+                .bill(0L)
+                .member(member)
+                .build();
+
         memberRepository.save(member);
         accountRepository.save(account);
+        savingsSettingRepository.save(savingsSetting);
 
         return new MemberResponseDto(member);
     }
