@@ -150,6 +150,7 @@ public class StockService {
                 .stateName(StateName.DEPOSIT)
                 .count(buyCount)
                 .total(stock.getPrice() * buyCount)
+                .price(stock.getPrice())
                 .stock(stock)
                 .build();
         List<StockBuy> setStockBuyCount = stockBuyRepository.findAllByStock_StockId(stockId);
