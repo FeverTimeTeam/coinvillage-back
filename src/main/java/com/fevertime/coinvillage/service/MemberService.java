@@ -7,6 +7,7 @@ import com.fevertime.coinvillage.domain.job.Job;
 import com.fevertime.coinvillage.domain.account.Account;
 import com.fevertime.coinvillage.domain.member.Authority;
 import com.fevertime.coinvillage.domain.member.Member;
+import com.fevertime.coinvillage.domain.model.StateName;
 import com.fevertime.coinvillage.domain.model.Term;
 import com.fevertime.coinvillage.dto.login.CountryResponseDto;
 import com.fevertime.coinvillage.dto.login.MemberRequestDto;
@@ -122,6 +123,9 @@ public class MemberService {
 
         Account account = Account.builder()
                 .accountTotal(0L)
+                .count(0L)
+                .stateName(StateName.DEPOSIT)
+                .total(0L)
                 .member(member)
                 .build();
 

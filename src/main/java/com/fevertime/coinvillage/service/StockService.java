@@ -124,8 +124,10 @@ public class StockService {
     @Transactional
     public List<StockNationMypageResponseDto> showMypages(String email) {
         List<Stock> stockList = stockRepository.findAllByMember_Country_CountryName(memberRepository.findByEmail(email).getCountry().getCountryName());
-        return stockList.stream()
-                .map(StockNationMypageResponseDto::new).collect(Collectors.toList());
+        List<StockNationMypageResponseDto> stockNationMypageResponseDtos = stockList.stream().map(StockNationMypageResponseDto::new)
+                .collect(Collectors.toList());
+        stockNationMypageResponseDtos.forEach(a -> a.setStockTotal(memberRepository.findByEmail(email).getStockTotal()));
+        return stockNationMypageResponseDtos;
     }
 
     // 주식 마이페이지 상세보기(학생)
