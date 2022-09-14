@@ -60,15 +60,16 @@ public class StockService {
     @Transactional
     public StockResponseDto changeStocks(Long stockId, StockUpdateRequestDto stockUpdateRequestDto) {
         Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
-        stock.update(stockUpdateRequestDto.getContent(), stockUpdateRequestDto.getDescription(), stockUpdateRequestDto.getPrice());
-        stockRepository.save(stock);
 
         StockHistory stockHistory = StockHistory.builder()
                 .content(stock.getContent())
                 .price(stock.getPrice())
                 .stock(stock)
                 .build();
-        // stockHistoryRepository.save(stockHistory);
+        stockHistoryRepository.save(stockHistory);
+
+        stock.update(stockUpdateRequestDto.getContent(), stockUpdateRequestDto.getDescription(), stockUpdateRequestDto.getPrice());
+        stockRepository.save(stock);
 
         return new StockResponseDto(stock);
     }
