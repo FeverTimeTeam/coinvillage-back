@@ -121,6 +121,7 @@ public class MemberService {
         Account account = Account.builder()
                 .accountTotal(0L)
                 .count(0L)
+                .content("0")
                 .stateName(StateName.DEPOSIT)
                 .total(0L)
                 .member(member)
