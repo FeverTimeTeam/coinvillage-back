@@ -54,7 +54,7 @@ public class SavingsApiController {
         savingsService.receiveSavings(authentication.getName());
     }
 
-    @GetMapping
+    @GetMapping("interest")
     @ApiOperation(value = "학생 이자 보기")
     public ResponseEntity<InterestResponseDto> showInterest(Authentication authentication) {
         return ResponseEntity.ok(savingsService.showInterest(authentication.getName()));
