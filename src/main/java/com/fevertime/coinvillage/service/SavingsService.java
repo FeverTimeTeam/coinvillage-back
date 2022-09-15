@@ -6,7 +6,7 @@ import com.fevertime.coinvillage.domain.account.SavingsSetting;
 import com.fevertime.coinvillage.domain.country.Country;
 import com.fevertime.coinvillage.domain.member.Member;
 import com.fevertime.coinvillage.domain.model.StateName;
-import com.fevertime.coinvillage.domain.model.Term;
+import com.fevertime.coinvillage.dto.savings.InterestResponseDto;
 import com.fevertime.coinvillage.dto.savings.SavingsResponseDto;
 import com.fevertime.coinvillage.dto.savings.SavingsSettingRequestDto;
 import com.fevertime.coinvillage.dto.savings.SavingsSettingResponseDto;
@@ -111,5 +111,12 @@ public class SavingsService {
                 .build();
         accountRepository.save(account);
         accountRepository.save(account1);
+    }
+
+    // 이자 보여주기
+    @Transactional
+    public InterestResponseDto showInterest(String email) {
+        SavingsSetting savingsSetting = savingsSettingRepository.findByMember_Email(email);
+        return new InterestResponseDto(savingsSetting);
     }
 }
