@@ -64,6 +64,7 @@ public class SavingsService {
         return SavingsSettingResponseDto.builder()
                 .tax(country.getTax())
                 .day(savingsSetting.getDay())
+                .interest(savingsSetting.getInterest())
                 .maturity(savingsSetting.getMaturity())
                 .build();
     }
