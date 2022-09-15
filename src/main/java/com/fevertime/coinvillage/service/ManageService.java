@@ -1,7 +1,6 @@
 package com.fevertime.coinvillage.service;
 
 import com.fevertime.coinvillage.domain.account.Account;
-import com.fevertime.coinvillage.domain.member.Authority;
 import com.fevertime.coinvillage.domain.member.Member;
 import com.fevertime.coinvillage.domain.model.StateName;
 import com.fevertime.coinvillage.dto.manage.ManageResponseDto;
@@ -16,10 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
-
-import static com.fevertime.coinvillage.domain.model.Role.ROLE_NATION;
 
 @Service
 @Slf4j
