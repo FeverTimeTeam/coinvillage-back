@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -37,6 +38,7 @@ public class Account extends BaseEntity {
     private Member member;
 
     @OneToMany(mappedBy = "account", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @BatchSize(size = 10)
     private List<Savings> savingsList;
 
     public void stack(Long total) {

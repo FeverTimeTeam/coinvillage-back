@@ -6,6 +6,7 @@ import com.fevertime.coinvillage.domain.account.Account;
 import com.fevertime.coinvillage.domain.account.SavingsSetting;
 import com.fevertime.coinvillage.domain.account.Stock;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.util.List;
@@ -56,9 +57,11 @@ public class Member {
     private Job job;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @BatchSize(size = 10)
     private List<Account> accountList;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @BatchSize(size = 10)
     private List<Stock> stockList;
 
     @OneToOne(mappedBy = "member")

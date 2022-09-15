@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.util.List;
@@ -25,6 +26,7 @@ public class Country {
     private Long tax;
 
     @OneToMany(mappedBy = "country", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @BatchSize(size = 10)
     private List<Member> memberList;
 
     @OneToOne(mappedBy = "country")
