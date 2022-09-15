@@ -30,7 +30,7 @@ public class SavingsService {
     private final AccountRepository accountRepository;
 
     // 적금 내역 보기
-    @Transactional
+    @Transactional(readOnly = true)
     public List<SavingsResponseDto> showSavings(String email) {
         List<Savings> savings = savingsRepository.findByAccount_Member_Email(email);
         return savings.stream()
@@ -56,7 +56,7 @@ public class SavingsService {
     }
 
     // 현재 설정한 세팅값(선생님)
-    @Transactional
+    @Transactional(readOnly = true)
     public SavingsSettingResponseDto showSetting(String email) {
         Country country = countryRepository.findByCountryName(memberRepository.findByEmail(email).getCountry().getCountryName());
         SavingsSetting savingsSetting = savingsSettingRepository.findAllByMember_Country_CountryName(country.getCountryName()).get(0);
@@ -114,7 +114,7 @@ public class SavingsService {
     }
 
     // 이자 보여주기
-    @Transactional
+    @Transactional(readOnly = true)
     public InterestResponseDto showInterest(String email) {
         SavingsSetting savingsSetting = savingsSettingRepository.findByMember_Email(email);
         return new InterestResponseDto(savingsSetting);

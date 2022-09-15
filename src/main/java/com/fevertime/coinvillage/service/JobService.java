@@ -35,7 +35,7 @@ public class JobService {
     }
 
     // 직업 전체 보기
-    @Transactional
+    @Transactional(readOnly = true)
     public List<JobResponseDto> viewJobs(String email) {
         List<Job> jobs = jobRepository.findAllByCountry_CountryName(memberRepository.findByEmail(email).getCountry().getCountryName());
         return jobs.stream().map(JobResponseDto::new)

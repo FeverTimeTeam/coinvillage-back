@@ -143,6 +143,7 @@ public class MemberService {
     }
 
     // 테스트용 전체보기 리스트
+    @Transactional(readOnly = true)
     public List<CountryResponseDto> findCountries() {
         List<Country> countries = countryRepository.findAll();
         return countries.stream().map(CountryResponseDto::new).collect(Collectors.toList());
@@ -178,14 +179,14 @@ public class MemberService {
     }
     
     // 프로필 정보주기
-    @Transactional
+    @Transactional(readOnly = true)
     public MemberResponseDto getProfileImage(String email) {
         Member member = memberRepository.findByEmail(email);
         return new MemberResponseDto(member);
     }
 
     // 현재 재산
-    @Transactional
+    @Transactional(readOnly = true)
     public PropertryResponseDto getPropertry(String email) {
         Member member = memberRepository.findByEmail(email);
         return new PropertryResponseDto(member);

@@ -25,6 +25,7 @@ public class TodayMessageService {
     }
 
     // 오늘의 정보 가져오기
+    @Transactional(readOnly = true)
     public TodayMessageResponseDto showInfo(String email) {
         TodayMessage todayMessage = todayMessageRepository.findById(memberRepository.findByEmail(email).getCountry().getTodayMessage().getTodayMessageId()).orElseThrow(() -> new IllegalArgumentException("해당 정보가 없습니다."));
         return new TodayMessageResponseDto(todayMessage);

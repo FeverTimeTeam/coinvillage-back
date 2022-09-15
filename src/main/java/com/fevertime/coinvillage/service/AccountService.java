@@ -9,6 +9,7 @@ import com.fevertime.coinvillage.repository.AccountRepository;
 import com.fevertime.coinvillage.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +21,7 @@ public class AccountService {
     private final MemberRepository memberRepository;
     
     // 통장 내역 보기
+    @Transactional(readOnly = true)
     public List<AccountResponseDto> showAccounts(String email) {
         List<Account> accounts = accountRepository.findAllByMember_Email(email);
         return accounts.stream()

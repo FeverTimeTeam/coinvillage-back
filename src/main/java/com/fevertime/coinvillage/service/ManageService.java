@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -29,6 +30,7 @@ public class ManageService {
     private final AccountRepository accountRepository;
 
     // 국민관리 회원 전체보기
+    @Transactional(readOnly = true)
     public List<ManageResponseDto> showMembers(String email) {
         List<Member> memberList = memberRepository.findAllByCountry_CountryName(memberRepository
                 .findByEmail(email).getCountry().getCountryName(), Sort.by(Sort.Direction.DESC, "property"));

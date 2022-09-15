@@ -42,7 +42,7 @@ public class StockService {
     }
 
     // 주식 종목 전체보기(선생님)
-    @Transactional
+    @Transactional(readOnly = true)
     public List<StockResponseDto> showStocks(String email) {
         List<Stock> stockList = stockRepository.findAllByMember_Email(email);
         return stockList.stream()
@@ -50,7 +50,7 @@ public class StockService {
     }
     
     // 주식 종목 상세보기(선생님)
-    @Transactional
+    @Transactional(readOnly = true)
     public StockResponseDto showStock(Long stockId) {
         Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
         return new StockResponseDto(stock);
@@ -81,7 +81,7 @@ public class StockService {
     }
 
     // 주식 종목 전체보기(학생)
-    @Transactional
+    @Transactional(readOnly = true)
     public List<StockNationResponseDto> showNationStocks(String email) {
         List<Stock> stockList = stockRepository.findAllByMember_Country_CountryName(memberRepository.findByEmail(email).getCountry().getCountryName());
         return stockList.stream()
@@ -89,7 +89,7 @@ public class StockService {
     }
 
     // 주식 종목 상세보기(학생)
-    @Transactional
+    @Transactional(readOnly = true)
     public StockResponseDto showNationStock(Long stockId) {
         Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
         return new StockResponseDto(stock);
@@ -121,7 +121,7 @@ public class StockService {
     }
 
     // 주식 마이페이지 전체보기(학생)
-    @Transactional
+    @Transactional(readOnly = true)
     public List<StockNationMypageResponseDto> showMypages(String email) {
         List<Stock> stockList = stockRepository.findAllByMember_Country_CountryName(memberRepository.findByEmail(email).getCountry().getCountryName());
         List<StockNationMypageResponseDto> stockNationMypageResponseDtos = stockList.stream().map(StockNationMypageResponseDto::new)
@@ -131,7 +131,7 @@ public class StockService {
     }
 
     // 주식 마이페이지 상세보기(학생)
-    @Transactional
+    @Transactional(readOnly = true)
     public StockNationMypageResponseDto showMypage(Long stockId) {
         Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
         return new StockNationMypageResponseDto(stock);
@@ -174,7 +174,7 @@ public class StockService {
     }
 
     // 주식 거래기록 확인
-    @Transactional
+    @Transactional(readOnly = true)
     public List<StockBuyResponseDto> showStockBuys(String email) {
         List<StockBuy> stockBuy = stockBuyRepository.findAllByStock_Member_Country_CountryName(memberRepository.findByEmail(email).getCountry().getCountryName());
         return stockBuy.stream()
