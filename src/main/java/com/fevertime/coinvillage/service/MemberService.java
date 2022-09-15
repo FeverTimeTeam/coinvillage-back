@@ -9,10 +9,7 @@ import com.fevertime.coinvillage.domain.member.Authority;
 import com.fevertime.coinvillage.domain.member.Member;
 import com.fevertime.coinvillage.domain.model.StateName;
 import com.fevertime.coinvillage.domain.model.Term;
-import com.fevertime.coinvillage.dto.login.CountryResponseDto;
-import com.fevertime.coinvillage.dto.login.MemberRequestDto;
-import com.fevertime.coinvillage.dto.login.MemberResponseDto;
-import com.fevertime.coinvillage.dto.login.MemberUpdateRequestDto;
+import com.fevertime.coinvillage.dto.login.*;
 import com.fevertime.coinvillage.exception.DuplicateMemberException;
 import com.fevertime.coinvillage.repository.*;
 import com.fevertime.coinvillage.util.S3Uploader;
@@ -185,5 +182,12 @@ public class MemberService {
     public MemberResponseDto getProfileImage(String email) {
         Member member = memberRepository.findByEmail(email);
         return new MemberResponseDto(member);
+    }
+
+    // 현재 재산
+    @Transactional
+    public PropertryResponseDto getPropertry(String email) {
+        Member member = memberRepository.findByEmail(email);
+        return new PropertryResponseDto(member);
     }
 }

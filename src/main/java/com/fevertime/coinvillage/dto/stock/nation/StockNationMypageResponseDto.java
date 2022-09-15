@@ -35,6 +35,5 @@ public class StockNationMypageResponseDto {
         this.price = stock.getPrice();
         this.count = stock.getCount();
         this.buyCount = buyCount;
-        this.stockTotal = 0L;
     }
 }

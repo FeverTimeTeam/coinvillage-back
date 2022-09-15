@@ -86,4 +86,10 @@ public class MemberApiController {
     public ResponseEntity<MemberResponseDto> getProfile(Authentication authentication) {
         return ResponseEntity.ok(memberService.getProfileImage(authentication.getName()));
     }
+
+    @GetMapping("property")
+    @ApiOperation(value = "현재 재산")
+    public ResponseEntity<PropertryResponseDto> getProperty(Authentication authentication) {
+        return ResponseEntity.ok(memberService.getPropertry(authentication.getName()));
+    }
 }
