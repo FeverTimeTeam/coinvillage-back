@@ -192,4 +192,11 @@ public class MemberService {
         Member member = memberRepository.findByEmail(email);
         return new PropertryResponseDto(member);
     }
+
+    // 회원 정보 가져오기
+    @Transactional(readOnly = true)
+    public MemberResponseDto getMemberInfo(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("해당 회원이 없습니다."));
+        return new MemberResponseDto(member);
+    }
 }
