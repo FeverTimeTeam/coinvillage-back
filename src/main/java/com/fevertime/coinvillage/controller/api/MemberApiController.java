@@ -93,9 +93,9 @@ public class MemberApiController {
         return ResponseEntity.ok(memberService.getPropertry(authentication.getName()));
     }
 
-    @GetMapping("{memberId}")
+    @GetMapping("memberInfo")
     @ApiOperation(value = "회원 정보 가져오기")
-    public ResponseEntity<MemberResponseDto> getMemberInfo(@PathVariable Long memberId) {
-        return ResponseEntity.ok(memberService.getMemberInfo(memberId));
+    public ResponseEntity<MemberResponseDto> getMemberInfo(Authentication authentication) {
+        return ResponseEntity.ok(memberService.getMemberInfo(authentication.getName()));
     }
 }
