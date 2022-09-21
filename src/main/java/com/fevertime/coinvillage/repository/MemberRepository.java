@@ -20,5 +20,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     List<Member> findByNicknameContaining(String searchWord);
 
-    List<Member> findAllByCountry_CountryNameAAndAuthoritiesIn(String email, Set<Authority> authorities, Sort sort);
+    List<Member> findAllByCountry_CountryNameAndAuthoritiesIn(String email, Set<Authority> authorities, Sort sort);
 }

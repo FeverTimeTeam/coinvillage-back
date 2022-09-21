@@ -34,7 +34,7 @@ public class ManageService {
         Authority authority = Authority.builder()
                 .authorityName(Role.ROLE_NATION)
                 .build();
-        List<Member> memberList = memberRepository.findAllByCountry_CountryNameAAndAuthoritiesIn(memberRepository
+        List<Member> memberList = memberRepository.findAllByCountry_CountryNameAndAuthoritiesIn(memberRepository
                 .findByEmail(email).getCountry().getCountryName(), Collections.singleton(authority), Sort.by(Sort.Direction.DESC, "property"));
         List<ManageResponseDto> manageResponseDtos = memberList.stream().map(ManageResponseDto::new).collect(Collectors.toList());
         manageResponseDtos.forEach(manage -> manage.setJobList(jobRepository.findAllJobName()));
