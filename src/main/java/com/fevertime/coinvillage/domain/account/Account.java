@@ -36,8 +36,6 @@ public class Account extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    private String zero;
-
     @OneToMany(mappedBy = "account", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @BatchSize(size = 10)
     private List<Savings> savingsList;
