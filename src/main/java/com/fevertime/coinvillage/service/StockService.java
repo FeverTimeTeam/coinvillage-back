@@ -1,15 +1,15 @@
 package com.fevertime.coinvillage.service;
 
-import com.fevertime.coinvillage.domain.account.Account;
-import com.fevertime.coinvillage.domain.account.Stock;
-import com.fevertime.coinvillage.domain.account.StockBuy;
-import com.fevertime.coinvillage.domain.account.StockHistory;
+import com.fevertime.coinvillage.domain.account.AccountHistory;
+import com.fevertime.coinvillage.domain.stock.CurrentStock;
+import com.fevertime.coinvillage.domain.stock.StockBuy;
+import com.fevertime.coinvillage.domain.stock.StockHistory;
 import com.fevertime.coinvillage.domain.member.Member;
 import com.fevertime.coinvillage.domain.model.StateName;
-import com.fevertime.coinvillage.dto.account.AccountResponseDto;
-import com.fevertime.coinvillage.dto.stock.StockRequestDto;
-import com.fevertime.coinvillage.dto.stock.StockResponseDto;
-import com.fevertime.coinvillage.dto.stock.StockUpdateRequestDto;
+import com.fevertime.coinvillage.dto.account.AccountHistoryResponseDto;
+import com.fevertime.coinvillage.dto.stock.StockBuyRequestDto;
+import com.fevertime.coinvillage.dto.stock.StockBuyResponseDto;
+import com.fevertime.coinvillage.dto.stock.StockBuyUpdateRequestDto;
 import com.fevertime.coinvillage.dto.stock.nation.*;
 import com.fevertime.coinvillage.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -22,99 +22,120 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class StockService {
-    private final StockRepository stockRepository;
     private final MemberRepository memberRepository;
     private final StockHistoryRepository stockHistoryRepository;
     private final StockBuyRepository stockBuyRepository;
-    private final AccountRepository accountRepository;
+    private final CurrentStockRepository currentStockRepository;
+    private final AccountHistoryRepository accountHistoryRepository;
 
     // 주식 종목 생성(선생님)
     @Transactional
-    public StockResponseDto makeStocks(String email, StockRequestDto stockRequestDto) {
+    public StockBuyResponseDto makeStocks(String email, StockBuyRequestDto stockBuyRequestDto) {
         Member member = memberRepository.findByEmail(email);
 
-        stockRequestDto.setStockTotal(member.getStockTotal());
-        stockRequestDto.setMember(member);
-        Stock stock = stockRequestDto.toEntity();
-        stockRepository.save(stock);
+        stockBuyRequestDto.setStockTotal(member.getStock().getStockTotal());
+        stockBuyRequestDto.setStock(member.getStock());
+        StockBuy stockBuy = stockBuyRequestDto.toEntity();
+        stockBuyRepository.save(stockBuy);
 
-        return new StockResponseDto(stock);
+        return new StockBuyResponseDto(stockBuy);
     }
 
     // 주식 종목 전체보기(선생님)
     @Transactional(readOnly = true)
-    public List<StockResponseDto> showStocks(String email) {
-        List<Stock> stockList = stockRepository.findAllByMember_Email(email);
-        return stockList.stream()
-                .map(StockResponseDto::new).collect(Collectors.toList());
+    public List<StockBuyResponseDto> showStocks(String email) {
+        List<StockBuy> stockBuyList = stockBuyRepository.findAllByStock_Member_Country_CountryName(memberRepository.findByEmail(email).getCountry().getCountryName());
+        return stockBuyList.stream()
+                .map(StockBuyResponseDto::new).collect(Collectors.toList());
     }
     
     // 주식 종목 상세보기(선생님)
     @Transactional(readOnly = true)
-    public StockResponseDto showStock(Long stockId) {
-        Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
-        return new StockResponseDto(stock);
+    public StockBuyResponseDto showStock(Long stockId) {
+        StockBuy stockBuy = stockBuyRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
+        return new StockBuyResponseDto(stockBuy);
     }
     
     // 주식 종목 수정(선생님)
     @Transactional
-    public StockResponseDto changeStocks(Long stockId, StockUpdateRequestDto stockUpdateRequestDto) {
-        Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
+    public StockBuyResponseDto changeStocks(Long stockBuyId, StockBuyUpdateRequestDto stockBuyUpdateRequestDto) {
+        StockBuy stockBuy = stockBuyRepository.findById(stockBuyId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
 
         StockHistory stockHistory = StockHistory.builder()
-                .content(stock.getContent())
-                .price(stock.getPrice())
-                .stock(stock)
+                .content(stockBuy.getContent())
+                .price(stockBuy.getPrice())
+                .stockBuy(stockBuy)
                 .build();
         stockHistoryRepository.save(stockHistory);
 
-        stock.update(stockUpdateRequestDto.getContent(), stockUpdateRequestDto.getDescription(), stockUpdateRequestDto.getPrice());
-        stockRepository.save(stock);
+        stockBuy.update(stockBuyUpdateRequestDto.getContent(), stockBuyUpdateRequestDto.getDescription(), stockBuyUpdateRequestDto.getPrice());
+        stockBuyRepository.save(stockBuy);
 
-        return new StockResponseDto(stock);
+        if (currentStockRepository.existsByContentAndStock_Member_Country_CountryName(stockBuy.getContent(),
+                memberRepository.findByEmail(stockBuy.getStock().getMember().getEmail()).getCountry().getCountryName())) {
+            List<CurrentStock> currentStockList = currentStockRepository.findAllByContentAndStock_Member_Country_CountryName(stockBuy.getContent(),
+                    memberRepository.findByEmail(stockBuy.getStock().getMember().getEmail()).getCountry().getCountryName());
+            currentStockList.forEach(a -> a.change(stockBuy.getContent(), stockBuy.getDescription(), stockBuy.getPrice()));
+            currentStockRepository.saveAll(currentStockList);
+        }
+
+        return new StockBuyResponseDto(stockBuy);
     }
 
     // 주식 종목 삭제(선생님)
     @Transactional
     public void deleteStock(Long stockId) {
-        stockRepository.deleteById(stockId);
+        stockBuyRepository.deleteById(stockId);
     }
 
     // 주식 종목 전체보기(학생)
     @Transactional(readOnly = true)
     public List<StockNationResponseDto> showNationStocks(String email) {
-        List<Stock> stockList = stockRepository.findAllByMember_Country_CountryName(memberRepository.findByEmail(email).getCountry().getCountryName());
+        List<StockBuy> stockList = stockBuyRepository.findAllByStock_Member_Country_CountryName(memberRepository.findByEmail(email).getCountry().getCountryName());
         return stockList.stream()
-                .map(StockNationResponseDto::new).collect(Collectors.toList());
+                .map(StockNationResponseDto::new)
+                .collect(Collectors.toList());
     }
 
     // 주식 종목 상세보기(학생)
     @Transactional(readOnly = true)
-    public StockResponseDto showNationStock(Long stockId) {
-        Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
-        return new StockResponseDto(stock);
+    public StockBuyResponseDto showNationStock(Long stockId) {
+        StockBuy stockBuy = stockBuyRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
+        return new StockBuyResponseDto(stockBuy);
     }
 
     // 주식 구매하기(학생)
     @Transactional
     public StockBuyResponseDto buyStock(Long stockId, String email, StockNationRequestDto stockNationRequestDto) {
-        Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
+        StockBuy stockBuy = stockBuyRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
         Member member = memberRepository.findByEmail(email);
 
-        StockBuy stockBuy = StockBuy.builder()
-                .content(stock.getContent())
-                .stateName(StateName.WITHDRAWL)
+        // 주식 구매 기록 남기기(학생)
+        StockHistory stockHistory = StockHistory.builder()
+                .content(stockBuy.getContent())
                 .count(stockNationRequestDto.getCount())
-                .price(stock.getPrice())
-                .total(stockNationRequestDto.getTotal())
-                .stock(stock)
+                .price(stockBuy.getPrice())
+                .stateName(StateName.WITHDRAWL)
+                .member(member)
                 .build();
-        stock.changeStockTotal(member.getStockTotal() - stockBuy.getTotal());
-        stockRepository.save(stock);
-        stockBuyRepository.save(stockBuy);
+        stockHistoryRepository.save(stockHistory);
 
-        member.changeStockTotal(member.getStockTotal() - stockBuy.getTotal());
-        member.changeProperty(member.getAccountTotal() + member.getSavingsTotal() + member.getStockTotal());
+        // 현재 보유 주식
+        CurrentStock currentStock = CurrentStock.builder()
+                .content(stockBuy.getContent())
+                .description(stockBuy.getDescription())
+                .count(stockNationRequestDto.getCount())
+                .price(stockBuy.getPrice())
+                .stock(member.getStock())
+                .build();
+        currentStockRepository.save(currentStock);
+
+        // 재산 변경
+        member.getStock().changeStockTotal(member.getStock().getStockTotal()
+                - stockNationRequestDto.getTotal());
+        member.changeProperty(member.getAccount().getAccountTotal()
+                + member.getSavings().getSavingsTotal()
+                + member.getStock().getStockTotal());
         memberRepository.save(member);
 
         return new StockBuyResponseDto(stockBuy);
@@ -123,83 +144,75 @@ public class StockService {
     // 주식 마이페이지 전체보기(학생)
     @Transactional(readOnly = true)
     public List<StockNationMypageResponseDto> showMypages(String email) {
-        List<Stock> stockList = stockRepository.findAllByMember_Country_CountryName(memberRepository.findByEmail(email).getCountry().getCountryName());
-        List<StockNationMypageResponseDto> stockNationMypageResponseDtos = stockList.stream().map(StockNationMypageResponseDto::new)
+        List<CurrentStock> currentStockList = currentStockRepository.findAllByStock_Member_Email(email);
+        List<StockNationMypageResponseDto> stockNationMypageResponseDtos = currentStockList.stream()
+                .map(StockNationMypageResponseDto::new)
                 .collect(Collectors.toList());
-        stockNationMypageResponseDtos.forEach(a -> a.setStockTotal(memberRepository.findByEmail(email).getStockTotal()));
+        stockNationMypageResponseDtos.forEach(a -> a.setStockTotal(memberRepository.findByEmail(email).getStock().getStockTotal()));
         return stockNationMypageResponseDtos;
     }
 
     // 주식 마이페이지 상세보기(학생)
     @Transactional(readOnly = true)
-    public StockNationMypageResponseDto showMypage(Long stockId) {
-        Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
-        return new StockNationMypageResponseDto(stock);
+    public StockNationMypageResponseDto showMypage(Long currentStockId) {
+        CurrentStock currentStock = currentStockRepository.findById(currentStockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
+        return new StockNationMypageResponseDto(currentStock);
     }
 
     // 주식 마이페이지 판매하기(학생)
     @Transactional
-    public StockNationMypageResponseDto sellStocks(Long stockId, String email) {
-        Stock stock = stockRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
+    public StockNationMypageResponseDto sellStocks(Long currentStockId, String email, StockNationRequestDto stockNationRequestDto) {
+        CurrentStock currentStock = currentStockRepository.findById(currentStockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
         Member member = memberRepository.findByEmail(email);
 
-        Long buyCount = 0L;
-        for (int i = 0; i < stock.getStockBuyList().size(); i++) {
-            buyCount += stock.getStockBuyList().get(i).getCount();
-        }
-
-        StockBuy stockBuy = StockBuy.builder()
-                .content(stock.getContent())
+        // 주식 판매 기록
+        StockHistory stockHistory = StockHistory.builder()
+                .content(currentStock.getContent())
                 .stateName(StateName.DEPOSIT)
-                .count(buyCount)
-                .total(stock.getPrice() * buyCount)
-                .price(stock.getPrice())
-                .stock(stock)
+                .count(stockNationRequestDto.getCount())
+                .price(currentStock.getPrice())
+                .member(member)
                 .build();
-        List<StockBuy> setStockBuyCount = stockBuyRepository.findAllByStock_StockId(stockId);
-        setStockBuyCount.forEach(StockBuy::clear);
-        stock.changeStockTotal(member.getStockTotal() + stockBuy.getTotal());
-        stockBuyRepository.save(stockBuy);
-        stockRepository.save(stock);
+        stockHistoryRepository.save(stockHistory);
 
-        member.changeStockTotal(member.getStockTotal() + stockBuy.getTotal());
-        member.changeProperty(member.getAccountTotal() + member.getSavingsTotal() + member.getStockTotal());
+        // 몇 주 파는지
+        currentStock.changeCount(stockNationRequestDto.getCount());
+        currentStockRepository.save(currentStock);
+
+        // 주식통장 잔액 구하기
+        member.getStock().changeStockTotal(member.getStock().getStockTotal() + stockHistory.getCount() * stockHistory.getPrice());
+        member.changeProperty(member.getAccount().getAccountTotal() + member.getSavings().getSavingsTotal() + member.getStock().getStockTotal());
         memberRepository.save(member);
 
-        List<StockBuy> setStockBuyCount1 = stockBuyRepository.findAllByStock_StockId(stockId);
-        setStockBuyCount1.forEach(StockBuy::clear);
-        stockBuyRepository.save(stockBuy);
-
-        return new StockNationMypageResponseDto(stock);
+        return new StockNationMypageResponseDto(currentStock);
     }
 
     // 주식 거래기록 확인
     @Transactional(readOnly = true)
-    public List<StockBuyResponseDto> showStockBuys(String email) {
-        List<StockBuy> stockBuy = stockBuyRepository.findAllByStock_Member_Country_CountryName(memberRepository.findByEmail(email).getCountry().getCountryName());
-        return stockBuy.stream()
-                .map(StockBuyResponseDto::new)
+    public List<StockHistoryResponseDto> showStockBuys(String email) {
+        List<StockHistory> stockHistoryList = stockHistoryRepository.findAllByMember_Email(email);
+        return stockHistoryList.stream()
+                .map(StockHistoryResponseDto::new)
                 .collect(Collectors.toList());
     }
 
     // 주식통장에서 입출금통장으로 입금
     @Transactional
-    public AccountResponseDto stockTransfer(String email, StockRequestDto stockRequestDto) {
+    public AccountHistoryResponseDto stockTransfer(String email, StockBuyRequestDto stockBuyRequestDto) {
         Member member = memberRepository.findByEmail(email);
 
-        Account account = Account.builder()
-                .total(stockRequestDto.getPrice())
+        AccountHistory accountHistory = AccountHistory.builder()
+                .total(stockBuyRequestDto.getPrice())
                 .stateName(StateName.DEPOSIT)
                 .content("주식통장에서 입금")
-                .member(member)
-                .accountTotal(member.getAccountTotal() + stockRequestDto.getPrice())
+                .account(member.getAccount())
                 .build();
-        accountRepository.save(account);
+        accountHistoryRepository.save(accountHistory);
 
-        member.changeAccountTotal(member.getAccountTotal() + stockRequestDto.getPrice());
-        member.changeStockTotal(member.getStockTotal() - stockRequestDto.getPrice());
+        member.getAccount().changeAccountTotal(member.getAccount().getAccountTotal() + stockBuyRequestDto.getPrice());
+        member.getStock().changeStockTotal(member.getStock().getStockTotal() - stockBuyRequestDto.getPrice());
         memberRepository.save(member);
 
-        return new AccountResponseDto(account);
+        return new AccountHistoryResponseDto(accountHistory);
     }
 }

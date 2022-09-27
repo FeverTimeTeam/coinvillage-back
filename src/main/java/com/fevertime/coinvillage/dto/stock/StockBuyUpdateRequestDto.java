@@ -7,12 +7,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class StockUpdateRequestDto {
+public class StockBuyUpdateRequestDto {
     private String content;
 
     private String description;
 
     private Long price;
-
-    private Long variable;
 }

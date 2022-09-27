@@ -21,22 +21,21 @@ public class JobService {
 
     // 직업 추가
     @Transactional
-    public JobResponseDto addJob(JobRequestDto jobRequestDto, String email) {
+    public JobResponseDto makeJob(JobRequestDto jobRequestDto, String email) {
         jobRequestDto.setCountry(memberRepository.findByEmail(email).getCountry());
         Job job = jobRequestDto.toEntity();
         jobRepository.save(job);
         return JobResponseDto.builder()
                 .jobName(jobRequestDto.getJobName())
                 .jobContent(jobRequestDto.getJobContent())
-                .headcount(jobRepository.countByJobName(jobRequestDto.getJobName()) - 1)
+                .headcount(1)
                 .payCheck(jobRequestDto.getPayCheck())
-                .memberList(null)
                 .build();
     }
 
     // 직업 전체 보기
     @Transactional(readOnly = true)
-    public List<JobResponseDto> viewJobs(String email) {
+    public List<JobResponseDto> showJobs(String email) {
         List<Job> jobs = jobRepository.findAllByCountry_CountryName(memberRepository.findByEmail(email).getCountry().getCountryName());
         return jobs.stream().map(JobResponseDto::new)
                 .collect(Collectors.toList());
@@ -44,7 +43,7 @@ public class JobService {
 
     // 직업 삭제
     @Transactional
-    public void deletejob(Long jobId) {
+    public void deljob(Long jobId) {
         jobRepository.deleteById(jobId);
     }
 

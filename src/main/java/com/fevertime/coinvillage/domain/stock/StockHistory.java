@@ -1,7 +1,8 @@
-package com.fevertime.coinvillage.domain.account;
+package com.fevertime.coinvillage.domain.stock;
 
-import com.fevertime.coinvillage.domain.BaseEntity;
+import com.fevertime.coinvillage.domain.member.Member;
 import com.fevertime.coinvillage.domain.model.StateName;
+import com.fevertime.coinvillage.domain.stock.Stock;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,30 +11,27 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 @Builder
-public class StockBuy extends BaseEntity {
+public class StockHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long stockBuyId;
+    private Long stockHistoryId;
 
     private String content;
+
+    private Long count;
+
+    private Long price;
 
     @Enumerated(EnumType.STRING)
     private StateName stateName;
 
-    private Long price;
-
-    private Long count;
-
-    private Long total;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private StockBuy stockBuy;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Stock stock;
-
-    public void clear() {
-        this.count = 0L;
-    }
+    private Member member;
 }

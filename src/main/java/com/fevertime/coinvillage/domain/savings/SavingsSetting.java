@@ -1,4 +1,4 @@
-package com.fevertime.coinvillage.domain.account;
+package com.fevertime.coinvillage.domain.savings;
 
 import com.fevertime.coinvillage.domain.member.Member;
 import com.fevertime.coinvillage.domain.model.Term;
@@ -31,7 +31,7 @@ public class SavingsSetting {
     private Long interest;
 
     @OneToOne(cascade = CascadeType.PERSIST)
-    private Member member;
+    private Savings savings;
 
     public void updateBill(Long bill) {
         this.bill = bill;

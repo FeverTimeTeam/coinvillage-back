@@ -1,7 +1,7 @@
 package com.fevertime.coinvillage.controller.api;
 
-import com.fevertime.coinvillage.dto.account.AccountRequestDto;
-import com.fevertime.coinvillage.dto.account.AccountResponseDto;
+import com.fevertime.coinvillage.dto.account.AccountHistoryRequestDto;
+import com.fevertime.coinvillage.dto.account.AccountHistoryResponseDto;
 import com.fevertime.coinvillage.service.AccountService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,19 +21,19 @@ public class AccountApiController {
 
     @GetMapping
     @ApiOperation(value = "입출금내역")
-    public ResponseEntity<List<AccountResponseDto>> showAccounts(Authentication authentication) {
+    public ResponseEntity<List<AccountHistoryResponseDto>> showAccounts(Authentication authentication) {
         return ResponseEntity.ok(accountService.showAccounts(authentication.getName()));
     }
 
     @PostMapping
     @ApiOperation(value = "소비하기")
-    public ResponseEntity<AccountResponseDto> consumeAccount(Authentication authentication, @RequestBody AccountRequestDto accountRequestDto) {
-        return ResponseEntity.ok(accountService.consumeAccount(authentication.getName(), accountRequestDto));
+    public ResponseEntity<AccountHistoryResponseDto> consumeAccount(Authentication authentication, @RequestBody AccountHistoryRequestDto accountHistoryRequestDto) {
+        return ResponseEntity.ok(accountService.consumeAccount(authentication.getName(), accountHistoryRequestDto));
     }
 
     @PostMapping("stock")
     @ApiOperation(value = "주식통장으로 입금")
-    public ResponseEntity<AccountResponseDto> stockDeposit(Authentication authentication, @RequestBody AccountRequestDto accountRequestDto) {
-        return ResponseEntity.ok(accountService.stockDeposit(authentication.getName(), accountRequestDto));
+    public ResponseEntity<AccountHistoryResponseDto> stockDeposit(Authentication authentication, @RequestBody AccountHistoryRequestDto accountHistoryRequestDto) {
+        return ResponseEntity.ok(accountService.stockDeposit(authentication.getName(), accountHistoryRequestDto));
     }
 }

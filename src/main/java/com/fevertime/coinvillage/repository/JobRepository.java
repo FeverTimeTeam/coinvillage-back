@@ -7,10 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface JobRepository extends JpaRepository<Job, Long> {
-    int countByJobName(String jobName);
-
-    @Query("select j.jobName from Job j")
-    List<String> findAllJobName();
+    @Query("select j.jobName from Job j where j.country.countryName = ?1")
+    List<String> findAllJobName(String email);
 
     Job findByJobName(String jobName);
 

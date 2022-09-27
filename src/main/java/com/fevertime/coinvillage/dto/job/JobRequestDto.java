@@ -2,6 +2,7 @@ package com.fevertime.coinvillage.dto.job;
 
 import com.fevertime.coinvillage.domain.country.Country;
 import com.fevertime.coinvillage.domain.job.Job;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 @Getter
@@ -16,6 +17,7 @@ public class JobRequestDto {
 
     private Long payCheck;
 
+    @ApiModelProperty(hidden = true)
     private Country country;
 
     public Job toEntity() {

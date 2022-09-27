@@ -1,6 +1,7 @@
 package com.fevertime.coinvillage.dto.stock.nation;
 
-import com.fevertime.coinvillage.domain.account.Stock;
+import com.fevertime.coinvillage.domain.stock.CurrentStock;
+import com.fevertime.coinvillage.domain.stock.Stock;
 import lombok.*;
 
 @Getter
@@ -9,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class StockNationMypageResponseDto {
-    private Long stockId;
+    private Long currentStockId;
 
     private String content;
 
@@ -19,21 +20,13 @@ public class StockNationMypageResponseDto {
 
     private Long count;
 
-    private Long buyCount;
-
     private Long stockTotal;
 
-    public StockNationMypageResponseDto(Stock stock) {
-        Long buyCount = 0L;
-        for (int i = 0; i < stock.getStockBuyList().size(); i++) {
-            buyCount += stock.getStockBuyList().get(i).getCount();
-        }
-
-        this.stockId = stock.getStockId();
-        this.content = stock.getContent();
-        this.description = stock.getDescription();
-        this.price = stock.getPrice();
-        this.count = stock.getCount();
-        this.buyCount = buyCount;
+    public StockNationMypageResponseDto(CurrentStock currentStock) {
+        this.currentStockId = currentStock.getCurrentStockId();
+        this.content = currentStock.getContent();
+        this.description = currentStock.getDescription();
+        this.price = currentStock.getPrice();
+        this.count = currentStock.getCount();
     }
 }

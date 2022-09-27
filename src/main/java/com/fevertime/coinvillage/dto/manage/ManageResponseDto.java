@@ -30,25 +30,9 @@ public class ManageResponseDto {
     public ManageResponseDto(Member member) {
         this.memberId = member.getMemberId();
         this.nickname = member.getNickname();
-
-        if (member.getJob() == null) {
-            this.jobName = "무직";
-        } else {
-            this.jobName = member.getJob().getJobName();
-        }
-
-        if (member.getJob() == null) {
-            this.jobContent = "없음";
-        } else {
-            this.jobContent = member.getJob().getJobContent();
-        }
-
-        if (member.getJob() == null) {
-            this.payCheck = 0L;
-        } else {
-            this.payCheck = member.getJob().getPayCheck();
-        }
-
+        this.jobName = (member.getJob() == null) ? "무직" : member.getJob().getJobName();
+        this.jobContent = (member.getJob() == null) ? "없음" : member.getJob().getJobContent();
+        this.payCheck = (member.getJob() == null) ? 0L : member.getJob().getPayCheck();
         this.property = member.getProperty();
     }
 }

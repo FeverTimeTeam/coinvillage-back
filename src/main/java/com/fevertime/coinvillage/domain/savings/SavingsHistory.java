@@ -1,8 +1,7 @@
-package com.fevertime.coinvillage.domain.account;
+package com.fevertime.coinvillage.domain.savings;
 
 import com.fevertime.coinvillage.domain.BaseEntity;
 import com.fevertime.coinvillage.domain.model.StateName;
-import com.fevertime.coinvillage.domain.model.Term;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,24 +14,18 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Savings extends BaseEntity {
+public class SavingsHistory extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long savingsId;
+    private Long savingsHistoryId;
 
     private String content;
 
     private Long total;
 
-    private Long savingsTotal;
-
     @Enumerated(EnumType.STRING)
     private StateName stateName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Account account;
-
-    public void changeSavingsTotal(Long total) {
-        this.savingsTotal += total;
-    }
+    private Savings savings;
 }

@@ -1,6 +1,6 @@
 package com.fevertime.coinvillage.dto.savings;
 
-import com.fevertime.coinvillage.domain.account.SavingsSetting;
+import com.fevertime.coinvillage.domain.savings.SavingsSetting;
 import lombok.*;
 
 @Getter

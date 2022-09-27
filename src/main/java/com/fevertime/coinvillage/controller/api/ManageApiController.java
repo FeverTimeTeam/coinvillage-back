@@ -40,8 +40,8 @@ public class ManageApiController {
 
     @GetMapping("search")
     @ApiOperation(value = "국민관리 회원검색")
-    public ResponseEntity<List<ManageResponseDto>> searchMembers(@RequestParam String searchWord) {
-        return ResponseEntity.ok(manageService.searchMembers(searchWord));
+    public ResponseEntity<List<ManageResponseDto>> searchMembers(@RequestParam String searchWord, Authentication authentication) {
+        return ResponseEntity.ok(manageService.searchMembers(searchWord, authentication.getName()));
     }
 
     @PutMapping("pay/{memberId}")

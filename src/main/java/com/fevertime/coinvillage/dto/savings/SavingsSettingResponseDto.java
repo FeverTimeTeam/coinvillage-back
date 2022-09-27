@@ -1,6 +1,6 @@
 package com.fevertime.coinvillage.dto.savings;
 
-import com.fevertime.coinvillage.domain.account.SavingsSetting;
+import com.fevertime.coinvillage.domain.savings.SavingsSetting;
 import com.fevertime.coinvillage.domain.model.Term;
 import lombok.*;
 
@@ -30,7 +30,7 @@ public class SavingsSettingResponseDto {
         this.day = savingsSetting.getDay();
         this.interest = savingsSetting.getInterest();
         this.bill = savingsSetting.getBill();
-        this.tax = savingsSetting.getMember().getCountry().getTax();
+        this.tax = savingsSetting.getSavings().getMember().getCountry().getTax();
         this.maturity = savingsSetting.getMaturity();
     }
 }

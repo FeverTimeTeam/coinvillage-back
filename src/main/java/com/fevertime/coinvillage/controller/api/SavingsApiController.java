@@ -1,7 +1,7 @@
 package com.fevertime.coinvillage.controller.api;
 
 import com.fevertime.coinvillage.dto.savings.InterestResponseDto;
-import com.fevertime.coinvillage.dto.savings.SavingsResponseDto;
+import com.fevertime.coinvillage.dto.savings.SavingsHistoryResponseDto;
 import com.fevertime.coinvillage.dto.savings.SavingsSettingRequestDto;
 import com.fevertime.coinvillage.dto.savings.SavingsSettingResponseDto;
 import com.fevertime.coinvillage.service.SavingsService;
@@ -24,7 +24,7 @@ public class SavingsApiController {
 
     @GetMapping
     @ApiOperation(value = "적금 목록")
-    public ResponseEntity<List<SavingsResponseDto>> showSavings(Authentication authentication) {
+    public ResponseEntity<List<SavingsHistoryResponseDto>> showSavings(Authentication authentication) {
         return ResponseEntity.ok(savingsService.showSavings(authentication.getName()));
     }
 

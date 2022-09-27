@@ -1,4 +1,4 @@
-package com.fevertime.coinvillage.domain.account;
+package com.fevertime.coinvillage.domain.stock;
 
 import com.fevertime.coinvillage.domain.BaseEntity;
 import com.fevertime.coinvillage.domain.member.Member;
@@ -21,32 +21,18 @@ public class Stock extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long stockId;
 
-    private String content;
-
-    private String description;
-
-    private Long count;
-
-    private Long price;
-
     private Long stockTotal;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne
     private Member member;
-
-    @OneToMany(mappedBy = "stock", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @BatchSize(size = 10)
-    private List<StockHistory> stockHistoryList;
 
     @OneToMany(mappedBy = "stock", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @BatchSize(size = 10)
     private List<StockBuy> stockBuyList;
 
-    public void update(String content, String description, Long price) {
-        this.content = content;
-        this.description = description;
-        this.price = price;
-    }
+    @OneToMany(mappedBy = "stock", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @BatchSize(size = 10)
+    private List<CurrentStock> currentStockList;
 
     public void changeStockTotal(Long stockTotal) {
         this.stockTotal = stockTotal;

@@ -1,11 +1,11 @@
 package com.fevertime.coinvillage.service;
 
-import com.fevertime.coinvillage.domain.account.Account;
+import com.fevertime.coinvillage.domain.account.AccountHistory;
 import com.fevertime.coinvillage.domain.member.Member;
 import com.fevertime.coinvillage.domain.model.StateName;
-import com.fevertime.coinvillage.dto.account.AccountRequestDto;
-import com.fevertime.coinvillage.dto.account.AccountResponseDto;
-import com.fevertime.coinvillage.repository.AccountRepository;
+import com.fevertime.coinvillage.dto.account.AccountHistoryRequestDto;
+import com.fevertime.coinvillage.dto.account.AccountHistoryResponseDto;
+import com.fevertime.coinvillage.repository.AccountHistoryRepository;
 import com.fevertime.coinvillage.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,54 +17,59 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AccountService {
-    private final AccountRepository accountRepository;
+    private final AccountHistoryRepository accountHistoryRepository;
     private final MemberRepository memberRepository;
     
     // 통장 내역 보기
     @Transactional(readOnly = true)
-    public List<AccountResponseDto> showAccounts(String email) {
-        List<Account> accounts = accountRepository.findAllByMember_Email(email);
-        return accounts.stream()
-                .map(AccountResponseDto::new)
+    public List<AccountHistoryResponseDto> showAccounts(String email) {
+        List<AccountHistory> accountHistories = accountHistoryRepository.findAllByAccount_Member_Email(email);
+        return accountHistories.stream()
+                .map(AccountHistoryResponseDto::new)
                 .collect(Collectors.toList());
     }
 
     // 통장 소비 API
-    public AccountResponseDto consumeAccount(String email, AccountRequestDto accountRequestDto) {
+    public AccountHistoryResponseDto consumeAccount(String email, AccountHistoryRequestDto accountHistoryRequestDto) {
         Member member = memberRepository.findByEmail(email);
 
-        accountRequestDto.setMember(member);
-        accountRequestDto.setStateName(StateName.WITHDRAWL);
-        accountRequestDto.setAccountTotal(member.getAccountTotal() - accountRequestDto.getTotal());
-        member.changeAccountTotal(member.getAccountTotal() - accountRequestDto.getTotal());
-        member.changeProperty(member.getAccountTotal() + member.getSavingsTotal() + member.getStockTotal());
+        accountHistoryRequestDto.setAccount(member.getAccount());
+        accountHistoryRequestDto.setStateName(StateName.WITHDRAWL);
+        accountHistoryRequestDto.setAccountTotal(member.getAccount().getAccountTotal()
+                - accountHistoryRequestDto.getTotal());
+        member.getAccount().changeAccountTotal(member.getAccount().getAccountTotal()
+                - accountHistoryRequestDto.getTotal());
+        member.changeProperty(member.getAccount().getAccountTotal()
+                + member.getSavings().getSavingsTotal()
+                + member.getStock().getStockTotal());
 
-        Account account = accountRequestDto.toEntity();
+        AccountHistory accountHistory = accountHistoryRequestDto.toEntity();
 
-        accountRepository.save(account);
+        accountHistoryRepository.save(accountHistory);
         memberRepository.save(member);
 
-        return new AccountResponseDto(account);
+        return new AccountHistoryResponseDto(accountHistory);
     }
 
     // 입출금에서 주식통장으로 입금
-    public AccountResponseDto stockDeposit(String email, AccountRequestDto accountRequestDto) {
+    public AccountHistoryResponseDto stockDeposit(String email, AccountHistoryRequestDto accountHistoryRequestDto) {
         Member member = memberRepository.findByEmail(email);
         
-        Account account = Account.builder()
-                .total(accountRequestDto.getTotal())
+        AccountHistory accountHistory = AccountHistory.builder()
+                .total(accountHistoryRequestDto.getTotal())
                 .stateName(StateName.WITHDRAWL)
-                .accountTotal(member.getAccountTotal() - accountRequestDto.getTotal())
                 .content("주식통장으로 입금")
-                .member(member)
+                .account(member.getAccount())
                 .build();
 
-        member.changeAccountTotal(member.getAccountTotal() - accountRequestDto.getTotal());
-        member.changeStockTotal(member.getStockTotal() + accountRequestDto.getTotal());
+        member.getAccount().changeAccountTotal(member.getAccount().getAccountTotal()
+                - accountHistoryRequestDto.getTotal());
+        member.getStock().changeStockTotal(member.getStock().getStockTotal()
+                + accountHistoryRequestDto.getTotal());
 
-        accountRepository.save(account);
+        accountHistoryRepository.save(accountHistory);
         memberRepository.save(member);
 
-        return new AccountResponseDto(account);
+        return new AccountHistoryResponseDto(accountHistory);
     }
 }

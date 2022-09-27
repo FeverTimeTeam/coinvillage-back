@@ -5,6 +5,7 @@ import com.fevertime.coinvillage.domain.member.Authority;
 import com.fevertime.coinvillage.domain.country.Country;
 import com.fevertime.coinvillage.domain.job.Job;
 import com.fevertime.coinvillage.domain.member.Member;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
@@ -38,8 +39,10 @@ public class MemberRequestDto {
 
     private String countryName;
 
+    @ApiModelProperty(hidden = true)
     private Country country;
 
+    @ApiModelProperty(hidden = true)
     private Job job;
 
     public Member toEntity() {

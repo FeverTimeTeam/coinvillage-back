@@ -1,15 +1,14 @@
 package com.fevertime.coinvillage.repository;
 
-import com.fevertime.coinvillage.domain.account.SavingsSetting;
-import com.fevertime.coinvillage.domain.model.Term;
+import com.fevertime.coinvillage.domain.member.Authority;
+import com.fevertime.coinvillage.domain.savings.SavingsSetting;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Set;
 
 public interface SavingsSettingRepository extends JpaRepository<SavingsSetting, Long> {
-    SavingsSetting findAllByTerm(Term term);
+    SavingsSetting findBySavings_Member_Email(String email);
 
-    SavingsSetting findByMember_Email(String email);
-
-    List<SavingsSetting> findAllByMember_Country_CountryName(String countryname);
+    List<SavingsSetting> findAllBySavings_Member_Country_CountryNameAndSavings_Member_AuthoritiesIn(String countryName, Set<Authority> authorities);
 }

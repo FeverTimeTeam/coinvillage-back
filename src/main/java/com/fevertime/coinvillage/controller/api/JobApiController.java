@@ -24,22 +24,22 @@ public class JobApiController {
     @PostMapping
     @PreAuthorize("hasRole('ROLE_RULER')")
     @ApiOperation(value = "직업 추가")
-    public ResponseEntity<JobResponseDto> addJob(@RequestBody JobRequestDto jobRequestDto, Authentication authentication) {
-        return ResponseEntity.ok(jobService.addJob(jobRequestDto, authentication.getName()));
+    public ResponseEntity<JobResponseDto> makeJob(@RequestBody JobRequestDto jobRequestDto, Authentication authentication) {
+        return ResponseEntity.ok(jobService.makeJob(jobRequestDto, authentication.getName()));
     }
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_RULER')")
     @ApiOperation(value = "직업 전체 보기")
-    public ResponseEntity<List<JobResponseDto>> viewJobs(Authentication authentication) {
-        return ResponseEntity.ok(jobService.viewJobs(authentication.getName()));
+    public ResponseEntity<List<JobResponseDto>> showJobs(Authentication authentication) {
+        return ResponseEntity.ok(jobService.showJobs(authentication.getName()));
     }
 
     @DeleteMapping("{jobId}")
     @PreAuthorize("hasRole('ROLE_RULER')")
     @ApiOperation(value = "직업 삭제")
-    public ResponseEntity removeJob(@PathVariable Long jobId) {
-        jobService.deletejob(jobId);
+    public ResponseEntity delJob(@PathVariable Long jobId) {
+        jobService.deljob(jobId);
         return ResponseEntity.noContent().build();
     }
     

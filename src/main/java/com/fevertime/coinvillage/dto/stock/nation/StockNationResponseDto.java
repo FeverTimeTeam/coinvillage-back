@@ -1,6 +1,7 @@
 package com.fevertime.coinvillage.dto.stock.nation;
 
-import com.fevertime.coinvillage.domain.account.Stock;
+import com.fevertime.coinvillage.domain.stock.Stock;
+import com.fevertime.coinvillage.domain.stock.StockBuy;
 import lombok.*;
 
 @Getter
@@ -19,21 +20,18 @@ public class StockNationResponseDto {
 
     private Long gap;
 
-    public StockNationResponseDto(Stock stock) {
-        this.stockId = stock.getStockId();
-        this.content = stock.getContent();
-        this.price = stock.getPrice();
-        if (stock.getStockHistoryList().size() - 1 == -1) {
-            this.percent = 0.0;
-        } else {
-            this.percent = (stock.getPrice().doubleValue()
-                    - stock.getStockHistoryList().get(stock.getStockHistoryList().size() - 1).getPrice().doubleValue()) * 100 / stock.getPrice().doubleValue();
-        }
-        if (stock.getStockHistoryList().size() - 1 == -1) {
-            this.gap = 0L;
-        } else {
-            this.gap = stock.getPrice()
-                    - stock.getStockHistoryList().get(stock.getStockHistoryList().size() - 1).getPrice();
-        }
+    public StockNationResponseDto(StockBuy stockBuy) {
+        this.stockId = stockBuy.getStockBuyId();
+        this.content = stockBuy.getContent();
+        this.price = stockBuy.getPrice();
+        this.percent = (stockBuy.getStockHistoryList().size() - 1 == -1)
+                ? 0.0
+                : (stockBuy.getPrice().doubleValue()
+                - stockBuy.getStockHistoryList().get(stockBuy.getStockHistoryList().size() - 1).getPrice().doubleValue())
+                * 100 / stockBuy.getPrice().doubleValue();
+        this.gap = (stockBuy.getStockHistoryList().size() - 1 == -1)
+                ? 0L
+                : stockBuy.getPrice()
+                - stockBuy.getStockHistoryList().get(stockBuy.getStockHistoryList().size() - 1).getPrice();
     }
 }

@@ -1,8 +1,9 @@
 package com.fevertime.coinvillage.dto.account;
 
 import com.fevertime.coinvillage.domain.account.Account;
-import com.fevertime.coinvillage.domain.member.Member;
+import com.fevertime.coinvillage.domain.account.AccountHistory;
 import com.fevertime.coinvillage.domain.model.StateName;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 @Getter
@@ -10,27 +11,29 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AccountRequestDto {
+public class AccountHistoryRequestDto {
     private String content;
 
     private Long count;
 
     private Long total;
 
+    @ApiModelProperty(hidden = true)
     private Long accountTotal;
 
+    @ApiModelProperty(hidden = true)
     private StateName stateName;
 
-    private Member member;
+    @ApiModelProperty(hidden = true)
+    private Account account;
 
-    public Account toEntity() {
-        return Account.builder()
+    public AccountHistory toEntity() {
+        return AccountHistory.builder()
                 .content(content)
                 .count(count)
                 .total(total)
-                .accountTotal(accountTotal)
                 .stateName(stateName)
-                .member(member)
+                .account(account)
                 .build();
     }
 }

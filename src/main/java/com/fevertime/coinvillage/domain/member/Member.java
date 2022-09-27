@@ -1,10 +1,12 @@
 package com.fevertime.coinvillage.domain.member;
 
+import com.fevertime.coinvillage.domain.account.Account;
 import com.fevertime.coinvillage.domain.country.Country;
 import com.fevertime.coinvillage.domain.job.Job;
-import com.fevertime.coinvillage.domain.account.Account;
-import com.fevertime.coinvillage.domain.account.SavingsSetting;
-import com.fevertime.coinvillage.domain.account.Stock;
+import com.fevertime.coinvillage.domain.savings.Savings;
+import com.fevertime.coinvillage.domain.savings.SavingsSetting;
+import com.fevertime.coinvillage.domain.stock.Stock;
+import com.fevertime.coinvillage.domain.stock.StockHistory;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
 
@@ -35,12 +37,6 @@ public class Member {
 
     private Long property;
 
-    private Long accountTotal;
-
-    private Long savingsTotal;
-
-    private Long stockTotal;
-
     private String imageUrl;
 
     @ManyToMany
@@ -53,34 +49,23 @@ public class Member {
     @ManyToOne(fetch = FetchType.LAZY)
     private Country country;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne
     private Job job;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @BatchSize(size = 10)
-    private List<Account> accountList;
-
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @BatchSize(size = 10)
-    private List<Stock> stockList;
+    @OneToOne(mappedBy = "member")
+    private Account account;
 
     @OneToOne(mappedBy = "member")
-    private SavingsSetting savingsSetting;
+    private Savings savings;
+
+    @OneToOne(mappedBy = "member")
+    private Stock stock;
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<StockHistory> stockHistoryList;
 
     public void update(Job job) {
         this.job = job;
-    }
-
-    public void changeAccountTotal(Long accountTotal) {
-        this.accountTotal = accountTotal;
-    }
-
-    public void changeSavingsTotal(Long savingsTotal) {
-        this.savingsTotal = savingsTotal;
-    }
-
-    public void changeStockTotal(Long stockTotal) {
-        this.stockTotal = stockTotal;
     }
 
     public void changeProperty(Long property) { this.property = property; }

@@ -3,10 +3,8 @@ package com.fevertime.coinvillage.domain.job;
 import com.fevertime.coinvillage.domain.country.Country;
 import com.fevertime.coinvillage.domain.member.Member;
 import lombok.*;
-import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter
@@ -24,16 +22,11 @@ public class Job {
 
     private Long payCheck;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Country country;
 
-    @OneToMany(mappedBy = "job", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @BatchSize(size = 10)
-    private List<Member> memberList;
-
-    @OneToMany(mappedBy = "job", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @BatchSize(size = 10)
-    private List<JobImage> jobImageList;
+    @OneToOne(mappedBy = "job")
+    private Member member;
 
     public void update(String jobContent, Long payCheck) {
         this.jobContent = jobContent;

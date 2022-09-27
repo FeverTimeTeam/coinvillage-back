@@ -1,6 +1,7 @@
 package com.fevertime.coinvillage.dto.job;
 
 import com.fevertime.coinvillage.domain.job.Job;
+import com.fevertime.coinvillage.domain.member.Member;
 import com.fevertime.coinvillage.dto.login.MemberResponseDto;
 import lombok.*;
 
@@ -23,19 +24,11 @@ public class JobResponseDto {
 
     private Long payCheck;
 
-    private List<MemberResponseDto> memberList;
-
-    private List<JobImageResponseDto> jobImageList;
-
     public JobResponseDto(Job job) {
         this.jobId = job.getJobId();
         this.jobName = job.getJobName();
         this.jobContent = job.getJobContent();
-        this.headcount = job.getMemberList().size();
+        this.headcount = 1;
         this.payCheck = job.getPayCheck();
-        this.memberList = job.getMemberList().stream().map(MemberResponseDto::new).collect(Collectors.toList());
-        this.jobImageList = job.getJobImageList().stream()
-                .map(JobImageResponseDto::new)
-                .collect(Collectors.toList());
     }
 }

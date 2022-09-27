@@ -1,6 +1,7 @@
 package com.fevertime.coinvillage.service;
 
-import com.fevertime.coinvillage.domain.account.SavingsSetting;
+import com.fevertime.coinvillage.domain.savings.Savings;
+import com.fevertime.coinvillage.domain.savings.SavingsSetting;
 import com.fevertime.coinvillage.domain.country.Country;
 import com.fevertime.coinvillage.domain.country.TodayMessage;
 import com.fevertime.coinvillage.domain.job.Job;
@@ -9,6 +10,7 @@ import com.fevertime.coinvillage.domain.member.Authority;
 import com.fevertime.coinvillage.domain.member.Member;
 import com.fevertime.coinvillage.domain.model.StateName;
 import com.fevertime.coinvillage.domain.model.Term;
+import com.fevertime.coinvillage.domain.stock.Stock;
 import com.fevertime.coinvillage.dto.login.*;
 import com.fevertime.coinvillage.exception.DuplicateMemberException;
 import com.fevertime.coinvillage.repository.*;
@@ -33,11 +35,12 @@ import static com.fevertime.coinvillage.domain.model.Role.ROLE_NATION;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final CountryRepository countryRepository;
-    private final JobRepository jobRepository;
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
     private final TodayMessageRepository todayMessageRepository;
     private final SavingsSettingRepository savingsSettingRepository;
+    private final SavingsRepository savingsRepository;
+    private final StockRepository stockRepository;
     private final S3Uploader s3Uploader;
 
     // 선생님 회원가입
@@ -65,14 +68,29 @@ public class MemberService {
                 .phoneNumber(memberRequestDto.getPhoneNumber())
                 .authorities(Collections.singleton(authority))
                 .property(null)
-                .accountTotal(null)
-                .savingsTotal(null)
-                .stockTotal(null)
                 .imageUrl(null)
                 .job(null)
                 .country(country)
                 .build();
         memberRepository.save(member);
+
+        Account account = Account.builder()
+                .accountTotal(0L)
+                .member(member)
+                .build();
+        accountRepository.save(account);
+
+        Savings savings = Savings.builder()
+                .savingsTotal(0L)
+                .member(member)
+                .build();
+        savingsRepository.save(savings);
+
+        Stock stock = Stock.builder()
+                .stockTotal(0L)
+                .member(member)
+                .build();
+        stockRepository.save(stock);
 
         TodayMessage todayMessage = TodayMessage.builder()
                 .message(null)
@@ -111,21 +129,22 @@ public class MemberService {
                 .authorities(Collections.singleton(authority))
                 .phoneNumber(memberRequestDto.getPhoneNumber())
                 .country(country)
-                .accountTotal(0L)
-                .savingsTotal(0L)
-                .stockTotal(0L)
                 .job(null)
                 .imageUrl(null)
                 .build();
+        memberRepository.save(member);
 
         Account account = Account.builder()
                 .accountTotal(0L)
-                .count(0L)
-                .content("0")
-                .stateName(StateName.DEPOSIT)
-                .total(0L)
                 .member(member)
                 .build();
+        accountRepository.save(account);
+
+        Savings savings = Savings.builder()
+                .savingsTotal(0L)
+                .member(member)
+                .build();
+        savingsRepository.save(savings);
 
         SavingsSetting savingsSetting = SavingsSetting.builder()
                 .term(Term.MONTHLY)
@@ -133,12 +152,15 @@ public class MemberService {
                 .bill(0L)
                 .maturity(6L)
                 .interest(0L)
+                .savings(savings)
+                .build();
+        savingsSettingRepository.save(savingsSetting);
+
+        Stock stock = Stock.builder()
+                .stockTotal(0L)
                 .member(member)
                 .build();
-
-        memberRepository.save(member);
-        accountRepository.save(account);
-        savingsSettingRepository.save(savingsSetting);
+        stockRepository.save(stock);
 
         return new MemberResponseDto(member);
     }
@@ -148,20 +170,6 @@ public class MemberService {
     public List<CountryResponseDto> findCountries() {
         List<Country> countries = countryRepository.findAll();
         return countries.stream().map(CountryResponseDto::new).collect(Collectors.toList());
-    }
-
-    // 직업 담당자 수정
-    @Transactional
-    public Long modJob(Long jobId, MemberUpdateRequestDto memberUpdateRequestDto) {
-        Job job = jobRepository.findById(jobId).orElseThrow(() -> new IllegalArgumentException("해당하는 직업이 없습니다."));
-
-        for (int i = 0; i < memberUpdateRequestDto.getMemberList().size(); i++) {
-            Member member = memberRepository.findByNickname(memberUpdateRequestDto.getMemberList().get(i));
-            member.setJob(job);
-            memberRepository.save(member);
-        }
-
-        return job.getJobId();
     }
 
     // 이미지 수정

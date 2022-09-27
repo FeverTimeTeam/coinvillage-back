@@ -1,6 +1,6 @@
 package com.fevertime.coinvillage.repository;
 
-import com.fevertime.coinvillage.domain.account.Stock;
+import com.fevertime.coinvillage.domain.stock.Stock;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
