@@ -61,6 +61,7 @@ public class StockService {
     public StockBuyResponseDto changeStocks(Long stockBuyId, StockBuyUpdateRequestDto stockBuyUpdateRequestDto) {
         StockBuy stockBuy = stockBuyRepository.findById(stockBuyId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
 
+        // 주식 변동 퍼센트용 로그 남기기
         StockHistory stockHistory = StockHistory.builder()
                 .content(stockBuy.getContent())
                 .price(stockBuy.getPrice())
@@ -68,16 +69,18 @@ public class StockService {
                 .build();
         stockHistoryRepository.save(stockHistory);
 
-        stockBuy.update(stockBuyUpdateRequestDto.getContent(), stockBuyUpdateRequestDto.getDescription(), stockBuyUpdateRequestDto.getPrice());
-        stockBuyRepository.save(stockBuy);
-
+        // 만약 사놓은 주식이 있다면 그 주식목록에 수정사항 적용
         if (currentStockRepository.existsByContentAndStock_Member_Country_CountryName(stockBuy.getContent(),
                 memberRepository.findByEmail(stockBuy.getStock().getMember().getEmail()).getCountry().getCountryName())) {
             List<CurrentStock> currentStockList = currentStockRepository.findAllByContentAndStock_Member_Country_CountryName(stockBuy.getContent(),
                     memberRepository.findByEmail(stockBuy.getStock().getMember().getEmail()).getCountry().getCountryName());
-            currentStockList.forEach(a -> a.change(stockBuy.getContent(), stockBuy.getDescription(), stockBuy.getPrice()));
+            currentStockList.forEach(a -> a.change(stockBuyUpdateRequestDto.getContent(), stockBuyUpdateRequestDto.getDescription(), stockBuyUpdateRequestDto.getPrice()));
             currentStockRepository.saveAll(currentStockList);
         }
+
+        // 주식 변경 사항 적용
+        stockBuy.update(stockBuyUpdateRequestDto.getContent(), stockBuyUpdateRequestDto.getDescription(), stockBuyUpdateRequestDto.getPrice());
+        stockBuyRepository.save(stockBuy);
 
         return new StockBuyResponseDto(stockBuy);
     }

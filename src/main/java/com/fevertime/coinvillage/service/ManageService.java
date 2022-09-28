@@ -2,7 +2,6 @@ package com.fevertime.coinvillage.service;
 
 import com.fevertime.coinvillage.domain.account.Account;
 import com.fevertime.coinvillage.domain.account.AccountHistory;
-import com.fevertime.coinvillage.domain.job.Job;
 import com.fevertime.coinvillage.domain.member.Authority;
 import com.fevertime.coinvillage.domain.member.Member;
 import com.fevertime.coinvillage.domain.model.Role;
