@@ -37,4 +37,8 @@ public class CurrentStock {
     public void changeCount(Long count) {
         this.count -= count;
     }
+
+    public void buyCount(Long count) {
+        this.count += count;
+    }
 }

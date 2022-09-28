@@ -67,7 +67,7 @@ public class ManageService {
 
     // 국민관리 회원 검색
     public List<ManageResponseDto> searchMembers(String searchWord, String email) {
-        List<Member> memberList = memberRepository.findByCountry_CountryNameAndNicknameContaining(searchWord, Sort.by(Sort.Direction.DESC, "property"), memberRepository.findByEmail(email).getCountry().getCountryName());
+        List<Member> memberList = memberRepository.findByCountry_CountryNameAndNicknameContaining(memberRepository.findByEmail(email).getCountry().getCountryName(), searchWord, Sort.by(Sort.Direction.DESC, "property"));
         return memberList.stream().map(ManageResponseDto::new).collect(Collectors.toList());
     }
     

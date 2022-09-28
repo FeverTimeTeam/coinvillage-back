@@ -11,4 +11,8 @@ public interface CurrentStockRepository extends JpaRepository<CurrentStock, Long
     List<CurrentStock> findAllByContentAndStock_Member_Country_CountryName(String content, String countryName);
 
     boolean existsByContentAndStock_Member_Country_CountryName(String content, String countryName);
+
+    boolean existsByStock_Member_Email(String email);
+
+    CurrentStock findByStock_Member_Email(String email);
 }

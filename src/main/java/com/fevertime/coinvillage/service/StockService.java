@@ -106,8 +106,8 @@ public class StockService {
 
     // 주식 구매하기(학생)
     @Transactional
-    public StockBuyResponseDto buyStock(Long stockId, String email, StockNationRequestDto stockNationRequestDto) {
-        StockBuy stockBuy = stockBuyRepository.findById(stockId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
+    public StockBuyResponseDto buyStock(Long stockBuyId, String email, StockNationRequestDto stockNationRequestDto) {
+        StockBuy stockBuy = stockBuyRepository.findById(stockBuyId).orElseThrow(() -> new IllegalArgumentException("해당 종목 없음"));
         Member member = memberRepository.findByEmail(email);
 
         // 주식 구매 기록 남기기(학생)
@@ -121,18 +121,24 @@ public class StockService {
         stockHistoryRepository.save(stockHistory);
 
         // 현재 보유 주식
-        CurrentStock currentStock = CurrentStock.builder()
-                .content(stockBuy.getContent())
-                .description(stockBuy.getDescription())
-                .count(stockNationRequestDto.getCount())
-                .price(stockBuy.getPrice())
-                .stock(member.getStock())
-                .build();
-        currentStockRepository.save(currentStock);
+        if (currentStockRepository.existsByStock_Member_Email(email)) {
+            CurrentStock currentStock = currentStockRepository.findByStock_Member_Email(email);
+            currentStock.buyCount(stockNationRequestDto.getCount());
+            currentStockRepository.save(currentStock);
+        } else {
+            CurrentStock currentStock = CurrentStock.builder()
+                    .content(stockBuy.getContent())
+                    .description(stockBuy.getDescription())
+                    .count(stockNationRequestDto.getCount())
+                    .price(stockBuy.getPrice())
+                    .stock(member.getStock())
+                    .build();
+            currentStockRepository.save(currentStock);
+        }
 
         // 재산 변경
         member.getStock().changeStockTotal(member.getStock().getStockTotal()
-                - stockNationRequestDto.getTotal());
+                - stockNationRequestDto.getCount() * stockBuy.getPrice());
         member.changeProperty(member.getAccount().getAccountTotal()
                 + member.getSavings().getSavingsTotal()
                 + member.getStock().getStockTotal());
@@ -180,7 +186,7 @@ public class StockService {
         currentStockRepository.save(currentStock);
 
         // 주식통장 잔액 구하기
-        member.getStock().changeStockTotal(member.getStock().getStockTotal() + stockHistory.getCount() * stockHistory.getPrice());
+        member.getStock().changeStockTotal(member.getStock().getStockTotal() + stockNationRequestDto.getCount() * currentStock.getPrice());
         member.changeProperty(member.getAccount().getAccountTotal() + member.getSavings().getSavingsTotal() + member.getStock().getStockTotal());
         memberRepository.save(member);
 
