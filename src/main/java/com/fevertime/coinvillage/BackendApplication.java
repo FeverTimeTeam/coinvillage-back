@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class BackendApplication extends SpringBootServletInitializer {
 
-    // ec2 404에러 해결 코드
+    // ec2 404에러 해결 코드, 개 거지 같은 코딩
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return builder.sources(BackendApplication.class);
