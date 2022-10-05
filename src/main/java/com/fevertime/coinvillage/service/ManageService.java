@@ -64,7 +64,7 @@ public class ManageService {
         memberRepository.deleteById(memberId);
     }
 
-    // 국민관리 회원 검색
+    // 국민관리 회원 검색...
     public List<ManageResponseDto> searchMembers(String searchWord, String email) {
         Authority authority = Authority.builder()
                 .authorityName(Role.ROLE_NATION)
