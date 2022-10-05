@@ -98,4 +98,10 @@ public class MemberApiController {
     public ResponseEntity<MemberResponseDto> getMemberInfo(Authentication authentication) {
         return ResponseEntity.ok(memberService.getMemberInfo(authentication.getName()));
     }
+
+    @GetMapping("test")
+    @ApiOperation(value = "무중단 배포 테스트 연결용")
+    public ResponseEntity<String> showTest() {
+        return ResponseEntity.ok("테스트");
+    }
 }
