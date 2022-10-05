@@ -20,7 +20,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     List<Member> findByNicknameContaining(String searchWord, Sort sort);
 
-    List<Member> findByCountry_CountryNameAndNicknameContaining(String countryName, String searchWord, Sort sort);
+    List<Member> findByCountry_CountryNameAndNicknameContainingAndAuthoritiesIn(String countryName, String searchWord, Set<Authority> authorities, Sort sort);
 
     List<Member> findAllByCountry_CountryNameAndAuthoritiesIn(String email, Set<Authority> authorities, Sort sort);
 }
