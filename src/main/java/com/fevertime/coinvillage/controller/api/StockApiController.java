@@ -44,7 +44,7 @@ public class StockApiController {
         return ResponseEntity.ok(stockService.makeStocks(authentication.getName(), stockBuyRequestDto));
     }
 
-    @PatchMapping("ruler/{stockBuyId}")
+    @PutMapping("ruler/{stockBuyId}")
     @PreAuthorize("hasRole('ROLE_RULER')")
     @ApiOperation(value = "주식 종목 수정하기(선생님)")
     public ResponseEntity<StockBuyResponseDto> changeStock(@PathVariable Long stockBuyId, @RequestBody StockBuyUpdateRequestDto stockBuyUpdateRequestDto) {
