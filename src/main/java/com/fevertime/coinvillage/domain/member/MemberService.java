@@ -17,8 +17,11 @@ import com.fevertime.coinvillage.domain.model.Term;
 import com.fevertime.coinvillage.domain.stock.entity.Stock;
 import com.fevertime.coinvillage.domain.member.dto.login.*;
 import com.fevertime.coinvillage.domain.stock.repository.StockRepository;
+import com.fevertime.coinvillage.global.error.ErrorCode;
+import com.fevertime.coinvillage.global.error.exception.BadRequestException;
 import com.fevertime.coinvillage.global.error.exception.DuplicateMemberException;
 import com.fevertime.coinvillage.global.config.s3.S3Uploader;
+import com.fevertime.coinvillage.global.error.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -51,7 +54,7 @@ public class MemberService {
     @Transactional
     public MemberResponseDto signupRuler(MemberRequestDto memberRequestDto) {
         if (memberRepository.findOneWithAuthoritiesByEmail(memberRequestDto.getEmail()).orElse(null) != null) {
-            throw new DuplicateMemberException("이미 가입되어 있는 유저입니다.");
+            throw new BadRequestException(ErrorCode.MEMBER_ALREADY_EXIST);
         }
 
         countryRepository.save(memberRequestDto.toCountry());
@@ -109,11 +112,11 @@ public class MemberService {
     @Transactional
     public MemberResponseDto signupNation(MemberRequestDto memberRequestDto) {
         if (memberRepository.findOneWithAuthoritiesByEmail(memberRequestDto.getEmail()).orElse(null) != null) {
-            throw new DuplicateMemberException("이미 가입되어 있는 유저입니다.");
+            throw new BadRequestException(ErrorCode.MEMBER_ALREADY_EXIST);
         }
 
         if (countryRepository.findByCountryName(memberRequestDto.getCountryName()) == null) {
-            throw new IllegalArgumentException("존재하지 않는 국가입니다.");
+            throw new NotFoundException(ErrorCode.COUNTRY_NOT_FOUND);
         }
 
         Country country = countryRepository.findByCountryName(memberRequestDto.getCountryName());
