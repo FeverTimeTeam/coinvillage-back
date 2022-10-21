@@ -49,7 +49,7 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
             sudo docker rm -f $(docker ps -qa)
-            sudo docker pull ${{ secrets.DOCKER_REPO }}/coinvillage-web
-            sudo docker pull ${{ secrets.DOCKER_REPO }}/coinvillage-nginx
+            sudo docker pull rkdwlals/coinvillage-web
+            sudo docker pull rkdwlals/coinvillage-nginx
             docker-compose up -d
             docker image prune -f
