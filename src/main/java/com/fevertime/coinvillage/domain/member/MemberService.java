@@ -19,6 +19,7 @@ import com.fevertime.coinvillage.domain.member.dto.login.*;
 import com.fevertime.coinvillage.domain.stock.repository.StockRepository;
 import com.fevertime.coinvillage.global.error.ErrorCode;
 import com.fevertime.coinvillage.global.error.exception.BadRequestException;
+import com.fevertime.coinvillage.global.error.exception.DuplicateMemberException;
 import com.fevertime.coinvillage.global.config.s3.S3Uploader;
 import com.fevertime.coinvillage.global.error.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
